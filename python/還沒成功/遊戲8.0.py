@@ -35,7 +35,10 @@ class InputBox:
             self.active = not self.active
         else:
             self.active = False
-        self.color = (0, 0, 200) if self.active else (0, 0, 100)
+        if self.active:
+            self.color = (0, 0, 200)
+        else:
+            self.color = (0, 0, 100)
 
     def handle_keydown(self, event):
         global input_text, input_flag
@@ -154,11 +157,14 @@ class Button:
                 center=(fl(self.x_ + self.w_ / 2), fl(self.y_ + self.h_ / 2))
             ),
         )
+        if self.surface.name == "CreateCharacter":
+            input_box.draw(self.surface.surface)
 
     def do(self, do_something):
         try:
             exec(do_something)
-        except:
+        except Exception as e:
+            print(e)
             print(do_something)
             exit()
 
@@ -172,12 +178,19 @@ class Surface:
         self.surface = pygame.Surface((w, h)).convert_alpha()
 
     def display(self):
+        global sx, sy
         self.surface.fill((104, 104, 130, 200))
         pygame.draw.rect(self.surface, (0, 0, 0), (0, 0, self.w, self.h), 5)
+        sx, sy = W / 2 - self.w / 2, H / 2 - self.h / 2
         for i in self.object:
-            i.check(mx, my, W / 2 - self.w / 2, H / 2 - self.h / 2)
+            i.check(mx, my, sx, sy)
             i.display()
-        screen.blit(self.surface, (W / 2 - self.w / 2, H / 2 - self.h / 2))
+        screen.blit(self.surface, (sx, sy))
+
+
+class Player:
+    def __init__(self, name):
+        self.name = name
 
 
 def back_ground_color(w, h):
@@ -273,7 +286,7 @@ def add_surface(surface_name):
                     "print(f'button {self.text} is pressed')\nremove_surface('LeaveTheGameConfirmation')",
                 )
             )
-        case "CreateCharacter":  #
+        case "CreateCharacter":
             surface = Surface(surface_name, 400, 300)
             surface.object.append(
                 Button(
@@ -284,7 +297,7 @@ def add_surface(surface_name):
                     "確認",
                     False,
                     surface,
-                    "print(f'button {self.text} is pressed')\nadd_surface('InitialAttributes')\nremove_surface('CreateCharacter')\nremove_surface('Start')",
+                    "print(f'button {self.text} is pressed')\ninputbox=True\nadd_surface('InitialAttributes')\nremove_surface('CreateCharacter')\nremove_surface('Start')",
                 )
             )
             surface.object.append(
@@ -312,7 +325,7 @@ def remove_surface(surface_name):
     del surface_dict[surface_name]
 
 
-input_box = InputBox(0, 0, 300, 40, "請輸入名字")
+input_box = InputBox(50, 210, 300, 40, "請輸入名字")
 back_ground = back_ground_color(W, H)
 surface_dict = {}
 surface_list = []
@@ -360,5 +373,8 @@ while True:
 
     for i in surface_list:
         surface_dict[i].display()
+        if surface_list[-1] == "CreateCharacter" and input_flag:
+            player = Player(input_text)
+            print(player.name)
     pygame.display.update()
     clock.tick(100)
