@@ -16,6 +16,7 @@ input_flag = False
 fullscreen = 0
 inputbox = False
 do_something = None
+remaining_points = 30
 
 
 class InputBox:
@@ -44,7 +45,6 @@ class InputBox:
         global input_text, input_flag
         if self.active:
             if event.key == pygame.K_RETURN:
-                input_text = self.text
                 input_flag = True
                 self.text = ""
             elif event.key == pygame.K_BACKSPACE:
@@ -54,6 +54,7 @@ class InputBox:
             self.txt_surface = pygame.font.Font(textlink, 20).render(
                 self.text, True, self.color
             )
+        input_text = self.text
 
     def update(self):
         width = max(200, self.txt_surface.get_width() + 10)
@@ -115,9 +116,12 @@ class Button:
                 self.h_ = self.original_h * 0.9
                 self.text_size_ = 18
                 if self.time <= 0:
-                    do_something = (self, self.do_something)
                     if self.holddown:
-                        self.time = 20
+                        print("直接調用")
+                        self.do(self.do_something)
+                        self.time = 15
+                    else:
+                        do_something = (self, self.do_something)
                 if not self.holddown:
                     self.time = 10
             else:
@@ -139,14 +143,13 @@ class Button:
         pygame.draw.rect(
             self.surface.surface,
             self.button_color,
-            (self.x_, self.y_, self.w_, self.h_),
+            (self.x_, self.y_, self.w_, self.h_)
         )
         if self.frame_:
             pygame.draw.rect(
                 self.surface.surface,
                 self.frame_color,
-                (self.x_, self.y_, self.w_, self.h_),
-                5,
+                (self.x_, self.y_, self.w_, self.h_),5
             )
         text = pygame.font.Font(textlink, self.text_size_).render(
             self.text, True, self.text_color_
@@ -169,6 +172,24 @@ class Button:
             exit()
 
 
+class Label:
+    def __init__(self,x,y,w,h,text,screen):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.text = text
+        self.screen = screen
+        self.text_color = (200, 200, 200)
+        self.label_color = (20, 20, 20)
+        self.frame_color = (200, 200, 200)
+    def display(self):
+        pygame.draw.rect(self.surface.surface,self.label_color,(self.x, self.y, self.w, self.h))
+        pygame.draw.rect(self.surface.surface,self.frame_color,(self.x, self.y, self.w, self.h),5)
+        text = pygame.font.Font(textlink,20).render(self.text, True, self.text_color)
+        self.surface.surface.blit(text,text.get_rect(center=(fl(self.x + self.w / 2), fl(self.y + self.h / 2))))
+
+
 class Surface:
     def __init__(self, name, w, h, object=[]):
         self.name = name
@@ -189,8 +210,14 @@ class Surface:
 
 
 class Player:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
+        self.name = "name"
+        self.stamina = 0
+        self.strength = 0
+        self.wisdom = 0
+        self.dexterity = 0
+        self.vitality = 0
+        self.luck = 0
 
 
 def back_ground_color(w, h):
@@ -297,7 +324,7 @@ def add_surface(surface_name):
                     "確認",
                     False,
                     surface,
-                    "print(f'button {self.text} is pressed')\ninputbox=True\nadd_surface('InitialAttributes')\nremove_surface('CreateCharacter')\nremove_surface('Start')",
+                    "print(f'button {self.text} is pressed')\nplayer.name=input_text\nprint(player.name)\nadd_surface('InitialAttributes')\nremove_surface('CreateCharacter')\nremove_surface('Start')",
                 )
             )
             surface.object.append(
@@ -312,6 +339,21 @@ def add_surface(surface_name):
                     "print(f'button {self.text} is pressed')\nremove_surface('CreateCharacter')",
                 )
             )
+        case "InitialAttributes":
+            surface = Surface(surface_name,620,440)
+            surface.object.append(Button(50, 50, 40, 40,"-",True,surface,"print(f'button {self.text} is pressed')\nif player.stamina>0:\n\tplayer.stamina-=1\n\tremaining_points+=1"))
+            surface.object.append(Button(240, 50, 40, 40,"+",True,surface,"print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.stamina+=1"))
+            surface.object.append(Button(340, 50, 40, 40,"-",True,surface,"print(f'button {self.text} is pressed')\nif player.strength>0:\n\tplayer.strength-=1\n\tremaining_points+=1"))
+            surface.object.append(Button(530, 50, 40, 40,"+",True,surface,"print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.strength+=1"))
+            surface.object.append(Button(50, 150, 40, 40,"-",True,surface,"print(f'button {self.text} is pressed')\nif player.wisdom>0:\n\tplayer.wisdom-=1\n\tremaining_points+=1"))
+            surface.object.append(Button(240, 150, 40, 40,"+",True,surface,"print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.wisdom+=1"))
+            surface.object.append(Button(340, 150, 40, 40,"-",True,surface,"print(f'button {self.text} is pressed')\nif player.dexterity>0:\n\tplayer.dexterity-=1\n\tremaining_points+=1"))
+            surface.object.append(Button(530, 150, 40, 40,"+",True,surface,"print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.dexterity+=1"))
+            surface.object.append(Button(50, 250, 40, 40,"-",True,surface,"print(f'button {self.text} is pressed')\nif player.vitality>0:\n\tplayer.vitality-=1\n\tremaining_points+=1"))
+            surface.object.append(Button(240, 250, 40, 40,"+",True,surface,"print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.vitality+=1"))
+            surface.object.append(Button(340, 250, 40, 40,"-",True,surface,"print(f'button {self.text} is pressed')\nif player.luck>0:\n\tplayer.luck-=1\n\tremaining_points+=1"))
+            surface.object.append(Button(530, 250, 40, 40,"+",True,surface,"print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.luck+=1"))
+            surface.object.append(Button(260, 350, 100, 40,"確認",True,surface,"print(f'button {self.text} is pressed')\nadd_surface('Base')\nremove_surface('InitialAttributes')"))
         case _:
             print("這個功能尚未製作完成")
             f = False
@@ -325,11 +367,21 @@ def remove_surface(surface_name):
     del surface_dict[surface_name]
 
 
+'''f"體力:{player.stamina}",
+f"力量{player.strength}",
+f"智慧:{player.wisdom}",
+f"敏捷:{player.dexterity}",
+f"血氣:{player.vitality}",
+f"運氣:{player.luck}",
+f"剩餘點數:{remaining_points}"'''
+
+
 input_box = InputBox(50, 210, 300, 40, "請輸入名字")
 back_ground = back_ground_color(W, H)
 surface_dict = {}
 surface_list = []
 add_surface("Start")
+player = Player()
 
 while True:
     mx, my = pygame.mouse.get_pos()
@@ -357,13 +409,13 @@ while True:
                     screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
                     back_ground = back_ground_color(W, H)
         elif event.type == pygame.MOUSEBUTTONUP:
-            if do_something is not None:
-                do_something[0].do(do_something[1])
-                do_something = None
             if inputbox:
                 input_box.handle_mouse(mx, my, sx, sy)
                 inputbox = False
                 sx, sy = 0, 0
+            if do_something is not None:
+                do_something[0].do(do_something[1])
+                do_something = None
 
     screen.fill((0, 0, 0))
     for x in range(fl(W / 10)):
@@ -373,8 +425,13 @@ while True:
 
     for i in surface_list:
         surface_dict[i].display()
-        if surface_list[-1] == "CreateCharacter" and input_flag:
-            player = Player(input_text)
-            print(player.name)
+        if surface_list[-1] == "CreateCharacter":
+            inputbox = True
+            if input_flag:
+                player.name = input_text
+                print(player.name)
+                add_surface('InitialAttributes')
+                remove_surface('CreateCharacter')
+                remove_surface('Start')
     pygame.display.update()
     clock.tick(100)
