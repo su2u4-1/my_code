@@ -143,13 +143,14 @@ class Button:
         pygame.draw.rect(
             self.surface.surface,
             self.button_color,
-            (self.x_, self.y_, self.w_, self.h_)
+            (self.x_, self.y_, self.w_, self.h_),
         )
         if self.frame_:
             pygame.draw.rect(
                 self.surface.surface,
                 self.frame_color,
-                (self.x_, self.y_, self.w_, self.h_),5
+                (self.x_, self.y_, self.w_, self.h_),
+                5,
             )
         text = pygame.font.Font(textlink, self.text_size_).render(
             self.text, True, self.text_color_
@@ -173,7 +174,7 @@ class Button:
 
 
 class Label:
-    def __init__(self,x,y,w,h,text,screen):
+    def __init__(self, x, y, w, h, text, screen):
         self.x = x
         self.y = y
         self.w = w
@@ -183,11 +184,19 @@ class Label:
         self.text_color = (200, 200, 200)
         self.label_color = (20, 20, 20)
         self.frame_color = (200, 200, 200)
+
     def display(self):
-        pygame.draw.rect(self.surface.surface,self.label_color,(self.x, self.y, self.w, self.h))
-        pygame.draw.rect(self.surface.surface,self.frame_color,(self.x, self.y, self.w, self.h),5)
-        text = pygame.font.Font(textlink,20).render(self.text, True, self.text_color)
-        self.surface.surface.blit(text,text.get_rect(center=(fl(self.x + self.w / 2), fl(self.y + self.h / 2))))
+        pygame.draw.rect(
+            self.surface.surface, self.label_color, (self.x, self.y, self.w, self.h)
+        )
+        pygame.draw.rect(
+            self.surface.surface, self.frame_color, (self.x, self.y, self.w, self.h), 5
+        )
+        text = pygame.font.Font(textlink, 20).render(self.text, True, self.text_color)
+        self.surface.surface.blit(
+            text,
+            text.get_rect(center=(fl(self.x + self.w / 2), fl(self.y + self.h / 2))),
+        )
 
 
 class Surface:
@@ -340,20 +349,163 @@ def add_surface(surface_name):
                 )
             )
         case "InitialAttributes":
-            surface = Surface(surface_name,620,440)
-            surface.object.append(Button(50, 50, 40, 40,"-",True,surface,"print(f'button {self.text} is pressed')\nif player.stamina>0:\n\tplayer.stamina-=1\n\tremaining_points+=1"))
-            surface.object.append(Button(240, 50, 40, 40,"+",True,surface,"print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.stamina+=1"))
-            surface.object.append(Button(340, 50, 40, 40,"-",True,surface,"print(f'button {self.text} is pressed')\nif player.strength>0:\n\tplayer.strength-=1\n\tremaining_points+=1"))
-            surface.object.append(Button(530, 50, 40, 40,"+",True,surface,"print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.strength+=1"))
-            surface.object.append(Button(50, 150, 40, 40,"-",True,surface,"print(f'button {self.text} is pressed')\nif player.wisdom>0:\n\tplayer.wisdom-=1\n\tremaining_points+=1"))
-            surface.object.append(Button(240, 150, 40, 40,"+",True,surface,"print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.wisdom+=1"))
-            surface.object.append(Button(340, 150, 40, 40,"-",True,surface,"print(f'button {self.text} is pressed')\nif player.dexterity>0:\n\tplayer.dexterity-=1\n\tremaining_points+=1"))
-            surface.object.append(Button(530, 150, 40, 40,"+",True,surface,"print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.dexterity+=1"))
-            surface.object.append(Button(50, 250, 40, 40,"-",True,surface,"print(f'button {self.text} is pressed')\nif player.vitality>0:\n\tplayer.vitality-=1\n\tremaining_points+=1"))
-            surface.object.append(Button(240, 250, 40, 40,"+",True,surface,"print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.vitality+=1"))
-            surface.object.append(Button(340, 250, 40, 40,"-",True,surface,"print(f'button {self.text} is pressed')\nif player.luck>0:\n\tplayer.luck-=1\n\tremaining_points+=1"))
-            surface.object.append(Button(530, 250, 40, 40,"+",True,surface,"print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.luck+=1"))
-            surface.object.append(Button(260, 350, 100, 40,"確認",True,surface,"print(f'button {self.text} is pressed')\nadd_surface('Base')\nremove_surface('InitialAttributes')"))
+            surface = Surface(surface_name, 620, 440)
+            surface.object.append(
+                Button(
+                    50,
+                    50,
+                    40,
+                    40,
+                    "-",
+                    True,
+                    surface,
+                    "print(f'button {self.text} is pressed')\nif player.stamina>0:\n\tplayer.stamina-=1\n\tremaining_points+=1",
+                )
+            )
+            surface.object.append(
+                Button(
+                    240,
+                    50,
+                    40,
+                    40,
+                    "+",
+                    True,
+                    surface,
+                    "print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.stamina+=1",
+                )
+            )
+            surface.object.append(
+                Button(
+                    340,
+                    50,
+                    40,
+                    40,
+                    "-",
+                    True,
+                    surface,
+                    "print(f'button {self.text} is pressed')\nif player.strength>0:\n\tplayer.strength-=1\n\tremaining_points+=1",
+                )
+            )
+            surface.object.append(
+                Button(
+                    530,
+                    50,
+                    40,
+                    40,
+                    "+",
+                    True,
+                    surface,
+                    "print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.strength+=1",
+                )
+            )
+            surface.object.append(
+                Button(
+                    50,
+                    150,
+                    40,
+                    40,
+                    "-",
+                    True,
+                    surface,
+                    "print(f'button {self.text} is pressed')\nif player.wisdom>0:\n\tplayer.wisdom-=1\n\tremaining_points+=1",
+                )
+            )
+            surface.object.append(
+                Button(
+                    240,
+                    150,
+                    40,
+                    40,
+                    "+",
+                    True,
+                    surface,
+                    "print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.wisdom+=1",
+                )
+            )
+            surface.object.append(
+                Button(
+                    340,
+                    150,
+                    40,
+                    40,
+                    "-",
+                    True,
+                    surface,
+                    "print(f'button {self.text} is pressed')\nif player.dexterity>0:\n\tplayer.dexterity-=1\n\tremaining_points+=1",
+                )
+            )
+            surface.object.append(
+                Button(
+                    530,
+                    150,
+                    40,
+                    40,
+                    "+",
+                    True,
+                    surface,
+                    "print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.dexterity+=1",
+                )
+            )
+            surface.object.append(
+                Button(
+                    50,
+                    250,
+                    40,
+                    40,
+                    "-",
+                    True,
+                    surface,
+                    "print(f'button {self.text} is pressed')\nif player.vitality>0:\n\tplayer.vitality-=1\n\tremaining_points+=1",
+                )
+            )
+            surface.object.append(
+                Button(
+                    240,
+                    250,
+                    40,
+                    40,
+                    "+",
+                    True,
+                    surface,
+                    "print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.vitality+=1",
+                )
+            )
+            surface.object.append(
+                Button(
+                    340,
+                    250,
+                    40,
+                    40,
+                    "-",
+                    True,
+                    surface,
+                    "print(f'button {self.text} is pressed')\nif player.luck>0:\n\tplayer.luck-=1\n\tremaining_points+=1",
+                )
+            )
+            surface.object.append(
+                Button(
+                    530,
+                    250,
+                    40,
+                    40,
+                    "+",
+                    True,
+                    surface,
+                    "print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.luck+=1",
+                )
+            )
+            surface.object.append(
+                Button(
+                    260,
+                    350,
+                    100,
+                    40,
+                    "確認",
+                    True,
+                    surface,
+                    "print(f'button {self.text} is pressed')\nadd_surface('Base')\nremove_surface('InitialAttributes')",
+                )
+            )
         case _:
             print("這個功能尚未製作完成")
             f = False
@@ -430,8 +582,8 @@ while True:
             if input_flag:
                 player.name = input_text
                 print(player.name)
-                add_surface('InitialAttributes')
-                remove_surface('CreateCharacter')
-                remove_surface('Start')
+                add_surface("InitialAttributes")
+                remove_surface("CreateCharacter")
+                remove_surface("Start")
     pygame.display.update()
     clock.tick(100)
