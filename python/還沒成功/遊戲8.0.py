@@ -174,12 +174,13 @@ class Button:
 
 
 class Label:
-    def __init__(self, x, y, w, h, text, screen):
+    def __init__(self, x, y, w, h, text,v, screen):
         self.x = x
         self.y = y
         self.w = w
         self.h = h
         self.text = text
+        self.dict = v
         self.screen = screen
         self.text_color = (200, 200, 200)
         self.label_color = (20, 20, 20)
@@ -192,7 +193,7 @@ class Label:
         pygame.draw.rect(
             self.surface.surface, self.frame_color, (self.x, self.y, self.w, self.h), 5
         )
-        text = pygame.font.Font(textlink, 20).render(self.text, True, self.text_color)
+        text = pygame.font.Font(textlink, 20).render(self.text.format(self.v), True, self.text_color)
         self.surface.surface.blit(
             text,
             text.get_rect(center=(fl(self.x + self.w / 2), fl(self.y + self.h / 2))),
