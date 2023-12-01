@@ -29,21 +29,13 @@ def astar_search(grid, start, end):
             new_x, new_y = current[0] + d[0], current[1] + d[1]
             neighbor = (new_x, new_y)
 
-            if (
-                0 <= new_x < len(grid)
-                and 0 <= new_y < len(grid[0])
-                and grid[new_x][new_y] != 1
-            ):
+            if 0 <= new_x < len(grid) and 0 <= new_y < len(grid[0]) and grid[new_x][new_y] != 1:
                 tentative_g_score = g_score[current] + 1
 
                 if tentative_g_score < g_score.get(neighbor, float("inf")):
                     came_from[neighbor] = current
                     g_score[neighbor] = tentative_g_score
-                    f_score[neighbor] = (
-                        g_score[neighbor]
-                        + abs(neighbor[0] - end[0])
-                        + abs(neighbor[1] - end[1])
-                    )
+                    f_score[neighbor] = g_score[neighbor] + abs(neighbor[0] - end[0]) + abs(neighbor[1] - end[1])
 
                     if neighbor not in closed_list:
                         open_list.append((f_score[neighbor], neighbor))

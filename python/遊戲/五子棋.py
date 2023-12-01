@@ -14,12 +14,7 @@ def checking():
                     x1 = x
                     y1 = y
                     for _ in range(4):
-                        if (
-                            x1 + a[i] < 0
-                            or x1 + a[i] > 14
-                            or y1 + b[i] < 0
-                            or y1 + b[i] > 14
-                        ):
+                        if x1 + a[i] < 0 or x1 + a[i] > 14 or y1 + b[i] < 0 or y1 + b[i] > 14:
                             break
                         elif chessBoard[x1 + a[i]][y1 + b[i]] != 1:
                             break
@@ -39,12 +34,7 @@ def checking():
                     x1 = x
                     y1 = y
                     for _ in range(4):
-                        if (
-                            x1 + a[i] < 0
-                            or x1 + a[i] > 14
-                            or y1 + b[i] < 0
-                            or y1 + b[i] > 14
-                        ):
+                        if x1 + a[i] < 0 or x1 + a[i] > 14 or y1 + b[i] < 0 or y1 + b[i] > 14:
                             break
                         elif chessBoard[x1 + a[i]][y1 + b[i]] != 2:
                             break
@@ -148,29 +138,19 @@ def main():
         for i in range(sl):
             for j in range(sl):
                 if chessBoard[i][j] == 1:
-                    pygame.draw.circle(
-                        screen, (0, 0, 0), (i * 44 + 28, j * 44 + 28), 13
-                    )
+                    pygame.draw.circle(screen, (0, 0, 0), (i * 44 + 28, j * 44 + 28), 13)
                 elif chessBoard[i][j] == 2:
-                    pygame.draw.circle(
-                        screen, (255, 255, 255), (i * 44 + 28, j * 44 + 28), 13
-                    )
+                    pygame.draw.circle(screen, (255, 255, 255), (i * 44 + 28, j * 44 + 28), 13)
         if gameContinue:
             winner_line = checking()
         if first % 2 == 0:
             turn = "Black"
-            pygame.draw.circle(
-                screen, (0, 0, 0), (mx * 44 + 28, my * 44 + 28), 15, width=3
-            )
+            pygame.draw.circle(screen, (0, 0, 0), (mx * 44 + 28, my * 44 + 28), 15, width=3)
         else:
             turn = "White"
-            pygame.draw.circle(
-                screen, (255, 255, 255), (mx * 44 + 28, my * 44 + 28), 15, width=3
-            )
+            pygame.draw.circle(screen, (255, 255, 255), (mx * 44 + 28, my * 44 + 28), 15, width=3)
         if not gameContinue and type(winner_line) == list:
-            pygame.draw.line(
-                screen, (255, 0, 0), winner_line[0], winner_line[1], width=3
-            )
+            pygame.draw.line(screen, (255, 0, 0), winner_line[0], winner_line[1], width=3)
         pygame.draw.rect(screen, (0, 0, 0), (0, 670, 60, 30), 5)
         screen.blit(font.render("reset", True, (0, 0, 0)), [5, 675])
         pygame.draw.rect(screen, (0, 0, 0), (60, 670, 60, 30), 5)

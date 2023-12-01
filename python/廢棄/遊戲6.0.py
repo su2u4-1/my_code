@@ -26,81 +26,63 @@ def attributepage():
             attributepage()
         if option == "1":
             if option1 <= player.rp1:
-                print(
-                    f"攻擊力:{player.att} -> {player.att + option1}\n基礎屬性剩餘點:{player.rp1} -> {player.rp1 - option1}"
-                )
+                print(f"攻擊力:{player.att} -> {player.att + option1}\n基礎屬性剩餘點:{player.rp1} -> {player.rp1 - option1}")
                 player.att += option1
                 player.rp1 -= option1
             else:
                 print("剩餘點數不夠")
         elif option == "2":
             if option1 <= player.rp1:
-                print(
-                    f"防禦力:{player.Def} -> {player.Def + option1}\n基礎屬性剩餘點:{player.rp1} -> {player.rp1 - option1}"
-                )
+                print(f"防禦力:{player.Def} -> {player.Def + option1}\n基礎屬性剩餘點:{player.rp1} -> {player.rp1 - option1}")
                 player.Def += option1
                 player.rp1 -= option1
             else:
                 print("剩餘點數不夠")
         elif option == "3":
             if option1 <= player.rp1:
-                print(
-                    f"速度:{player.agi} -> {player.agi + option1}\n基礎屬性剩餘點:{player.rp1} -> {player.rp1 - option1}"
-                )
+                print(f"速度:{player.agi} -> {player.agi + option1}\n基礎屬性剩餘點:{player.rp1} -> {player.rp1 - option1}")
                 player.agi += option1
                 player.rp1 -= option1
             else:
                 print("剩餘點數不夠")
         elif option == "4":
             if option1 <= player.rp1:
-                print(
-                    f"血量:{player.hp} -> {player.hp + option1}\n基礎屬性剩餘點:{player.rp1} -> {player.rp1 - option1}"
-                )
+                print(f"血量:{player.hp} -> {player.hp + option1}\n基礎屬性剩餘點:{player.rp1} -> {player.rp1 - option1}")
                 player.hp += option1
                 player.rp1 -= option1
             else:
                 print("剩餘點數不夠")
         elif option == "5":
             if option1 <= player.rp2:
-                print(
-                    f"金:{player.metal} -> {player.metal + option1}\n五行屬性剩餘點:{player.rp2} -> {player.rp2 - option1}"
-                )
+                print(f"金:{player.metal} -> {player.metal + option1}\n五行屬性剩餘點:{player.rp2} -> {player.rp2 - option1}")
                 player.metal += option1
                 player.rp2 -= option1
             else:
                 print("剩餘點數不夠")
         elif option == "6":
             if option1 <= player.rp2:
-                print(
-                    f"木:{player.wood} -> {player.wood + option1}\n五行屬性剩餘點:{player.rp2} -> {player.rp2 - option1}"
-                )
+                print(f"木:{player.wood} -> {player.wood + option1}\n五行屬性剩餘點:{player.rp2} -> {player.rp2 - option1}")
                 player.wood += option1
                 player.rp2 -= option1
             else:
                 print("剩餘點數不夠")
         elif option == "7":
             if option1 <= player.rp2:
-                print(
-                    f"水:{player.water} -> {player.water + option1}\n五行屬性剩餘點:{player.rp2} -> {player.rp2 - option1}"
-                )
+                print(f"水:{player.water} -> {player.water + option1}\n五行屬性剩餘點:{player.rp2} -> {player.rp2 - option1}")
                 player.water += option1
                 player.rp2 -= option1
             else:
                 print("剩餘點數不夠")
         elif option == "8":
             if option1 <= player.rp2:
-                print(
-                    f"火:{player.fire} -> {player.fire + option1}\n五行屬性剩餘點:{player.rp2} -> {player.rp2 - option1}"
-                )
+                print(f"火:{player.fire} -> {player.fire + option1}\n五行屬性剩餘點:{player.rp2} -> {player.rp2 - option1}")
                 player.fire += option1
                 player.rp2 -= option1
             else:
                 print("剩餘點數不夠")
         elif option == "9":
             if option1 <= player.rp2:
-                print(
-                    f"土:{player.earth} -> {player.earth + option1}\n五行屬性剩餘點:{player.rp2} -> {player.rp2 - option1}"
-                )
+                print(f"土:{player.earth} -> {player.earth + option1}\n五行屬性剩餘點:{player.rp2} -> {player.rp2 - option1}")
                 player.earth += option1
                 player.rp2 -= option1
             else:
@@ -124,15 +106,11 @@ def bag():
             option1 = int(option1)
             for i in range(len(li)):
                 if li[i][0] == option1:
-                    print(
-                        f"\n你選取了{li[i][0]}.{li[i][1]}，目前有{player.material_bag[f'{li[i][0]}.{li[i][1]}']}個\n"
-                    )
+                    print(f"\n你選取了{li[i][0]}.{li[i][1]}，目前有{player.material_bag[f'{li[i][0]}.{li[i][1]}']}個\n")
         except:
             for i in range(len(li)):
                 if li[i][1] == option1:
-                    print(
-                        f"\n你選取了{li[i][0]}.{li[i][1]}，目前有{player.material_bag[f'{li[i][0]}.{li[i][1]}']}個\n"
-                    )
+                    print(f"\n你選取了{li[i][0]}.{li[i][1]}，目前有{player.material_bag[f'{li[i][0]}.{li[i][1]}']}個\n")
     elif option == "2":
         for i in player.equipment_bag:
             print(f"{i}:{player.equipment_bag[i]}")
@@ -142,15 +120,11 @@ def bag():
             option1 = int(option1)
             for i in range(len(li)):
                 if li[i][0] == option1:
-                    print(
-                        f"\n你選取了{li[i][0]}.{li[i][1]}，目前有{player.equipment_bag[f'{li[i][0]}.{li[i][1]}']}個\n"
-                    )
+                    print(f"\n你選取了{li[i][0]}.{li[i][1]}，目前有{player.equipment_bag[f'{li[i][0]}.{li[i][1]}']}個\n")
         except:
             for i in range(len(li)):
                 if li[i][1] == option1:
-                    print(
-                        f"\n你選取了{li[i][0]}.{li[i][1]}，目前有{player.equipment_bag[f'{li[i][0]}.{li[i][1]}']}個\n"
-                    )
+                    print(f"\n你選取了{li[i][0]}.{li[i][1]}，目前有{player.equipment_bag[f'{li[i][0]}.{li[i][1]}']}個\n")
     elif option == "3":
         for i in player.equipment_slot:
             print(f"{i}:{player.equipment_slot[i]}")
@@ -160,15 +134,11 @@ def bag():
             option1 = int(option1)
             for i in range(len(li)):
                 if li[i][0] == option1:
-                    print(
-                        f"\n你選取了{li[i][0]}.{li[i][1]}，目前裝備是{player.equipment_bag[f'{li[i][0]}.{li[i][1]}']}\n"
-                    )
+                    print(f"\n你選取了{li[i][0]}.{li[i][1]}，目前裝備是{player.equipment_bag[f'{li[i][0]}.{li[i][1]}']}\n")
         except:
             for i in range(len(li)):
                 if li[i][1] == option1:
-                    print(
-                        f"\n你選取了{li[i][0]}.{li[i][1]}，目前裝備是{player.equipment_bag[f'{li[i][0]}.{li[i][1]}']}\n"
-                    )
+                    print(f"\n你選取了{li[i][0]}.{li[i][1]}，目前裝備是{player.equipment_bag[f'{li[i][0]}.{li[i][1]}']}\n")
     elif option == "4":
         return
     else:
@@ -210,9 +180,7 @@ def generatemap():
 def goout():
     global map, player
     x, y = player.x + 500, player.y + 500
-    print(
-        f"\n你現在的座標是({player.x},{player.y}),ID是{map[x][y][0]},地形是{map[x][y][1]},有{map[x][y][2]}"
-    )
+    print(f"\n你現在的座標是({player.x},{player.y}),ID是{map[x][y][0]},地形是{map[x][y][1]},有{map[x][y][2]}")
     option = input("\n要在地圖上行走請輸入[東西南北]或[ewsn]\n要打開地圖請按1\n要打開背包請按2\n要回家請按3\n")
     if option == "e" or option == "E" or option == "東":
         player.x += 1
@@ -239,13 +207,7 @@ def goout():
     ):
         if map[x][y][1] == "山地":
             option1 = input("\n遇上山地,是否要花費一條繩索爬山\n請輸入(y/n)或(T/F)或(1/2)\n")
-            if (
-                option1 == "y"
-                or option1 == "Y"
-                or option1 == "t"
-                or option1 == "T"
-                or option1 == "1"
-            ):
+            if option1 == "y" or option1 == "Y" or option1 == "t" or option1 == "T" or option1 == "1":
                 if player.material_bag["rope"] >= 1:
                     player.material_bag["rope"] -= 1
                     print("你移動了一格")
@@ -260,13 +222,7 @@ def goout():
                     elif option == "n" or option == "N" or option == "北":
                         player.y += 1
                     x, y = player.x + 500, player.y + 500
-            elif (
-                option1 == "n"
-                or option1 == "N"
-                or option1 == "f"
-                or option1 == "F"
-                or option1 == "2"
-            ):
+            elif option1 == "n" or option1 == "N" or option1 == "f" or option1 == "F" or option1 == "2":
                 print("你留在原地沒有行動")
                 if option == "e" or option == "E" or option == "東":
                     player.x -= 1
@@ -290,13 +246,7 @@ def goout():
                 x, y = player.x + 500, player.y + 500
         elif map[x][y][1] == "河/湖":
             option1 = input("\n遇上河/湖,是否要花費一艘船航行\n請輸入(y/n)或(T/F)或(1/2)\n")
-            if (
-                option1 == "y"
-                or option1 == "Y"
-                or option1 == "t"
-                or option1 == "T"
-                or option1 == "1"
-            ):
+            if option1 == "y" or option1 == "Y" or option1 == "t" or option1 == "T" or option1 == "1":
                 if player.material_bag["ship"] >= 1:
                     player.material_bag["ship"] -= 1
                     print("你移動了一格")
@@ -311,13 +261,7 @@ def goout():
                     elif option == "n" or option == "N" or option == "北":
                         player.y += 1
                     x, y = player.x + 500, player.y + 500
-            elif (
-                option1 == option1 == "n"
-                or option1 == "N"
-                or option1 == "f"
-                or option1 == "F"
-                or option1 == "2"
-            ):
+            elif option1 == option1 == "n" or option1 == "N" or option1 == "f" or option1 == "F" or option1 == "2":
                 print("你留在原地沒有行動")
                 if option == "e" or option == "E" or option == "東":
                     player.x -= 1
@@ -500,9 +444,7 @@ def fightbackjudgment(m, p, mn, pn, s):
         if ri(1, 100) <= fightback:
             atk = p["att"] / (p["att"] + m["def"])
             mn -= atk
-            print(
-                f"  {m['name']}受到了來自{p['name']}的{atk}點反擊傷害\n  剩餘血量:{mn}|{round((mn/m['hp'])*100,2)}%"
-            )
+            print(f"  {m['name']}受到了來自{p['name']}的{atk}點反擊傷害\n  剩餘血量:{mn}|{round((mn/m['hp'])*100,2)}%")
         return mn
     elif s == "m":
         fightback = m["bonus"][1] - p["bonus"][7]
@@ -510,9 +452,7 @@ def fightbackjudgment(m, p, mn, pn, s):
         if ri(1, 100) <= fightback:
             atk = m["att"] / (m["att"] + p["def"])
             pn -= atk
-            print(
-                f"  {p['name']}受到了來自{m['name']}的{atk}點反擊傷害\n  剩餘血量:{pn}|{round((pn/p['hp'])*100,2)}%"
-            )
+            print(f"  {p['name']}受到了來自{m['name']}的{atk}點反擊傷害\n  剩餘血量:{pn}|{round((pn/p['hp'])*100,2)}%")
         return pn
 
 
@@ -625,23 +565,17 @@ def PvE(m, p):  # bonus = [吸血,反擊,連擊,閃避,爆擊,擊暈,抗吸血,�
             if ri(1, 100) <= crit:
                 atk *= 1.5
                 pnowhp -= atk * ri(90, 110) / 100
-                print(
-                    f"  {p['name']}受到了來自{m['name']}的{atk}點{c[element]}屬性爆擊傷害\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%"
-                )
+                print(f"  {p['name']}受到了來自{m['name']}的{atk}點{c[element]}屬性爆擊傷害\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%")
                 mnowhp = fightbackjudgment(m, p, mnowhp, pnowhp, "p")
                 f = False
             if ri(1, 100) <= combo:
                 pnowhp -= atk * ri(90, 110) / 100
-                print(
-                    f"  {p['name']}受到了來自{m['name']}的{atk}點{c[element]}屬性連擊傷害\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%"
-                )
+                print(f"  {p['name']}受到了來自{m['name']}的{atk}點{c[element]}屬性連擊傷害\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%")
                 mnowhp = fightbackjudgment(m, p, mnowhp, pnowhp, "p")
                 f = False
             if f:
                 pnowhp -= atk * ri(90, 110) / 100
-                print(
-                    f"  {p['name']}受到了來自{m['name']}的{atk}點{c[element]}屬性普攻傷害\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%"
-                )
+                print(f"  {p['name']}受到了來自{m['name']}的{atk}點{c[element]}屬性普攻傷害\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%")
             if ri(1, 100) <= suckblood:
                 mnowhp += round(atk * (suckblood / 100))
                 print(
@@ -683,23 +617,17 @@ def PvE(m, p):  # bonus = [吸血,反擊,連擊,閃避,爆擊,擊暈,抗吸血,�
             if ri(1, 100) <= crit:
                 atk *= 1.5
                 mnowhp -= atk * ri(90, 110) / 100
-                print(
-                    f"  {m['name']}受到了來自{p['name']}的{atk}點{c[element]}屬性爆擊傷害\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%"
-                )
+                print(f"  {m['name']}受到了來自{p['name']}的{atk}點{c[element]}屬性爆擊傷害\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%")
                 pnowhp = fightbackjudgment(m, p, mnowhp, pnowhp, "m")
                 f = False
             if ri(1, 100) <= combo:
                 mnowhp -= atk * ri(90, 110) / 100
-                print(
-                    f"  {m['name']}受到了來自{p['name']}的{atk}點{c[element]}屬性連擊傷害\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%"
-                )
+                print(f"  {m['name']}受到了來自{p['name']}的{atk}點{c[element]}屬性連擊傷害\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%")
                 pnowhp = fightbackjudgment(m, p, mnowhp, pnowhp, "m")
                 f = False
             if f:
                 mnowhp -= atk * ri(90, 110) / 100
-                print(
-                    f"  {m['name']}受到了來自{p['name']}的{atk}點{c[element]}屬性普攻傷害\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%"
-                )
+                print(f"  {m['name']}受到了來自{p['name']}的{atk}點{c[element]}屬性普攻傷害\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%")
             if ri(1, 100) <= suckblood:
                 pnowhp += round(atk * (suckblood / 100))
                 print(

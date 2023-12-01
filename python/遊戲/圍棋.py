@@ -8,9 +8,7 @@ def put_chess(x, y, p):
     for j in range(4):
         if 0 <= x + A[j] < 19 and 0 <= y + B[j] < 19:
             for i in range(len(same_color_chess)):
-                if (x + A[j], y + B[j]) in same_color_chess[i][1] and same_color_chess[
-                    i
-                ][2] == p:
+                if (x + A[j], y + B[j]) in same_color_chess[i][1] and same_color_chess[i][2] == p:
                     same_color_chess[i][1].append((x, y))
                     n.append(same_color_chess[i])
     if len(n) == 0:
@@ -62,9 +60,7 @@ def check(x, y):
 def main():
     pygame.init()
     pygame.display.set_caption("圍棋")
-    screen = pygame.display.set_mode(
-        ((l - 1) * 44 + 54, (l - 1) * 44 + 54), pygame.RESIZABLE
-    )
+    screen = pygame.display.set_mode(((l - 1) * 44 + 54, (l - 1) * 44 + 54), pygame.RESIZABLE)
     clock = pygame.time.Clock()
     font = pygame.font.Font("C:\\Windows\\Fonts\\kaiu.ttf", 48)
 
@@ -131,21 +127,13 @@ def main():
         for i in range(l):
             for j in range(l):
                 if board[i][j] == 1:
-                    pygame.draw.circle(
-                        screen, (0, 0, 0), (i * 44 + 28, j * 44 + 28), 13
-                    )
+                    pygame.draw.circle(screen, (0, 0, 0), (i * 44 + 28, j * 44 + 28), 13)
                 elif board[i][j] == 2:
-                    pygame.draw.circle(
-                        screen, (255, 255, 255), (i * 44 + 28, j * 44 + 28), 13
-                    )
+                    pygame.draw.circle(screen, (255, 255, 255), (i * 44 + 28, j * 44 + 28), 13)
         if f == 1:
-            pygame.draw.circle(
-                screen, (0, 0, 0), (mx * 44 + 28, my * 44 + 28), 15, width=3
-            )
+            pygame.draw.circle(screen, (0, 0, 0), (mx * 44 + 28, my * 44 + 28), 15, width=3)
         elif f == 2:
-            pygame.draw.circle(
-                screen, (255, 255, 255), (mx * 44 + 28, my * 44 + 28), 15, width=3
-            )
+            pygame.draw.circle(screen, (255, 255, 255), (mx * 44 + 28, my * 44 + 28), 15, width=3)
 
         pygame.display.update()
         clock.tick(100)

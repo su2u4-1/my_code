@@ -27,12 +27,7 @@ def checking():
                     # 總共要連五個棋子，所以要跑四次
                     for _ in range(4):
                         # 如過下一格會超出棋盤範圍就退出
-                        if (
-                            x1 + a[i] < 0
-                            or x1 + a[i] > 14
-                            or y1 + b[i] < 0
-                            or y1 + b[i] > 14
-                        ):
+                        if x1 + a[i] < 0 or x1 + a[i] > 14 or y1 + b[i] < 0 or y1 + b[i] > 14:
                             break
                         # 如果下一格不是同色的棋子就退出
                         elif chessBoard[x1 + a[i]][y1 + b[i]] != 1:
@@ -59,12 +54,7 @@ def checking():
                     x1 = x
                     y1 = y
                     for _ in range(4):
-                        if (
-                            x1 + a[i] < 0
-                            or x1 + a[i] > 14
-                            or y1 + b[i] < 0
-                            or y1 + b[i] > 14
-                        ):
+                        if x1 + a[i] < 0 or x1 + a[i] > 14 or y1 + b[i] < 0 or y1 + b[i] > 14:
                             break
                         elif chessBoard[x1 + a[i]][y1 + b[i]] != 2:
                             break
@@ -170,32 +160,20 @@ def main():
         # 繪製格線
         for i in range(sl):
             if i == 0 or i == sl - 1:
-                pygame.draw.line(
-                    screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, 670 - 27], 4
-                )
-                pygame.draw.line(
-                    screen, (0, 0, 0), [27, i * 44 + 27], [670 - 27, i * 44 + 27], 4
-                )
+                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, 670 - 27], 4)
+                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [670 - 27, i * 44 + 27], 4)
             else:
-                pygame.draw.line(
-                    screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, 670 - 27], 2
-                )
-                pygame.draw.line(
-                    screen, (0, 0, 0), [27, i * 44 + 27], [670 - 27, i * 44 + 27], 2
-                )
+                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, 670 - 27], 2)
+                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [670 - 27, i * 44 + 27], 2)
         # 繪製棋子
         for i in range(sl):
             for j in range(sl):
                 # 黑方
                 if chessBoard[i][j] == 1:
-                    pygame.draw.circle(
-                        screen, (0, 0, 0), (i * 44 + 28, j * 44 + 28), 13
-                    )
+                    pygame.draw.circle(screen, (0, 0, 0), (i * 44 + 28, j * 44 + 28), 13)
                 # 白方
                 elif chessBoard[i][j] == 2:
-                    pygame.draw.circle(
-                        screen, (255, 255, 255), (i * 44 + 28, j * 44 + 28), 13
-                    )
+                    pygame.draw.circle(screen, (255, 255, 255), (i * 44 + 28, j * 44 + 28), 13)
         # 判斷遊戲是否正在進行中
         if gameContinue:
             # 確認是否有人獲勝
@@ -204,21 +182,15 @@ def main():
         if first % 2 == 0:
             turn = "Black"
             # 繪製跟隨游標的框
-            pygame.draw.circle(
-                screen, (0, 0, 0), (mx * 44 + 28, my * 44 + 28), 15, width=3
-            )
+            pygame.draw.circle(screen, (0, 0, 0), (mx * 44 + 28, my * 44 + 28), 15, width=3)
         else:
             turn = "White"
             # 繪製跟隨游標的框
-            pygame.draw.circle(
-                screen, (255, 255, 255), (mx * 44 + 28, my * 44 + 28), 15, width=3
-            )
+            pygame.draw.circle(screen, (255, 255, 255), (mx * 44 + 28, my * 44 + 28), 15, width=3)
         # 如果遊戲已結束中且有人勝利
         if not gameContinue and type(winner_line) == list:
             # 繪製勝利方獲勝的位置
-            pygame.draw.line(
-                screen, (255, 0, 0), winner_line[0], winner_line[1], width=3
-            )
+            pygame.draw.line(screen, (255, 0, 0), winner_line[0], winner_line[1], width=3)
         # 繪製重開遊戲的按鈕框
         pygame.draw.rect(screen, (0, 0, 0), (0, 670, 60, 30), 5)
         # 重開遊戲按鈕的文字

@@ -21,12 +21,7 @@ def generatemap(ax, ay, n):
                 for d in range(-1, 2):
                     for e in range(-1, 2):
                         if c[i][j] != 9:
-                            if (
-                                i + d >= 0
-                                and i + d <= xl - 1
-                                and j + e >= 0
-                                and j + e <= yl - 1
-                            ):
+                            if i + d >= 0 and i + d <= xl - 1 and j + e >= 0 and j + e <= yl - 1:
                                 if c[i + d][j + e] == 9:
                                     c[i][j] += 1
     return c
@@ -97,11 +92,7 @@ for i in range(xl):
     showmap.append(f)
 img = []
 for i in range(11):
-    img.append(
-        pygame.image.load(
-            os.path.dirname(os.path.realpath(__file__)) + "\\踩地雷圖片\\" + str(i) + ".png"
-        )
-    )
+    img.append(pygame.image.load(os.path.dirname(os.path.realpath(__file__)) + "\\踩地雷圖片\\" + str(i) + ".png"))
 
 while True:
     tmr += 1
@@ -110,21 +101,13 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if (
-            event.type == pygame.MOUSEBUTTONDOWN
-            and pygame.mouse.get_pressed()[0]
-            and flag == 0
-        ):
+        if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0] and flag == 0:
             if mx == math.floor(mousex / 50) and my == math.floor(mousey / 50):
                 rightchick(mx, my)
             else:
                 mx = math.floor(mousex / 50)
                 my = math.floor(mousey / 50)
-        if (
-            event.type == pygame.MOUSEBUTTONDOWN
-            and pygame.mouse.get_pressed()[2]
-            and flag == 0
-        ):
+        if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[2] and flag == 0:
             if mx == math.floor(mousex / 50) and my == math.floor(mousey / 50):
                 leftchick(mx, my)
     screen.fill((255, 255, 255))
@@ -157,8 +140,6 @@ while True:
                 )
             ),
         )
-    pygame.draw.rect(
-        screen, (255, 255, 255), pygame.Rect(mx * 50, my * 50, 50, 50), width=5
-    )
+    pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(mx * 50, my * 50, 50, 50), width=5)
     pygame.display.update()
     clock.tick(10)

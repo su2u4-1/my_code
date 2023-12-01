@@ -28,18 +28,10 @@ def layout():
             )
             globals()["la" + str(i)].grid(row=x, column=y)
             i += 1
-    Up = tkinter.Button(
-        root, text="上", command=up, width=2, height=1, font=("Arial", 32)
-    ).grid(row=0, column=4)
-    Down = tkinter.Button(
-        root, text="下", command=down, width=2, height=1, font=("Arial", 32)
-    ).grid(row=1, column=4)
-    Left = tkinter.Button(
-        root, text="左", command=left, width=2, height=1, font=("Arial", 32)
-    ).grid(row=2, column=4)
-    Right = tkinter.Button(
-        root, text="右", command=right, width=2, height=1, font=("Arial", 32)
-    ).grid(row=3, column=4)
+    Up = tkinter.Button(root, text="上", command=up, width=2, height=1, font=("Arial", 32)).grid(row=0, column=4)
+    Down = tkinter.Button(root, text="下", command=down, width=2, height=1, font=("Arial", 32)).grid(row=1, column=4)
+    Left = tkinter.Button(root, text="左", command=left, width=2, height=1, font=("Arial", 32)).grid(row=2, column=4)
+    Right = tkinter.Button(root, text="右", command=right, width=2, height=1, font=("Arial", 32)).grid(row=3, column=4)
 
 
 def left():

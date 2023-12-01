@@ -26,9 +26,7 @@ def show(name):
 def t():
     while True:
         t = time.localtime()
-        return flask.render_template(
-            "time.html", ti=f"{t[0]}/{t[1]}/{t[2]} {t[3]}:{t[4]}:{t[5]}"
-        )
+        return flask.render_template("time.html", ti=f"{t[0]}/{t[1]}/{t[2]} {t[3]}:{t[4]}:{t[5]}")
 
 
 @app.route("/道德經")

@@ -210,9 +210,7 @@ while repeat == 1:
     place = "無憂宗"
     print("\n%s進入了%s" % (player[0], place))
     time.sleep(0.75)
-    option_1 = input(
-        "\n[1]進入練功房\t[2]去見師父\t[3]去集市\n[4]去丹閣\t\t[5]去器閣\t\t[6]去藏經閣\n[7]去悟道峰\t[8]去外事閣\t[9]宗門大殿\n[10]去靈獸園\t[11]出山門\t:"
-    )
+    option_1 = input("\n[1]進入練功房\t[2]去見師父\t[3]去集市\n[4]去丹閣\t\t[5]去器閣\t\t[6]去藏經閣\n[7]去悟道峰\t[8]去外事閣\t[9]宗門大殿\n[10]去靈獸園\t[11]出山門\t:")
     judge(option_1)
     time.sleep(0.75)
     while option_1 == "1":
@@ -246,9 +244,7 @@ while repeat == 1:
         time.sleep(0.75)
         print("\n師父:徒兒阿，你今天來為師洞府是有什麼事嗎")
         time.sleep(0.75)
-        option_2 = input(
-            "\n[1]請教修練上的問題\t[2]請教與宗門有關的問題\t[3]想跟師父切磋\n[4]來接任務的\t[5]單純拜見師父\t[6]告辭\t:"
-        )
+        option_2 = input("\n[1]請教修練上的問題\t[2]請教與宗門有關的問題\t[3]想跟師父切磋\n[4]來接任務的\t[5]單純拜見師父\t[6]告辭\t:")
         if option_2 == "1":
             print("\n%s:師父，我今天是來請教修練上的問題" % (player[0]))
             time.sleep(0.75)
@@ -320,9 +316,7 @@ while repeat == 1:
                 "妖獸精華、修為丹、靈石",
                 "\n任務詳細資料:\n",
             ]
-            quest_list = [
-                "\n%s/%s/%s" % (quest_list_0[0], quest_list_0[1], quest_list_0[2])
-            ]
+            quest_list = ["\n%s/%s/%s" % (quest_list_0[0], quest_list_0[1], quest_list_0[2])]
             time.sleep(0.75)
             print("\n%s:師父，這裡有沒有什麼事是我可以幫忙的" % (player[0]))
             time.sleep(0.75)
@@ -360,10 +354,7 @@ while repeat == 1:
             if option_3 == "1":
                 quest_progress_list.append(int(quest))
                 time.sleep(0.75)
-                print(
-                    "\n你接取了%d.%s任務"
-                    % (int(quest), globals()["quest_list_%s" % (quest)][1])
-                )
+                print("\n你接取了%d.%s任務" % (int(quest), globals()["quest_list_%s" % (quest)][1]))
                 time.sleep(0.75)
         if option_2 == "5":
             time.sleep(0.5)
@@ -413,9 +404,7 @@ while repeat == 1:
             product_list_3 = [3, "", "", "\t"]
             product_list_4 = [4, "", "", "\t"]
             product_list_5 = [5, "", "", "\t"]
-            product_list = [
-                "\n%s/%s/%s" % (product_list_0[0], product_list_0[1], product_list_0[2])
-            ]
+            product_list = ["\n%s/%s/%s" % (product_list_0[0], product_list_0[1], product_list_0[2])]
             for i in range(1, 6):
                 product_list.append(
                     "%s/%s/%s"
@@ -459,12 +448,8 @@ while repeat == 1:
                     globals()["product_list_%s" % (product)][1],
                     int(option_3),
                 ] in storage_list:
-                    a = storage_list.index(
-                        [globals()["product_list_%s" % (product)][1], int(option_3)]
-                    )
-                    globals()["storage_list_%s" % (a)][1] = globals()[
-                        "storage_list_%s" % (a)
-                    ][1] + int(option_3)
+                    a = storage_list.index([globals()["product_list_%s" % (product)][1], int(option_3)])
+                    globals()["storage_list_%s" % (a)][1] = globals()["storage_list_%s" % (a)][1] + int(option_3)
                 else:
                     l = l + 1
                     globals()["storage_list_%s" % (l)] = [
@@ -476,10 +461,7 @@ while repeat == 1:
                     for i in range(1, l + 1):
                         storage_list.append(globals()["storage_list_%s" % (i)])
                 time.sleep(0.75)
-                print(
-                    "\n你購買了%s%d個"
-                    % (globals()["product_list_%s" % (product)][1], int(option_3))
-                )
+                print("\n你購買了%s%d個" % (globals()["product_list_%s" % (product)][1], int(option_3)))
             time.sleep(0.75)
             print("\n老闆:客官慢走")
             time.sleep(0.75)
@@ -516,9 +498,7 @@ while repeat == 1:
                 menu_list_3 = [3, "", "", "\t"]
                 menu_list_4 = [4, "", "", "\t"]
                 menu_list_5 = [5, "", "", "\t"]
-                menu_list = [
-                    "\n%s/%s/%s" % (menu_list_0[0], menu_list_0[1], menu_list_0[2])
-                ]
+                menu_list = ["\n%s/%s/%s" % (menu_list_0[0], menu_list_0[1], menu_list_0[2])]
                 for i in range(1, 6):
                     menu_list.append(
                         "\n%s/%s/%s"
@@ -570,9 +550,7 @@ while repeat == 1:
             product_list_3 = [3, "", "", "\t"]
             product_list_4 = [4, "", "", "\t"]
             product_list_5 = [5, "", "", "\t"]
-            product_list = [
-                "\n%s/%s/%s" % (product_list_0[0], product_list_0[1], product_list_0[2])
-            ]
+            product_list = ["\n%s/%s/%s" % (product_list_0[0], product_list_0[1], product_list_0[2])]
             for i in range(1, 6):
                 product_list.append(
                     "%s/%s/%s"
@@ -616,12 +594,8 @@ while repeat == 1:
                     globals()["product_list_%s" % (product)][1],
                     int(option_3),
                 ] in storage_list:
-                    a = storage_list.index(
-                        [globals()["product_list_%s" % (product)][1], int(option_3)]
-                    )
-                    globals()["storage_list_%s" % (a)][1] = globals()[
-                        "storage_list_%s" % (a)
-                    ][1] + int(option_3)
+                    a = storage_list.index([globals()["product_list_%s" % (product)][1], int(option_3)])
+                    globals()["storage_list_%s" % (a)][1] = globals()["storage_list_%s" % (a)][1] + int(option_3)
                 else:
                     l = l + 1
                     globals()["storage_list_%s" % (l)] = [
@@ -633,10 +607,7 @@ while repeat == 1:
                     for i in range(1, l + 1):
                         storage_list.append(globals()["storage_list_%s" % (i)])
                 time.sleep(0.75)
-                print(
-                    "\n你購買了%s%d個"
-                    % (globals()["product_list_%s" % (product)][1], int(option_3))
-                )
+                print("\n你購買了%s%d個" % (globals()["product_list_%s" % (product)][1], int(option_3)))
             time.sleep(0.75)
             print("\n老闆:客官慢走")
             time.sleep(0.75)

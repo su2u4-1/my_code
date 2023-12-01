@@ -86,10 +86,7 @@ def storehouse():
             if option_4 == "0":
                 break
         for i in range(len(storehouse_item)):
-            print(
-                "%d:%s\t%s個\n(屬性+介紹)"
-                % (i, storehouse_item[i][0], storehouse_item[i][1])
-            )
+            print("%d:%s\t%s個\n(屬性+介紹)" % (i, storehouse_item[i][0], storehouse_item[i][1]))
         option_4 = input("\n請輸入要操作的項目編號(按[0]退出)\t:")
         judgment(option_4)
         if option_4 == "0":
@@ -118,9 +115,7 @@ def storehouse():
                 print(f"{storehouse_item[option_4][0]}全部{txt}完了")
                 del storehouse_item[option_4]
             elif option_6 < storehouse_item[option_4][1]:
-                print(
-                    f"{txt}了{option_6}個{storehouse_item[option_4][0]}剩下{storehouse_item[option_4][1] - option_6}個"
-                )
+                print(f"{txt}了{option_6}個{storehouse_item[option_4][0]}剩下{storehouse_item[option_4][1] - option_6}個")
             if option_5 == "1":
                 use(storehouse_item[option_4], option_6)
             if option_5 == "3":
@@ -139,17 +134,12 @@ def storehouse():
             if option_4 == "0":
                 break
         for i in range(len(storehouse_equip)):
-            print(
-                "%d:%s\n(屬性+介紹)\n編號:%s"
-                % (i, storehouse_equip[i][0], storehouse_equip[i][1])
-            )
+            print("%d:%s\n(屬性+介紹)\n編號:%s" % (i, storehouse_equip[i][0], storehouse_equip[i][1]))
         option_4 = input("\n請輸入要操作的項目編號(按[0]退出)\t:")
         judgment(option_4)
         if option_4 == "0":
             break
-        print(
-            "%s\t%s%d" % (storehouse_equip[option_4][0], storehouse_equip[option_4][1])
-        )
+        print("%s\t%s%d" % (storehouse_equip[option_4][0], storehouse_equip[option_4][1]))
         option_5 = input("\n[0]退出\t[1]穿戴\t[2]丟棄\t[3]拿到背包\t:")
         judgment(option_5)
         if option_5 == "1":
@@ -406,10 +396,7 @@ def PvE(place):
         print("\n你選擇了戰鬥")
         HP = player_ability[3]
         if fighting(monster_ability, player_ability) == True:
-            print(
-                "\n錢:%d->%d\n經驗值:%d->%d"
-                % (money, money + moneyadd, exp, exp + moneyadd)
-            )
+            print("\n錢:%d->%d\n經驗值:%d->%d" % (money, money + moneyadd, exp, exp + moneyadd))
             money += moneyadd
             exp += moneyadd
         else:
@@ -475,9 +462,7 @@ def fighting(monster_ability, player_ability):  # atk,def,agi,HP
     while player_ability[4] > 0 and len(monster) > 0:
         for a in range(len(monster)):
             if b.count(a) == 0:
-                if (
-                    player_ability[2] / player_ability[2] + monster_ability[a][3]
-                ) * 50 > random.randint(1, 100):
+                if (player_ability[2] / player_ability[2] + monster_ability[a][3]) * 50 > random.randint(1, 100):
                     if monster_ability[a][6] == "金":
                         property = player_property[3]
                     if monster_ability[a][6] == "木":
@@ -489,14 +474,7 @@ def fighting(monster_ability, player_ability):  # atk,def,agi,HP
                     if monster_ability[a][6] == "土":
                         property = player_property[1]
                     atk = (
-                        player_ability[0]
-                        - (
-                            player_ability[0]
-                            * (
-                                monster_ability[a][2] / monster_ability[a][2]
-                                + player_ability[1]
-                            )
-                        )
+                        player_ability[0] - (player_ability[0] * (monster_ability[a][2] / monster_ability[a][2] + player_ability[1]))
                     ) * property
                     if atk <= 0:
                         atk = 1
@@ -519,9 +497,7 @@ def fighting(monster_ability, player_ability):  # atk,def,agi,HP
                     print("\n%s躲過了%s的攻擊" % (monster[a], player_name))
         for a in range(len(monster)):
             if b.count(a) == 0:
-                if (
-                    monster_ability[a][3] / player_ability[2] + monster_ability[a][3]
-                ) * 50 > random.randint(1, 100):
+                if (monster_ability[a][3] / player_ability[2] + monster_ability[a][3]) * 50 > random.randint(1, 100):
                     if monster_ability[a][6] == "金":
                         property = player_property[3]
                     if monster_ability[a][6] == "木":
@@ -534,13 +510,7 @@ def fighting(monster_ability, player_ability):  # atk,def,agi,HP
                         property = player_property[1]
                     atk = (
                         monster_ability[a][1]
-                        - (
-                            monster_ability[a][1]
-                            * (
-                                player_ability[1] / monster_ability[a][2]
-                                + player_ability[1]
-                            )
-                        )
+                        - (monster_ability[a][1] * (player_ability[1] / monster_ability[a][2] + player_ability[1]))
                     ) / property
                     if atk <= 0:
                         atk = 1
@@ -588,9 +558,7 @@ while 1 == 1:
     while option_1 == "1":
         time.sleep(0.5)
         print("\n%s決定出門打怪" % (player_name))
-        option_2 = input(
-            "\n[1]去東嶽泰山\t[2]去西嶽華山\t[3]去中嶽嵩山\t[4]去南嶽衡山\t[5]去北嶽恆山\t[6]結束冒險\t:"
-        )
+        option_2 = input("\n[1]去東嶽泰山\t[2]去西嶽華山\t[3]去中嶽嵩山\t[4]去南嶽衡山\t[5]去北嶽恆山\t[6]結束冒險\t:")
         judgment(option_2)
         if option_2 == "1":
             place = "東嶽泰山"
@@ -625,9 +593,7 @@ while 1 == 1:
     while option_1 == "2":
         time.sleep(0.5)
         print("\n%s決定先回洞府準備好再出發" % (player_name))
-        option_2 = input(
-            "\n[1]去倉庫\t[2]去鍛造室\t[3]去煉丹房\t[4]去礦場\t[5]去種植園\t[6]去祭壇\t[7]離開\t:"
-        )
+        option_2 = input("\n[1]去倉庫\t[2]去鍛造室\t[3]去煉丹房\t[4]去礦場\t[5]去種植園\t[6]去祭壇\t[7]離開\t:")
         judgment(option_2)
         if option_2 == "1":
             place = "倉庫"

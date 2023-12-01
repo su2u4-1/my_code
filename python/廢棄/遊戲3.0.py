@@ -34,12 +34,8 @@ b = root.winfo_screenheight()
 root.state("zoomed")
 print(a, b)
 gametitle = tkinter.Label(root, text="歡迎遊玩[遊戲名]", font=("Adobe 仿宋 Std R", 24))
-gamestart = tkinter.Button(
-    root, text="遊戲開始", font=("Adobe 仿宋 Std R", 24), command=game_start
-)
-gamesetup = tkinter.Button(
-    root, text="遊戲設定", font=("Adobe 仿宋 Std R", 24), command=game_set_up
-)
+gamestart = tkinter.Button(root, text="遊戲開始", font=("Adobe 仿宋 Std R", 24), command=game_start)
+gamesetup = tkinter.Button(root, text="遊戲設定", font=("Adobe 仿宋 Std R", 24), command=game_set_up)
 canvas = tkinter.Canvas(root, width="310", height="310")
 img = tkinter.PhotoImage(file="五行.png")
 image = Image.open("太極.png")

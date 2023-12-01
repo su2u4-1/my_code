@@ -120,14 +120,10 @@ async def 升級(ctx, *m2):
                 )
                 player[uid].at += add * a
             elif m2[1] == "2" or m2[1] == "防禦" or m2[1] == "def":
-                await ctx.send(
-                    f"<@{uid}>\n防禦:{player[uid].de} -> {player[uid].de+add}\n升級點:{player[uid].po} -> {player[uid].po-add}"
-                )
+                await ctx.send(f"<@{uid}>\n防禦:{player[uid].de} -> {player[uid].de+add}\n升級點:{player[uid].po} -> {player[uid].po-add}")
                 player[uid].de += add
             elif m2[1] == "3" or m2[1] == "速度" or m2[1] == "agi":
-                await ctx.send(
-                    f"<@{uid}>\n速度:{player[uid].ag} -> {player[uid].ag+add}\n升級點:{player[uid].po} -> {player[uid].po-add}"
-                )
+                await ctx.send(f"<@{uid}>\n速度:{player[uid].ag} -> {player[uid].ag+add}\n升級點:{player[uid].po} -> {player[uid].po-add}")
                 player[uid].ag += add
             elif m2[1] == "4" or m2[1] == "血量" or m2[1] == "Hp" or m2[1] == "hp":
                 a = random.randint(5, 20)
@@ -178,13 +174,9 @@ async def 冒險(ctx, *m2):
             if e == event_list[0]:
                 r = random.choices([0, 1, 2], [90, 9, 1])[0]
                 if player[uid].lv <= 3:
-                    monster = modules.SummonMods(
-                        random.randint(1, player[uid].lv + 2), event, r
-                    )
+                    monster = modules.SummonMods(random.randint(1, player[uid].lv + 2), event, r)
                 else:
-                    monster = modules.SummonMods(
-                        random.randint(player[uid].lv - 2, player[uid].lv + 2), event, r
-                    )
+                    monster = modules.SummonMods(random.randint(player[uid].lv - 2, player[uid].lv + 2), event, r)
                 if r == 0:
                     s = random.choices(["初", "中", "高"], [9, 1, 0])[0]
                     u = random.choices(["碎片", "結晶", "精華"], [1, 0, 0])[0]
@@ -201,9 +193,7 @@ async def 冒險(ctx, *m2):
                     drop_item = []
                     eq = modules.EquipGenerate(
                         monster[5],
-                        random.choices(
-                            [1, 2, 3, 4, 5, 6, 7], [900000, 90000, 9000, 900, 90, 9, 1]
-                        )[0],
+                        random.choices([1, 2, 3, 4, 5, 6, 7], [900000, 90000, 9000, 900, 90, 9, 1])[0],
                         1,
                         1,
                         1,
@@ -228,17 +218,13 @@ async def 冒險(ctx, *m2):
                         quantity = random.randint(0, math.ceil(monster[5] / u))
                         await ctx.send(f"<@{uid}>你得到了{quantity}個{i}")
                         bag[uid].add_item(i, quantity)
-                    await ctx.send(
-                        f"<@{uid}>你得到了{monster[8]}exp\nexp:{player[uid].exp} -> {player[uid].exp+monster[8]}"
-                    )
+                    await ctx.send(f"<@{uid}>你得到了{monster[8]}exp\nexp:{player[uid].exp} -> {player[uid].exp+monster[8]}")
                     player[uid].exp += monster[8]
                 elif message_a[-1] == f"{monster[4]}打敗你了":
                     await ctx.send(f"<@{uid}>")
                     for i in message_a:
                         await ctx.send(i)
-                    await ctx.send(
-                        f"<@{uid}>你失去了{monster[8]}exp\nexp:{player[uid].exp} -> {player[uid].exp-monster[8]}"
-                    )
+                    await ctx.send(f"<@{uid}>你失去了{monster[8]}exp\nexp:{player[uid].exp} -> {player[uid].exp-monster[8]}")
                     player[uid].exp -= monster[8]
             if e == event_list[1]:
                 pass

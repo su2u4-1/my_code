@@ -83,13 +83,9 @@ def main():
                 width=0,
             )
         )
-        pygame.display.update(
-            pygame.draw.rect(screen, (255, 255, 255), (0, 0, 214, 27))
-        )
+        pygame.display.update(pygame.draw.rect(screen, (255, 255, 255), (0, 0, 214, 27)))
         for i in range(16):
-            pygame.display.update(
-                pygame.draw.rect(screen, color[i], (i * 50, 30, 50, 50))
-            )
+            pygame.display.update(pygame.draw.rect(screen, color[i], (i * 50, 30, 50, 50)))
         pygame.display.update(screen.blit(txt, [0, 0]))
         clock.tick(10)
 

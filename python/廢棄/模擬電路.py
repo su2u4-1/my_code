@@ -262,17 +262,12 @@ while True:
             if i in data and j in data[i]:
                 if data[i][j][1] == "No":
                     screen.blit(
-                        pygame.image.load(
-                            image_link + f"{data[i][j][0]}_{data[i][j][2]}.png"
-                        ),
+                        pygame.image.load(image_link + f"{data[i][j][0]}_{data[i][j][2]}.png"),
                         [i * 10, j * 10],
                     )
                 else:
                     screen.blit(
-                        pygame.image.load(
-                            image_link
-                            + f"{data[i][j][0]}_{data[i][j][1]}_{data[i][j][2]}.png"
-                        ),
+                        pygame.image.load(image_link + f"{data[i][j][0]}_{data[i][j][1]}_{data[i][j][2]}.png"),
                         [i * 10, j * 10],
                     )
     if choose != "No":
@@ -284,13 +279,9 @@ while True:
                 )
             else:
                 screen.blit(
-                    pygame.image.load(
-                        image_link + f"{next_put[0]}_{next_put[1]}_{next_put[2]}.png"
-                    ),
+                    pygame.image.load(image_link + f"{next_put[0]}_{next_put[1]}_{next_put[2]}.png"),
                     [choose[0] * 10, choose[1] * 10],
                 )
-        pygame.draw.rect(
-            screen, (0, 0, 255), (choose[0] * 10, choose[1] * 10, 10, 10), 1
-        )
+        pygame.draw.rect(screen, (0, 0, 255), (choose[0] * 10, choose[1] * 10, 10, 10), 1)
     pygame.display.update()
     clock.tick(10)

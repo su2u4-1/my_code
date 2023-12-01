@@ -106,12 +106,7 @@ while True:
     for i in range(w):
         for j in range(h):
             for n in range(4):
-                if (
-                    i + b1[n] >= 0
-                    and j + b2[n] >= 0
-                    and i + b1[n] < w
-                    and j + b2[n] < h
-                ):
+                if i + b1[n] >= 0 and j + b2[n] >= 0 and i + b1[n] < w and j + b2[n] < h:
                     if map[i][j][0] >= map[i + b1[n]][j + b2[n]][0] + 10:
                         k = ri(1, ri(1, ri(1, 10)))
                         map[i][j][0] -= k

@@ -88,12 +88,7 @@ def judgment(n):
         for j in range(0, 4):
             for _ in range(0, 3):
                 try:
-                    if (
-                        n[i][j] != n[i - 1][j]
-                        and n[i][j] != n[i + 1][j]
-                        and n[i][j] != n[i][j - 1]
-                        and n[i][j] != n[i][j + 1]
-                    ):
+                    if n[i][j] != n[i - 1][j] and n[i][j] != n[i + 1][j] and n[i][j] != n[i][j - 1] and n[i][j] != n[i][j + 1]:
                         g += 1
                 except:
                     pass

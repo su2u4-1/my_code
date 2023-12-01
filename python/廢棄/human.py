@@ -52,11 +52,7 @@ while True:
             pass
     for i in range(0, len(humanlist)):
         try:
-            if (
-                human[humanlist[i]][0] > 20
-                and human[humanlist[i]][0] < 50
-                and human[humanlist[i]][4] == 0
-            ):
+            if human[humanlist[i]][0] > 20 and human[humanlist[i]][0] < 50 and human[humanlist[i]][4] == 0:
                 if human[humanlist[i]][1] == 1:
                     marryM.append(human[humanlist[i]][5])
                 if human[humanlist[i]][1] == 2:
@@ -109,9 +105,7 @@ while True:
             pass
     for i in range(0, len(humanlist)):
         try:
-            if human[humanlist[i]][2] + human[human[humanlist[i]][4]][
-                2
-            ] > random.randint(1, 100):
+            if human[humanlist[i]][2] + human[human[humanlist[i]][4]][2] > random.randint(1, 100):
                 b = summonhuman(human[humanlist[i]], human[human[humanlist[i]][4]])
                 humanlist.append(b[5])
                 human[b[5]] = b
@@ -131,9 +125,7 @@ while True:
             if len(dead) > 10000:
                 f = time.strftime("data%Y-%m-%d-%H-%M-%S", time.localtime())
                 with open("C:\\Users\\User\\Desktop\\%s.txt" % (f), "w+") as g:
-                    g.write(
-                        f"年分{year}\n人口{human}\n編號{humanlist}\n年出生數{nowborn}\n年死亡數{nowdead}\n未婚男{marryM}\n未婚女{marryF}\n已死亡{dead}"
-                    )
+                    g.write(f"年分{year}\n人口{human}\n編號{humanlist}\n年出生數{nowborn}\n年死亡數{nowdead}\n未婚男{marryM}\n未婚女{marryF}\n已死亡{dead}")
                 print("由於資料太多,所以已經把資料儲存在桌面的%s.txt" % (f))
             else:
                 print("年分", year)
@@ -146,9 +138,7 @@ while True:
             if len(human) > 10000:
                 f = time.strftime("data%Y-%m-%d-%H-%M-%S", time.localtime())
                 with open("C:\\Users\\User\\Desktop\\%s.txt" % (f), "w+") as g:
-                    g.write(
-                        f"年分{year}\n人口{human}\n編號{humanlist}\n年出生數{nowborn}\n年死亡數{nowdead}\n未婚男{marryM}\n未婚女{marryF}\n已死亡{dead}"
-                    )
+                    g.write(f"年分{year}\n人口{human}\n編號{humanlist}\n年出生數{nowborn}\n年死亡數{nowdead}\n未婚男{marryM}\n未婚女{marryF}\n已死亡{dead}")
                 print("由於資料太多,所以已經把資料儲存在桌面的%s.txt" % (f))
             elif a == "off":
                 break

@@ -81,12 +81,7 @@ def mountain():
         for i in range(w):
             for j in range(h):
                 for n in range(4):
-                    if (
-                        i + b1[n] >= 0
-                        and j + b2[n] >= 0
-                        and i + b1[n] < w
-                        and j + b2[n] < h
-                    ):
+                    if i + b1[n] >= 0 and j + b2[n] >= 0 and i + b1[n] < w and j + b2[n] < h:
                         if map[i][j][0] >= map[i + b1[n]][j + b2[n]][0] + 10:
                             k = ri(1, ri(1, ri(1, 10)))
                             map[i][j][0] -= k
@@ -110,12 +105,7 @@ def riverflow():
             c = [0, 1, 2, 3]
             for _ in range(4):
                 n = rc(c)
-                if (
-                    x + b1[n] >= 0
-                    and y + b2[n] >= 0
-                    and x + b1[n] < w
-                    and y + b2[n] < h
-                ):
+                if x + b1[n] >= 0 and y + b2[n] >= 0 and x + b1[n] < w and y + b2[n] < h:
                     if map[x][y][0] + ri(0, 5) > map[x + b1[n]][y + b2[n]][0]:
                         map[x + b1[n]][y + b2[n]][1] = True
                         x, y = x + b1[n], y + b2[n]
@@ -148,12 +138,7 @@ def erosion():
                 map[x][y][0] += k
                 s -= k
             for n in range(4):
-                if (
-                    x + b1[n] >= 0
-                    and y + b2[n] >= 0
-                    and x + b1[n] < w
-                    and y + b2[n] < h
-                ):
+                if x + b1[n] >= 0 and y + b2[n] >= 0 and x + b1[n] < w and y + b2[n] < h:
                     if map[x + b1[n]][y + b2[n]][0] >= 20:
                         k = ri(1, 3)
                         map[x + b1[n]][y + b2[n]][0] -= k
@@ -168,12 +153,7 @@ def erosion():
                         s -= k
             if a[-1] == r:
                 for n in range(4):
-                    if (
-                        x + b1[n] >= 0
-                        and y + b2[n] >= 0
-                        and x + b1[n] < w
-                        and y + b2[n] < h
-                    ):
+                    if x + b1[n] >= 0 and y + b2[n] >= 0 and x + b1[n] < w and y + b2[n] < h:
                         map[x + b1[n]][y + b2[n]][0] += floor(s / 4)
         rs.append(s)
 
@@ -232,9 +212,7 @@ def main():
                     a = (255, 255, 255)
                 pygame.draw.rect(screen, a, (i * ul, j * ul, ul, ul))
                 if map[i][j][1]:
-                    pygame.draw.rect(
-                        screen, (0, 0, 255), (i * ul, j * ul, ul, ul), width=1
-                    )
+                    pygame.draw.rect(screen, (0, 0, 255), (i * ul, j * ul, ul, ul), width=1)
         try:
             txt = font.render(
                 f"t:{tmr},x/y:{mx}/{my},h:{map[mx][my][0]},w:{map[mx][my][1]}",

@@ -16,7 +16,6 @@ input_flag = False
 fullscreen = 0
 inputbox = False
 do_something = None
-remaining_points = 30
 
 
 class InputBox:
@@ -29,10 +28,7 @@ class InputBox:
         self.active = False
 
     def handle_mouse(self, x, y, sx, sy):
-        if (
-            self.range[0] <= x - sx <= self.range[2]
-            and self.range[1] <= y - sy <= self.range[3]
-        ):
+        if self.range[0] <= x - sx <= self.range[2] and self.range[1] <= y - sy <= self.range[3]:
             self.active = not self.active
         else:
             self.active = False
@@ -51,9 +47,7 @@ class InputBox:
                 self.text = self.text[:-1]
             else:
                 self.text += event.unicode
-            self.txt_surface = pygame.font.Font(textlink, 20).render(
-                self.text, True, self.color
-            )
+            self.txt_surface = pygame.font.Font(textlink, 20).render(self.text, True, self.color)
         input_text = self.text
 
     def update(self):
@@ -117,7 +111,7 @@ class Button:
                 self.text_size_ = 18
                 if self.time <= 0:
                     if self.holddown:
-                        print("直接調用")
+                        print("直")
                         self.do(self.do_something)
                         self.time = 15
                     else:
@@ -152,14 +146,10 @@ class Button:
                 (self.x_, self.y_, self.w_, self.h_),
                 5,
             )
-        text = pygame.font.Font(textlink, self.text_size_).render(
-            self.text, True, self.text_color_
-        )
+        text = pygame.font.Font(textlink, self.text_size_).render(self.text, True, self.text_color_)
         self.surface.surface.blit(
             text,
-            text.get_rect(
-                center=(fl(self.x_ + self.w_ / 2), fl(self.y_ + self.h_ / 2))
-            ),
+            text.get_rect(center=(fl(self.x_ + self.w_ / 2), fl(self.y_ + self.h_ / 2))),
         )
         if self.surface.name == "CreateCharacter":
             input_box.draw(self.surface.surface)
@@ -174,26 +164,22 @@ class Button:
 
 
 class Label:
-    def __init__(self, x, y, w, h, text,v, screen):
+    def __init__(self, x, y, w, h, text, v, surface):
         self.x = x
         self.y = y
         self.w = w
         self.h = h
         self.text = text
-        self.dict = v
-        self.screen = screen
+        self.v = v
+        self.surface = surface
         self.text_color = (200, 200, 200)
         self.label_color = (20, 20, 20)
         self.frame_color = (200, 200, 200)
 
     def display(self):
-        pygame.draw.rect(
-            self.surface.surface, self.label_color, (self.x, self.y, self.w, self.h)
-        )
-        pygame.draw.rect(
-            self.surface.surface, self.frame_color, (self.x, self.y, self.w, self.h), 5
-        )
-        text = pygame.font.Font(textlink, 20).render(self.text.format(self.v), True, self.text_color)
+        pygame.draw.rect(self.surface.surface, self.label_color, (self.x, self.y, self.w, self.h))
+        pygame.draw.rect(self.surface.surface, self.frame_color, (self.x, self.y, self.w, self.h), 5)
+        text = pygame.font.Font(textlink, 20).render(self.text.format(eval(self.v)), True, self.text_color)
         self.surface.surface.blit(
             text,
             text.get_rect(center=(fl(self.x + self.w / 2), fl(self.y + self.h / 2))),
@@ -214,7 +200,8 @@ class Surface:
         pygame.draw.rect(self.surface, (0, 0, 0), (0, 0, self.w, self.h), 5)
         sx, sy = W / 2 - self.w / 2, H / 2 - self.h / 2
         for i in self.object:
-            i.check(mx, my, sx, sy)
+            if type(i) == Button:
+                i.check(mx, my, sx, sy)
             i.display()
         screen.blit(self.surface, (sx, sy))
 
@@ -228,6 +215,7 @@ class Player:
         self.dexterity = 0
         self.vitality = 0
         self.luck = 0
+        self.remaining_points = 30
 
 
 def back_ground_color(w, h):
@@ -360,7 +348,7 @@ def add_surface(surface_name):
                     "-",
                     True,
                     surface,
-                    "print(f'button {self.text} is pressed')\nif player.stamina>0:\n\tplayer.stamina-=1\n\tremaining_points+=1",
+                    "print(f'button {self.text} is pressed')\nif player.stamina>0:\n\tplayer.stamina-=1\n\tplayer.remaining_points+=1",
                 )
             )
             surface.object.append(
@@ -372,7 +360,7 @@ def add_surface(surface_name):
                     "+",
                     True,
                     surface,
-                    "print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.stamina+=1",
+                    "print(f'button {self.text} is pressed')\nif player.remaining_points>0:\n\tplayer.remaining_points-=1\n\tplayer.stamina+=1",
                 )
             )
             surface.object.append(
@@ -384,7 +372,7 @@ def add_surface(surface_name):
                     "-",
                     True,
                     surface,
-                    "print(f'button {self.text} is pressed')\nif player.strength>0:\n\tplayer.strength-=1\n\tremaining_points+=1",
+                    "print(f'button {self.text} is pressed')\nif player.strength>0:\n\tplayer.strength-=1\n\tplayer.remaining_points+=1",
                 )
             )
             surface.object.append(
@@ -396,7 +384,7 @@ def add_surface(surface_name):
                     "+",
                     True,
                     surface,
-                    "print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.strength+=1",
+                    "print(f'button {self.text} is pressed')\nif player.remaining_points>0:\n\tplayer.remaining_points-=1\n\tplayer.strength+=1",
                 )
             )
             surface.object.append(
@@ -408,7 +396,7 @@ def add_surface(surface_name):
                     "-",
                     True,
                     surface,
-                    "print(f'button {self.text} is pressed')\nif player.wisdom>0:\n\tplayer.wisdom-=1\n\tremaining_points+=1",
+                    "print(f'button {self.text} is pressed')\nif player.wisdom>0:\n\tplayer.wisdom-=1\n\tplayer.remaining_points+=1",
                 )
             )
             surface.object.append(
@@ -420,7 +408,7 @@ def add_surface(surface_name):
                     "+",
                     True,
                     surface,
-                    "print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.wisdom+=1",
+                    "print(f'button {self.text} is pressed')\nif player.remaining_points>0:\n\tplayer.remaining_points-=1\n\tplayer.wisdom+=1",
                 )
             )
             surface.object.append(
@@ -432,7 +420,7 @@ def add_surface(surface_name):
                     "-",
                     True,
                     surface,
-                    "print(f'button {self.text} is pressed')\nif player.dexterity>0:\n\tplayer.dexterity-=1\n\tremaining_points+=1",
+                    "print(f'button {self.text} is pressed')\nif player.dexterity>0:\n\tplayer.dexterity-=1\n\tplayer.remaining_points+=1",
                 )
             )
             surface.object.append(
@@ -444,7 +432,7 @@ def add_surface(surface_name):
                     "+",
                     True,
                     surface,
-                    "print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.dexterity+=1",
+                    "print(f'button {self.text} is pressed')\nif player.remaining_points>0:\n\tplayer.remaining_points-=1\n\tplayer.dexterity+=1",
                 )
             )
             surface.object.append(
@@ -456,7 +444,7 @@ def add_surface(surface_name):
                     "-",
                     True,
                     surface,
-                    "print(f'button {self.text} is pressed')\nif player.vitality>0:\n\tplayer.vitality-=1\n\tremaining_points+=1",
+                    "print(f'button {self.text} is pressed')\nif player.vitality>0:\n\tplayer.vitality-=1\n\tplayer.remaining_points+=1",
                 )
             )
             surface.object.append(
@@ -468,7 +456,7 @@ def add_surface(surface_name):
                     "+",
                     True,
                     surface,
-                    "print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.vitality+=1",
+                    "print(f'button {self.text} is pressed')\nif player.remaining_points>0:\n\tplayer.remaining_points-=1\n\tplayer.vitality+=1",
                 )
             )
             surface.object.append(
@@ -480,7 +468,7 @@ def add_surface(surface_name):
                     "-",
                     True,
                     surface,
-                    "print(f'button {self.text} is pressed')\nif player.luck>0:\n\tplayer.luck-=1\n\tremaining_points+=1",
+                    "print(f'button {self.text} is pressed')\nif player.luck>0:\n\tplayer.luck-=1\n\tplayer.remaining_points+=1",
                 )
             )
             surface.object.append(
@@ -492,7 +480,7 @@ def add_surface(surface_name):
                     "+",
                     True,
                     surface,
-                    "print(f'button {self.text} is pressed')\nif remaining_points>0:\n\tremaining_points-=1\n\tplayer.luck+=1",
+                    "print(f'button {self.text} is pressed')\nif player.remaining_points>0:\n\tplayer.remaining_points-=1\n\tplayer.luck+=1",
                 )
             )
             surface.object.append(
@@ -507,6 +495,13 @@ def add_surface(surface_name):
                     "print(f'button {self.text} is pressed')\nadd_surface('Base')\nremove_surface('InitialAttributes')",
                 )
             )
+            surface.object.append(Label(90, 50, 150, 40, "體力:{0}", "player.stamina", surface))
+            surface.object.append(Label(380, 50, 150, 40, "力量:{0}", "player.strength", surface))
+            surface.object.append(Label(90, 150, 150, 40, "智慧:{0}", "player.wisdom", surface))
+            surface.object.append(Label(380, 150, 150, 40, "敏捷:{0}", "player.dexterity", surface))
+            surface.object.append(Label(90, 250, 150, 40, "血氣:{0}", "player.vitality", surface))
+            surface.object.append(Label(380, 250, 150, 40, "運氣:{0}", "player.luck", surface))
+            surface.object.append(Label(50, 350, 150, 40, "剩餘點數:{0}", "player.remaining_points", surface))
         case _:
             print("這個功能尚未製作完成")
             f = False
@@ -520,15 +515,6 @@ def remove_surface(surface_name):
     del surface_dict[surface_name]
 
 
-'''f"體力:{player.stamina}",
-f"力量{player.strength}",
-f"智慧:{player.wisdom}",
-f"敏捷:{player.dexterity}",
-f"血氣:{player.vitality}",
-f"運氣:{player.luck}",
-f"剩餘點數:{remaining_points}"'''
-
-
 input_box = InputBox(50, 210, 300, 40, "請輸入名字")
 back_ground = back_ground_color(W, H)
 surface_dict = {}
@@ -540,7 +526,7 @@ while True:
     mx, my = pygame.mouse.get_pos()
     for j in surface_list:
         for i in surface_dict[j].object:
-            if i.time > 0:
+            if type(i) == Button and i.time > 0:
                 i.time -= 1
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

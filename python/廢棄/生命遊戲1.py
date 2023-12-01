@@ -9,9 +9,7 @@ def output(path):
     file1.close()
     file2 = open(path + "(n).txt", "w+")
     for i in life_list:
-        file2.write(
-            f"{i.id}\n{i.quantity},{i.age},{i.att},{i.de},{i.agi},({i.x},{i.y})"
-        )
+        file2.write(f"{i.id}\n{i.quantity},{i.age},{i.att},{i.de},{i.agi},({i.x},{i.y})")
         file2.write("\n")
     file2.close()
 
@@ -91,12 +89,7 @@ class summonlife:
                         break
                 if c == map[self.x][self.y]:
                     i = ri(0, 3)
-                    if (
-                        self.x + b1[i] < xl
-                        and self.x + b1[i] > 0
-                        and self.y + b2[i] < yl
-                        and self.y + b2[i] > 0
-                    ):
+                    if self.x + b1[i] < xl and self.x + b1[i] > 0 and self.y + b2[i] < yl and self.y + b2[i] > 0:
                         self.x += b1[i]
                         self.y += b2[i]
                         break
@@ -169,9 +162,7 @@ t = time.time()
 while True:
     if tmr == 1000:
         nt = time.localtime(time.time())
-        output(
-            f"C:\\Users\\User\\Desktop\\程式\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}"
-        )
+        output(f"C:\\Users\\User\\Desktop\\程式\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}")
         sys.exit()
     for i in life_list:
         i.next()

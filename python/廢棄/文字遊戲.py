@@ -190,9 +190,7 @@ while True:
         if a0 == "n" or a0 == "N" or a0 == "no" or a0 == "No":
             break
     else:
-        print(
-            f"\n你的能力值\n攻擊:{ability[0]*2}\n防禦:{ability[1]*2}\n血量:{ability[2]*20}\n速度:{ability[3]*20}\n幸運:{ability[4]*10}"
-        )
+        print(f"\n你的能力值\n攻擊:{ability[0]*2}\n防禦:{ability[1]*2}\n血量:{ability[2]*20}\n速度:{ability[3]*20}\n幸運:{ability[4]*10}")
         a0 = input("\n確定要用這種分配了嗎 (y)/(n):")
         if a0 == "y" or a0 == "Y" or a0 == "yes" or a0 == "Yes":
             player.atk = ability[0] * 2

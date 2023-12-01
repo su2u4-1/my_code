@@ -64,12 +64,7 @@ def check():
                     x1 = x
                     y1 = y
                     for _ in range(3):
-                        if (
-                            x1 + a[i] < 0
-                            or x1 + a[i] > 5
-                            or y1 + b[i] < 0
-                            or y1 + b[i] > 6
-                        ):
+                        if x1 + a[i] < 0 or x1 + a[i] > 5 or y1 + b[i] < 0 or y1 + b[i] > 6:
                             break
                         elif board[x1 + a[i]][y1 + b[i]] != 1:
                             break
@@ -82,12 +77,7 @@ def check():
                     x1 = x
                     y1 = y
                     for _ in range(3):
-                        if (
-                            x1 + a[i] < 0
-                            or x1 + a[i] > 5
-                            or y1 + b[i] < 0
-                            or y1 + b[i] > 6
-                        ):
+                        if x1 + a[i] < 0 or x1 + a[i] > 5 or y1 + b[i] < 0 or y1 + b[i] > 6:
                             break
                         elif board[x1 + a[i]][y1 + b[i]] != 2:
                             break

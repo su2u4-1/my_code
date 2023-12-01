@@ -113,9 +113,9 @@ def CreateSurface(Surface, Size, ButtonRange, other):
             button_size = button_size_original[i]
             text_size = text_size_original
             f0 = False
-        if (W / 2) + Button_range[i][0] <= mx <= (W / 2) + Button_range[i][1] and (
+        if (W / 2) + Button_range[i][0] <= mx <= (W / 2) + Button_range[i][1] and (H / 2) + Button_range[i][2] <= my <= (
             H / 2
-        ) + Button_range[i][2] <= my <= (H / 2) + Button_range[i][3]:
+        ) + Button_range[i][3]:
             text_color = text_color_change
             if pygame.mouse.get_pressed()[0]:
                 if Sl[-1] == "InitialAttributes":
@@ -201,17 +201,13 @@ def CreateSurface(Surface, Size, ButtonRange, other):
             button_size = button_size_original[i]
             text_size = text_size_original
             pygame.draw.rect(Surface, button_color, button_size, 0)
-        txt = pygame.font.Font(textlink, text_size).render(
-            txt_content[i], True, text_color
-        )
+        txt = pygame.font.Font(textlink, text_size).render(txt_content[i], True, text_color)
         Surface.blit(txt, txt.get_rect(center=text_center[i]))
     if Sl[-1] == "InitialAttributes":
         for i in range(other[0], other[1] + 1):
             pygame.draw.rect(Surface, label_color, label_size[i], 0)
             pygame.draw.rect(Surface, label_frame_color, label_size[i], 3)
-            txt = pygame.font.Font(textlink, label_text_size).render(
-                label_text[i], True, label_frame_color
-            )
+            txt = pygame.font.Font(textlink, label_text_size).render(label_text[i], True, label_frame_color)
             Surface.blit(txt, txt.get_rect(center=label_text_center[i]))
     screen.blit(Surface, (W / 2 - Size[0] / 2, H / 2 - Size[1] / 2))
 

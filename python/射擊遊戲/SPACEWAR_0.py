@@ -228,9 +228,7 @@ while True:
                 sys.exit()
 
     # 背景
-    background_image = pygame.transform.scale(
-        background_image, (display_width, display_height)
-    )
+    background_image = pygame.transform.scale(background_image, (display_width, display_height))
     screen.blit(background_image, (0, 0))
 
     # 主頁面
@@ -249,9 +247,7 @@ while True:
     # gameover
     if gameover:
         gameover_image = pygame.image.load("python\\射擊遊戲\\gameover.png")
-        gameover_image = pygame.transform.scale(
-            gameover_image, (display_width, display_height)
-        )
+        gameover_image = pygame.transform.scale(gameover_image, (display_width, display_height))
         screen.blit(gameover_image, (0, 0))
         font = pygame.font.Font(None, 200)
         txt = font.render(f"YOUR SCORE:{score}", True, (255, 255, 255))
@@ -278,15 +274,9 @@ while True:
             all_sprites.add(eyes)
             eyesll.add(eyes)
         # hp
-        hurt1 = pygame.sprite.spritecollide(
-            player, reds, False, pygame.sprite.collide_mask
-        )
-        hurt2 = pygame.sprite.spritecollide(
-            player, balls, False, pygame.sprite.collide_mask
-        )
-        hurt3 = pygame.sprite.spritecollide(
-            player, eyesll, False, pygame.sprite.collide_mask
-        )
+        hurt1 = pygame.sprite.spritecollide(player, reds, False, pygame.sprite.collide_mask)
+        hurt2 = pygame.sprite.spritecollide(player, balls, False, pygame.sprite.collide_mask)
+        hurt3 = pygame.sprite.spritecollide(player, eyesll, False, pygame.sprite.collide_mask)
         if hurt1 or hurt2 or hurt3:
             player.hp -= 1
             if player.hp < 0:

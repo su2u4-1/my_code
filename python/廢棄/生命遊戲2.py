@@ -136,12 +136,7 @@ class summonlife:
     def move(self):
         b = [[0, 1, 0, -1], [1, 0, -1, 0]]
         b1 = ri(0, 3)
-        if (
-            self.xy[0] + b[0][b1] <= 99
-            and self.xy[0] + b[0][b1] >= 0
-            and self.xy[1] + b[1][b1] <= 99
-            and self.xy[1] + b[1][b1] >= 0
-        ):
+        if self.xy[0] + b[0][b1] <= 99 and self.xy[0] + b[0][b1] >= 0 and self.xy[1] + b[1][b1] <= 99 and self.xy[1] + b[1][b1] >= 0:
             self.en -= ra() * self.gen * 10
             self.xy[0] += b[0][b1]
             self.xy[1] += b[1][b1]

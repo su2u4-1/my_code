@@ -63,9 +63,7 @@ while True:
             map[x][y][i] = round(map[x][y][i])
     mx, my = pygame.mouse.get_pos()
     mx, my = floor(mx / w), floor(my / w)
-    txt = font.render(
-        f"x:{mx},y:{my},color:{map[mx][my]},time:{tmr},speed:{s}", True, (0, 0, 0)
-    )
+    txt = font.render(f"x:{mx},y:{my},color:{map[mx][my]},time:{tmr},speed:{s}", True, (0, 0, 0))
 
     for x in range(round(W / w)):
         for y in range(round(L / w)):

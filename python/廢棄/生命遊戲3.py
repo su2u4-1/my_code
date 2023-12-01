@@ -63,12 +63,7 @@ class summonlife:
             self.quantity -= self.nu * 2
             while True:
                 i = ri(0, 3)
-                if (
-                    self.x + b1[i] < xl
-                    and self.x + b1[i] > 0
-                    and self.y + b2[i] < yl
-                    and self.y + b2[i] > 0
-                ):
+                if self.x + b1[i] < xl and self.x + b1[i] > 0 and self.y + b2[i] < yl and self.y + b2[i] > 0:
                     self.x += b1[i]
                     self.y += b2[i]
                     break
@@ -76,12 +71,7 @@ class summonlife:
             if ri(1, 100) <= 20:
                 while True:
                     i = ri(0, 3)
-                    if (
-                        self.x + b1[i] < xl
-                        and self.x + b1[i] > 0
-                        and self.y + b2[i] < yl
-                        and self.y + b2[i] > 0
-                    ):
+                    if self.x + b1[i] < xl and self.x + b1[i] > 0 and self.y + b2[i] < yl and self.y + b2[i] > 0:
                         self.x += b1[i]
                         self.y += b2[i]
                         break
@@ -153,9 +143,7 @@ while True:
     if tmr == 10000:
         pygame.quit()
         nt = time.localtime(time.time())
-        output(
-            f"C:\\Users\\User\\Desktop\\程式\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}"
-        )
+        output(f"C:\\Users\\User\\Desktop\\程式\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}")
         sys.exit()
     mx, my = pygame.mouse.get_pos()
     mx = math.floor(mx / 5)
@@ -173,9 +161,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             nt = time.localtime(time.time())
-            output(
-                f"C:\\Users\\User\\Desktop\\程式\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}"
-            )
+            output(f"C:\\Users\\User\\Desktop\\程式\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}")
             sys.exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
@@ -183,15 +169,11 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if pygame.mouse.get_pressed()[0]:
                 if idl < 10:
-                    z = summonlife(
-                        (ri(0, 255), ri(0, 255), ri(0, 255)), f"0{idl}", mx, my, 10
-                    )
+                    z = summonlife((ri(0, 255), ri(0, 255), ri(0, 255)), f"0{idl}", mx, my, 10)
                     life_list.append(z)
                     ancestor.append(z)
                 elif idl >= 10:
-                    z = summonlife(
-                        (ri(0, 255), ri(0, 255), ri(0, 255)), f"{idl}", mx, my, 10
-                    )
+                    z = summonlife((ri(0, 255), ri(0, 255), ri(0, 255)), f"{idl}", mx, my, 10)
                     life_list.append(z)
                     ancestor.append(z)
                 idl += 1
@@ -199,9 +181,7 @@ while True:
     for x in range(xl):
         for y in range(yl):
             c = (map[x][y] * -16) + 255
-            pygame.draw.rect(
-                screen, (c, c, c), pygame.Rect(x * 5, y * 5, 5, 5), width=0
-            )
+            pygame.draw.rect(screen, (c, c, c), pygame.Rect(x * 5, y * 5, 5, 5), width=0)
             if x == mx and y == my:
                 pygame.draw.rect(
                     screen,

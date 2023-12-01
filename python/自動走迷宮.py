@@ -36,11 +36,7 @@ def astar_search(grid, start, end):
             new_x, new_y = current[0] + dx, current[1] + dy
             neighbor = (new_x, new_y)
 
-            if (
-                0 <= new_x < len(grid)
-                and 0 <= new_y < len(grid[0])
-                and grid[new_x][new_y] != 1
-            ):
+            if 0 <= new_x < len(grid) and 0 <= new_y < len(grid[0]) and grid[new_x][new_y] != 1:
                 tentative_g_score = g_score[current] + 1
 
                 if tentative_g_score < g_score.get(neighbor, float("inf")):

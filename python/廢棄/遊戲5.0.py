@@ -21,9 +21,7 @@ color = [
 # 0青,1黑,2藍,3桃,4灰,5綠,6淺綠,7棕,8深藍,9土黃,10紫,11紅,12灰白,13藍綠,14白,15黃
 rectcolor = []
 for i in range(1600):
-    rectcolor.append(
-        random.choices(color, weights=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-    )
+    rectcolor.append(random.choices(color, weights=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]))
 
 
 def click(x, y):
@@ -70,9 +68,7 @@ def main():
     font = pygame.font.Font(None, 12)
     px = 1
     py = 1
-    map = generatemaze(
-        math.floor(screen.get_size()[0] / 48), math.floor(screen.get_size()[1] / 48)
-    )
+    map = generatemaze(math.floor(screen.get_size()[0] / 48), math.floor(screen.get_size()[1] / 48))
     tmr = 0
     refresh()
 
@@ -117,17 +113,9 @@ def refresh():
     for i in range(math.floor(SCREEN_SIZE[0] / 48)):
         for j in range(math.floor(SCREEN_SIZE[1] / 48)):
             if map[i][j] == 1:
-                pygame.display.update(
-                    pygame.draw.rect(
-                        screen, (0, 0, 0), (i * 48 + 3, j * 48 + 3, 42, 42)
-                    )
-                )
+                pygame.display.update(pygame.draw.rect(screen, (0, 0, 0), (i * 48 + 3, j * 48 + 3, 42, 42)))
             if map[i][j] == 0:
-                pygame.display.update(
-                    pygame.draw.rect(
-                        screen, (255, 255, 255), (i * 48 + 3, j * 48 + 3, 42, 42)
-                    )
-                )
+                pygame.display.update(pygame.draw.rect(screen, (255, 255, 255), (i * 48 + 3, j * 48 + 3, 42, 42)))
     pygame.display.update(
         pygame.draw.rect(
             screen,
