@@ -502,6 +502,16 @@ def add_surface(surface_name):
             surface.object.append(Label(90, 250, 150, 40, "血氣:{0}", "player.vitality", surface))
             surface.object.append(Label(380, 250, 150, 40, "運氣:{0}", "player.luck", surface))
             surface.object.append(Label(50, 350, 150, 40, "剩餘點數:{0}", "player.remaining_points", surface))
+        case "Base":
+            surface = Surface(surface_name, 680, 450)
+            surface.object.append(Button(50, 50, 50, 50,"設定",False,surface,"print(f'button {self.text} is pressed')\nadd_surface('Settings')"))
+            surface.object.append(Button(500, 50, 130, 50,"出門",False,surface,"print(f'button {self.text} is pressed')\nadd_surface('Map')"))
+            surface.object.append(Button(500, 125, 130, 50,"角色",False,surface,"print(f'button {self.text} is pressed')\nadd_surface('Character')"))
+            surface.object.append(Button(500, 200, 130, 50,"合成",False,surface,"print(f'button {self.text} is pressed')\nadd_surface('Synthesis')"))
+            surface.object.append(Button(500, 275, 130, 50,"鍛造",False,surface,"print(f'button {self.text} is pressed')\nadd_surface('Forging')"))
+            surface.object.append(Button(500, 350, 130, 50,"倉庫",False,surface,"print(f'button {self.text} is pressed')\nadd_surface('Warehouse')"))
+        case "Settings":
+            pass
         case _:
             print("這個功能尚未製作完成")
             f = False

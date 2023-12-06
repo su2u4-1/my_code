@@ -5,7 +5,7 @@ $開始
     -存檔-
     -離開-
         -> 關閉遊戲
-$系統
+$設定
     -幫助-
         -> $help
     -檔案-
@@ -21,26 +21,23 @@ $系統
             -> $主畫面
     -關閉-
         -> 關閉遊戲
-$主畫面
+$基地
     -出門-
         -> $出門
-    -基地-
-        -倉庫-
-            -> $倉庫
-        -設施A-      ★
-            -> $設施A★
-        -設施B-      ★
-            -> $設施B★
-        ...
-        -離開-
+    -倉庫-
+        -> $倉庫
     -角色-
         -背包-
             -> $背包
         -角色屬性-
             -> $屬性★
-    -系統-
-        -> $系統
-$出門
+    -合成-
+        -> $合成
+    -鍛造-
+        -> $鍛造
+    -設定-
+        -> $設定
+$地圖
     --X*Y地圖
         -地塊-
             -怪物- or
@@ -51,8 +48,8 @@ $出門
                 -> $迷宮
     -背包-
         -> $背包
-    -系統-
-        -> $系統
+    -設定-
+        -> $設定
     -回家-
         -> &主畫面
 $倉庫 or $背包
@@ -119,6 +116,10 @@ $迷宮
 基地:Base
 倉庫:Warehouse
 合成:Synthesis
+強化:Enhancement
+附魔:Enchantment
+鑲嵌:Socketing
+鍛造:Forging
 角色:Character
 地圖:Map
 設定:Settings
@@ -128,11 +129,7 @@ $迷宮
 技能:Skills
 裝備介面:EquipmentInterface
 物品介面:ItemInterface
-合成介面:SynthesisInterface
+鍛造介面:ForgingInterface
 怪物:Monsters
 資源:Resources
-強化:Enhancement
-附魔:Enchantment
-鑲嵌:Socketing
-鍛造:Forging
 離開遊戲確認:LeaveTheGameConfirmation
