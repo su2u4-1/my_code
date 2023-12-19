@@ -72,7 +72,7 @@ e = time()
 selection_time = e - s
 
 s = time()
-#insertion = insertion_sort(l.copy())
+# insertion = insertion_sort(l.copy())
 e = time()
 insertion_time = e - s
 
@@ -84,4 +84,4 @@ insertion_time = e - s
 print("氣泡排序法所花時間:", bubble_time)
 print("雞尾酒排序法所花時間:", cocktail_time)
 print("選擇排序法所花時間:", selection_time)
-#print("插入排序法所花時間:", insertion_time)
+# print("插入排序法所花時間:", insertion_time)

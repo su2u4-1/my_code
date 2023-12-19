@@ -15,7 +15,7 @@ def abc(n):
     try:
         n = int(n)
     except:
-        return {'error': "須為正整數"}
+        return {"error": "須為正整數"}
     if n <= 0:
         return {"error": "須為正整數"}
     if n == 1:

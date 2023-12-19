@@ -4,7 +4,7 @@ import pygame
 pygame.init()
 # 設定視窗名稱
 pygame.display.set_caption("視窗名稱")
-#取得螢幕長寬
+# 取得螢幕長寬
 W = pygame.display.Info().current_w
 H = pygame.display.Info().current_h
 # 建立視窗
