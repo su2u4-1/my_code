@@ -12,7 +12,7 @@ for i in range(9):
     rc[f"b{i}"] = (0, 0, 255)  # b藍
 
 
-def r1(s):  # 順
+def r1(s:str):  # 順
     a = rc[f"{s}0"]
     rc[f"{s}0"] = rc[f"{s}6"]
     rc[f"{s}6"] = rc[f"{s}8"]
@@ -25,7 +25,7 @@ def r1(s):  # 順
     rc[f"{s}5"] = a
 
 
-def r2(s):  # 逆
+def r2(s:str):  # 逆
     a = rc[f"{s}0"]
     rc[f"{s}0"] = rc[f"{s}2"]
     rc[f"{s}2"] = rc[f"{s}8"]
@@ -38,114 +38,103 @@ def r2(s):  # 逆
     rc[f"{s}3"] = a
 
 
+def r3(s1:str,s2:str,s3:str,s4:str,n:list):
+    for i in n:
+        a = rc[f'{s1}{i}']
+        rc[f'{s1}{i}'] = rc[f'{s2}{i}']
+        rc[f'{s2}{i}'] = rc[f'{s3}{i}']
+        rc[f'{s3}{i}'] = rc[f'{s4}{i}']
+        rc[f'{s4}{i}'] = a
+
+
 def f1l():
-    for i in range(3):
-        a = rc[f"f{i}"]
-        rc[f"f{i}"] = rc[f"r{i}"]
-        rc[f"r{i}"] = rc[f"b{i}"]
-        rc[f"b{i}"] = rc[f"l{i}"]
-        rc[f"l{i}"] = a
+    r3('f','r','b','l',[0,1,2])
     r1("u")
 
 
 def f2l():
-    for i in range(3, 6):
-        a = rc[f"f{i}"]
-        rc[f"f{i}"] = rc[f"r{i}"]
-        rc[f"r{i}"] = rc[f"b{i}"]
-        rc[f"b{i}"] = rc[f"l{i}"]
-        rc[f"l{i}"] = a
+    r3('f','r','b','l',[3,4,5])
 
 
 def f3l():
-    for i in range(6, 9):
-        a = rc[f"f{i}"]
-        rc[f"f{i}"] = rc[f"r{i}"]
-        rc[f"r{i}"] = rc[f"b{i}"]
-        rc[f"b{i}"] = rc[f"l{i}"]
-        rc[f"l{i}"] = a
+    r3('f','r','b','l',[6,7,8])
     r2("d")
 
 
 def f1r():
-    for i in range(3):
-        a = rc[f"f{i}"]
-        rc[f"f{i}"] = rc[f"l{i}"]
-        rc[f"l{i}"] = rc[f"b{i}"]
-        rc[f"b{i}"] = rc[f"r{i}"]
-        rc[f"r{i}"] = a
+    r3('f','l','b','r',[0,1,2])
     r2("u")
 
 
 def f2r():
-    for i in range(3, 6):
-        a = rc[f"f{i}"]
-        rc[f"f{i}"] = rc[f"l{i}"]
-        rc[f"l{i}"] = rc[f"b{i}"]
-        rc[f"b{i}"] = rc[f"r{i}"]
-        rc[f"r{i}"] = a
+    r3('f','l','b','r',[3,4,5])
 
 
 def f3r():
-    for i in range(6, 9):
-        a = rc[f"f{i}"]
-        rc[f"f{i}"] = rc[f"l{i}"]
-        rc[f"l{i}"] = rc[f"b{i}"]
-        rc[f"b{i}"] = rc[f"r{i}"]
-        rc[f"r{i}"] = a
+    r3('f','l','b','r',[6,7,8])
     r1("u")
 
 
-def l1l():
-    pass
+def l1u():
+    r3('f','d','b','u',[2,5,8])
+    r1('r')
 
 
-def l2l():
-    pass
+def l2u():
+    r3('f','d','b','u',[1,4,7])
 
 
-def l3l():
-    pass
+def l3u():
+    r3('f','d','b','u',[0,3,6])
+    r2('l')
 
 
-def l1r():
-    pass
+def l1d():
+    r3('f','u','b','d',[2,5,8])
+    r2('r')
 
 
-def l2r():
-    pass
+def l2d():
+    r3('f','u','b','d',[1,4,7])
 
 
-def l3r():
-    pass
+def l3d():
+    r3('f','u','b','d',[0,3,6])
+    r1('l')
 
 
-def r1l():
-    pass
+def r1u():
+    r3('r','d','l','u',[0,3,6])
+    r2('f')
 
 
-def r2l():
-    pass
+def r2u():
+    r3('r','d','l','u',[1,4,7])
 
 
-def r3l():
-    pass
+def r3u():
+    r3('r','d','l','u',[2,5,8])
+    r1('b')
 
 
-def r1r():
-    pass
+def r1d():
+    r3('r','u','l','d',[0,3,6])
+    r1('f')
 
 
-def r2r():
-    pass
+def r2d():
+    r3('r','u','l','d',[1,4,7])
 
 
-def r3r():
-    pass
+def r3d():
+    r3('r','u','l','d',[2,5,8])
+    r2('b')
 
 
 def ran():
-    match ri(1, 18):
+    global i
+    i += 1
+    match i:
         case 1:
             f1l()
         case 2:
@@ -159,31 +148,32 @@ def ran():
         case 6:
             f3r()
         case 7:
-            l1l()
+            l1u()
         case 8:
-            l2l()
+            l2u()
         case 9:
-            l3l()
+            l3u()
         case 10:
-            l1r()
+            l1d()
         case 11:
-            l2r()
+            l2d()
         case 12:
-            l3r()
+            l3d()
         case 13:
-            r1l()
+            r1u()
         case 14:
-            r2l()
+            r2u()
         case 15:
-            r3l()
+            r3u()
         case 16:
-            r1r()
+            r1d()
         case 17:
-            r2r()
+            r2d()
         case 18:
-            r3r()
+            r3d()
 
 
+i = 0
 l = 100
 xs = 200
 ys = 50
@@ -263,7 +253,7 @@ while True:
                     W, H = 1000, 700
                     screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
 
-    if t % 10 == 0:
+    if t % 100 == 0:
         ran()
 
     screen.fill((0, 0, 0))
@@ -296,6 +286,28 @@ while True:
     pygame.draw.polygon(screen, rc["r6"], [p[26], p[33], p[34], p[27]])
     pygame.draw.polygon(screen, rc["r7"], [p[27], p[34], p[35], p[28]])
     pygame.draw.polygon(screen, rc["r8"], [p[28], p[35], p[36], p[29]])
+
+    pygame.draw.line(screen,(0,0,0),p[0],p[6],3)
+    pygame.draw.line(screen,(0,0,0),p[0],p[9],3)
+    pygame.draw.line(screen,(0,0,0),p[1],p[12],3)
+    pygame.draw.line(screen,(0,0,0),p[3],p[14],3)
+    pygame.draw.line(screen,(0,0,0),p[2],p[10],3)
+    pygame.draw.line(screen,(0,0,0),p[5],p[13],3)
+    pygame.draw.line(screen,(0,0,0),p[6],p[15],3)
+    pygame.draw.line(screen,(0,0,0),p[9],p[15],3)
+    pygame.draw.line(screen,(0,0,0),p[6],p[30],3)
+    pygame.draw.line(screen,(0,0,0),p[15],p[33],3)
+    pygame.draw.line(screen,(0,0,0),p[9],p[36],3)
+    pygame.draw.line(screen,(0,0,0),p[30],p[33],3)
+    pygame.draw.line(screen,(0,0,0),p[33],p[36],3)
+    pygame.draw.line(screen,(0,0,0),p[10],p[31],3)
+    pygame.draw.line(screen,(0,0,0),p[13],p[32],3)
+    pygame.draw.line(screen,(0,0,0),p[14],p[34],3)
+    pygame.draw.line(screen,(0,0,0),p[12],p[35],3)
+    pygame.draw.line(screen,(0,0,0),p[16],p[19],3)
+    pygame.draw.line(screen,(0,0,0),p[23],p[26],3)
+    pygame.draw.line(screen,(0,0,0),p[19],p[22],3)
+    pygame.draw.line(screen,(0,0,0),p[26],p[29],3)
 
     pygame.display.update()
     clock.tick(100)
