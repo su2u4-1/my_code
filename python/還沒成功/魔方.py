@@ -128,7 +128,7 @@ def f2r():
 def f3r():
     for i in range(6, 9):
         r3("f", "l", "b", "r", i, i, i, i)
-    r1("u")
+    r1("d")
 
 
 def l1u():
