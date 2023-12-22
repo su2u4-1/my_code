@@ -18,7 +18,7 @@ class Button:
         self.color = self.color1
 
     def check1(self, mx, my):
-        if self.x <= mx <= self.x + self.w and self.y <= my <= self.y + self.h:
+        if self.x - self.w / 2 <= mx <= self.x + self.w / 2 and self.y - self.h / 2 <= my <= self.y + self.h / 2:
             self.color = self.color2
         else:
             self.x = self.ox
@@ -28,7 +28,7 @@ class Button:
             self.color = self.color1
 
     def check2(self, mx, my, mouse):
-        if self.x <= mx <= self.x + self.w and self.y <= my <= self.y + self.h and mouse:
+        if self.x - self.w / 2 <= mx <= self.x + self.w / 2 and self.y - self.h / 2 <= my <= self.y + self.h / 2 and mouse:
             self.x = self.ox + self.ow * 0.05
             self.y = self.oy + self.oh * 0.05
             self.w = self.ow * 0.9
@@ -41,7 +41,7 @@ class Button:
             self.h = self.oh
 
     def display(self):
-        pygame.draw.rect(screen, self.color, (self.x, self.y, self.w, self.h), 0)
+        pygame.draw.rect(screen, self.color, (self.x - self.w / 2, self.y - self.h / 2, self.w, self.h), 0)
 
     def do_something(self):
         try:
@@ -251,13 +251,13 @@ def rollback(a):
             r3u()
 
 
-l = 100
+l = 150
 xs = 200
 ys = 50
 x = []
 y = []
-for i in [0, 0.5, 1, 1.5, 2, 2.5, 3]:
-    x.append(xs + l * (i * 3**0.5))
+for i in [0, 0.5, 1, 1.5, 2, 2.5, 3, -0.25, 3.25]:
+    x.append(xs + l * i * 3**0.5)
 for i in [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6]:
     y.append(ys + l * i)
 p = [
@@ -312,24 +312,26 @@ font = pygame.font.Font(textlink, 20)
 fullscreen = 0
 step = []
 button_list = []
-button_list.append(Button(160, 240, 30, 20, "step.append('f1l')\nf1l()"))
-button_list.append(Button(160, 340, 30, 20, "step.append('f2l')\nf2l()"))
-button_list.append(Button(160, 440, 30, 20, "step.append('f3l')\nf3l()"))
-button_list.append(Button(750, 240, 30, 20, "step.append('f1r')\nf1r()"))
-button_list.append(Button(750, 340, 30, 20, "step.append('f2r')\nf2r()"))
-button_list.append(Button(750, 440, 30, 20, "step.append('f3r')\nf3r()"))
-button_list.append(Button(700, 150, 30, 20, "step.append('l1u')\nl1u()"))
-button_list.append(Button(610, 90, 30, 20, "step.append('l2u')\nl2u()"))
-button_list.append(Button(530, 50, 30, 20, "step.append('l3u')\nl3u()"))
-button_list.append(Button(400, 650, 30, 20, "step.append('l1d')\nl1d()"))
-button_list.append(Button(310, 600, 30, 20, "step.append('l2d')\nl2d()"))
-button_list.append(Button(220, 560, 30, 20, "step.append('l3d')\nl3d()"))
-button_list.append(Button(220, 140, 30, 20, "step.append('r1u')\nr1u()"))
-button_list.append(Button(290, 90, 30, 20, "step.append('r2u')\nr2u()"))
-button_list.append(Button(390, 50, 30, 20, "step.append('r3u')\nr3u()"))
-button_list.append(Button(520, 650, 30, 20, "step.append('r1d')\nr1d()"))
-button_list.append(Button(600, 600, 30, 20, "step.append('r2d')\nr2d()"))
-button_list.append(Button(690, 550, 30, 20, "step.append('r3d')\nr3d()"))
+
+
+button_list.append(Button(x[7], y[4], 30, 20, "step.append('f1l')\nf1l()"))
+button_list.append(Button(x[7], y[6], 30, 20, "step.append('f2l')\nf2l()"))
+button_list.append(Button(x[7], y[8], 30, 20, "step.append('f3l')\nf3l()"))
+button_list.append(Button(x[8], y[4], 30, 20, "step.append('f1r')\nf1r()"))
+button_list.append(Button(x[8], y[6], 30, 20, "step.append('f2r')\nf2r()"))
+button_list.append(Button(x[8], y[8], 30, 20, "step.append('f3r')\nf3r()"))
+button_list.append(Button(x[6], y[2], 30, 20, "step.append('l1u')\nl1u()"))
+button_list.append(Button(x[5], y[1], 30, 20, "step.append('l2u')\nl2u()"))
+button_list.append(Button(x[4], y[0], 30, 20, "step.append('l3u')\nl3u()"))
+button_list.append(Button(x[2], y[12], 30, 20, "step.append('l1d')\nl1d()"))
+button_list.append(Button(x[1], y[11], 30, 20, "step.append('l2d')\nl2d()"))
+button_list.append(Button(x[0], y[10], 30, 20, "step.append('l3d')\nl3d()"))
+button_list.append(Button(x[0], y[2], 30, 20, "step.append('r1u')\nr1u()"))
+button_list.append(Button(x[1], y[1], 30, 20, "step.append('r2u')\nr2u()"))
+button_list.append(Button(x[2], y[0], 30, 20, "step.append('r3u')\nr3u()"))
+button_list.append(Button(x[4], y[12], 30, 20, "step.append('r1d')\nr1d()"))
+button_list.append(Button(x[5], y[11], 30, 20, "step.append('r2d')\nr2d()"))
+button_list.append(Button(x[6], y[10], 30, 20, "step.append('r3d')\nr3d()"))
 button_list.append(Button(100, 100, 30, 20, "if len(step)>0:\n\trollback(step.pop())"))
 
 while True:
