@@ -1,8 +1,9 @@
 import pygame
+from random import randint as ri
 
 
 class Button:
-    def __init__(self, x, y, w, h, do):
+    def __init__(self, x, y, w, h, do, text=""):
         self.ox = x
         self.oy = y
         self.ow = w
@@ -16,6 +17,9 @@ class Button:
         self.color1 = (100, 100, 100)
         self.color2 = (200, 200, 200)
         self.color = self.color1
+        self.text = text
+        self.text_size = 20
+        self.text_color = (20, 20, 20)
 
     def check1(self, mx, my):
         if self.x - self.w / 2 <= mx <= self.x + self.w / 2 and self.y - self.h / 2 <= my <= self.y + self.h / 2:
@@ -42,6 +46,8 @@ class Button:
 
     def display(self):
         pygame.draw.rect(screen, self.color, (self.x - self.w / 2, self.y - self.h / 2, self.w, self.h), 0)
+        text = pygame.font.Font(textlink, self.text_size).render(self.text, True, self.text_color)
+        screen.blit(text, text.get_rect(center=(self.x, self.y)))
 
     def do_something(self):
         try:
@@ -211,47 +217,47 @@ def r3d():
     r2("b")
 
 
-def rollback(a):
-    match a:
-        case "f1l":
+def ro(n):
+    match n:
+        case 1:
             f1r()
-        case "f2l":
+        case 2:
             f2r()
-        case "f3l":
+        case 3:
             f3r()
-        case "f1r":
+        case 4:
             f1l()
-        case "f2r":
+        case 5:
             f2l()
-        case "f3r":
+        case 6:
             f3l()
-        case "l1u":
+        case 7:
             l1d()
-        case "l2u":
+        case 8:
             l2d()
-        case "l3u":
+        case 9:
             l3d()
-        case "l1d":
+        case 10:
             l1u()
-        case "l2d":
+        case 11:
             l2u()
-        case "l3d":
+        case 12:
             l3u()
-        case "r1u":
+        case 13:
             r1d()
-        case "r2u":
+        case 14:
             r2d()
-        case "r3u":
+        case 15:
             r3d()
-        case "r1d":
+        case 16:
             r1u()
-        case "r2d":
+        case 17:
             r2u()
-        case "r3d":
+        case 18:
             r3u()
 
 
-l = 150
+l = 100
 xs = 200
 ys = 50
 x = []
@@ -314,25 +320,33 @@ step = []
 button_list = []
 
 
-button_list.append(Button(x[7], y[4], 30, 20, "step.append('f1l')\nf1l()"))
-button_list.append(Button(x[7], y[6], 30, 20, "step.append('f2l')\nf2l()"))
-button_list.append(Button(x[7], y[8], 30, 20, "step.append('f3l')\nf3l()"))
-button_list.append(Button(x[8], y[4], 30, 20, "step.append('f1r')\nf1r()"))
-button_list.append(Button(x[8], y[6], 30, 20, "step.append('f2r')\nf2r()"))
-button_list.append(Button(x[8], y[8], 30, 20, "step.append('f3r')\nf3r()"))
-button_list.append(Button(x[6], y[2], 30, 20, "step.append('l1u')\nl1u()"))
-button_list.append(Button(x[5], y[1], 30, 20, "step.append('l2u')\nl2u()"))
-button_list.append(Button(x[4], y[0], 30, 20, "step.append('l3u')\nl3u()"))
-button_list.append(Button(x[2], y[12], 30, 20, "step.append('l1d')\nl1d()"))
-button_list.append(Button(x[1], y[11], 30, 20, "step.append('l2d')\nl2d()"))
-button_list.append(Button(x[0], y[10], 30, 20, "step.append('l3d')\nl3d()"))
-button_list.append(Button(x[0], y[2], 30, 20, "step.append('r1u')\nr1u()"))
-button_list.append(Button(x[1], y[1], 30, 20, "step.append('r2u')\nr2u()"))
-button_list.append(Button(x[2], y[0], 30, 20, "step.append('r3u')\nr3u()"))
-button_list.append(Button(x[4], y[12], 30, 20, "step.append('r1d')\nr1d()"))
-button_list.append(Button(x[5], y[11], 30, 20, "step.append('r2d')\nr2d()"))
-button_list.append(Button(x[6], y[10], 30, 20, "step.append('r3d')\nr3d()"))
-button_list.append(Button(100, 100, 30, 20, "if len(step)>0:\n\trollback(step.pop())"))
+button_list.append(Button(x[7], y[4], 30, 20, "step.append(1)\nf1l()"))
+button_list.append(Button(x[7], y[6], 30, 20, "step.append(2)\nf2l()"))
+button_list.append(Button(x[7], y[8], 30, 20, "step.append(3)\nf3l()"))
+button_list.append(Button(x[8], y[4], 30, 20, "step.append(4)\nf1r()"))
+button_list.append(Button(x[8], y[6], 30, 20, "step.append(5)\nf2r()"))
+button_list.append(Button(x[8], y[8], 30, 20, "step.append(6)\nf3r()"))
+button_list.append(Button(x[6], y[2], 30, 20, "step.append(7)\nl1u()"))
+button_list.append(Button(x[5], y[1], 30, 20, "step.append(8)\nl2u()"))
+button_list.append(Button(x[4], y[0], 30, 20, "step.append(9)\nl3u()"))
+button_list.append(Button(x[2], y[12], 30, 20, "step.append(10)\nl1d()"))
+button_list.append(Button(x[1], y[11], 30, 20, "step.append(11)\nl2d()"))
+button_list.append(Button(x[0], y[10], 30, 20, "step.append(12)\nl3d()"))
+button_list.append(Button(x[0], y[2], 30, 20, "step.append(13)\nr1u()"))
+button_list.append(Button(x[1], y[1], 30, 20, "step.append(14)\nr2u()"))
+button_list.append(Button(x[2], y[0], 30, 20, "step.append(15)\nr3u()"))
+button_list.append(Button(x[4], y[12], 30, 20, "step.append(16)\nr1d()"))
+button_list.append(Button(x[5], y[11], 30, 20, "step.append(17)\nr2d()"))
+button_list.append(Button(x[6], y[10], 30, 20, "step.append(18)\nr3d()"))
+button_list.append(Button(150, 75, 100, 40, "if len(step)>0:\n\tro(step.pop())", "回上一步"))
+button_list.append(Button(75, 150, 60, 40, "for _ in range(10):\n\tro(ri(1,18))", "轉亂"))
+
+button_list.append(Button(x[7] - 35, y[6], 30, 20, "step.append(1)\nstep.append(2)\nstep.append(3)\nf1l()\nf2l()\nf3l()"))
+button_list.append(Button(x[8] + 35, y[6], 30, 20, "step.append(4)\nstep.append(5)\nstep.append(6)\nf1r()\nf2r()\nf3r()"))
+button_list.append(Button(x[5] + 35, y[1] - 25, 30, 20, "step.append(7)\nstep.append(8)\nstep.append(9)\nl1u()\nl2u()\nl3u()"))
+button_list.append(Button(x[1] - 35, y[11] + 25, 30, 20, "step.append(10)\nstep.append(11)\nstep.append(12)\nl1d()\nl2d()\nl3d()"))
+button_list.append(Button(x[1] - 35, y[1] - 25, 30, 20, "step.append(13)\nstep.append(14)\nstep.append(15)\nr1u()\nr2u()\nr3u()"))
+button_list.append(Button(x[5] + 35, y[11] + 25, 30, 20, "step.append(16)\nstep.append(17)\nstep.append(18)\nr1d()\nr2d()\nr3d()"))
 
 while True:
     mx, my = pygame.mouse.get_pos()
@@ -408,7 +422,7 @@ while True:
     pygame.draw.line(screen, (0, 0, 0), p[23], p[26], 3)
     pygame.draw.line(screen, (0, 0, 0), p[19], p[22], 3)
     pygame.draw.line(screen, (0, 0, 0), p[26], p[29], 3)
-    text = font.render(f"({mx},{my})", True, (255, 255, 255))
+    text = font.render(f"({mx},{my}){step}", True, (255, 255, 255))
     screen.blit(text, [0, 0])
     for i in button_list:
         i.display()

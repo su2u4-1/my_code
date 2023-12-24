@@ -147,10 +147,7 @@ class Button:
                 5,
             )
         text = pygame.font.Font(textlink, self.text_size_).render(self.text, True, self.text_color_)
-        self.surface.surface.blit(
-            text,
-            text.get_rect(center=(fl(self.x_ + self.w_ / 2), fl(self.y_ + self.h_ / 2))),
-        )
+        self.surface.surface.blit(text, text.get_rect(center=(fl(self.x_ + self.w_ / 2), fl(self.y_ + self.h_ / 2))))
         if self.surface.name == "CreateCharacter":
             input_box.draw(self.surface.surface)
 
