@@ -1,5 +1,3 @@
-from math import ceil
-
 link = "python\\沒意義\\"
 print("正在讀取質數")
 f = open(link + "質數.txt", "r")

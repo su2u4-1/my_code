@@ -339,7 +339,7 @@ button_list.append(Button(x[4], y[12], 30, 20, "step.append(16)\nr1d()"))
 button_list.append(Button(x[5], y[11], 30, 20, "step.append(17)\nr2d()"))
 button_list.append(Button(x[6], y[10], 30, 20, "step.append(18)\nr3d()"))
 button_list.append(Button(150, 75, 100, 40, "if len(step)>0:\n\tro(step.pop())", "回上一步"))
-button_list.append(Button(75, 150, 60, 40, "for _ in range(10):\n\tro(ri(1,18))", "轉亂"))
+button_list.append(Button(75, 150, 60, 40, "for _ in range(10):\n\ta=ri(1,18)\n\tro(a)\n\tprint(a)", "轉亂"))
 
 button_list.append(Button(x[7] - 35, y[6], 30, 20, "step.append(1)\nstep.append(2)\nstep.append(3)\nf1l()\nf2l()\nf3l()"))
 button_list.append(Button(x[8] + 35, y[6], 30, 20, "step.append(4)\nstep.append(5)\nstep.append(6)\nf1r()\nf2r()\nf3r()"))
