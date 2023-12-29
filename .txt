@@ -3,5 +3,5 @@ black --line-length 135 程式
 
 pip install pygame
 pip install black
-cd Desktop
+cd Documents/GitHub
 black --line-length 135 my_code
