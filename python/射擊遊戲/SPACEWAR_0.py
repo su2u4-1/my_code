@@ -1,6 +1,5 @@
 import pygame, random, sys
 
-# 初始化 pygame
 pygame.init()
 pygame.mixer.init()
 score = 0
@@ -8,20 +7,16 @@ score = 0
 display_width = pygame.display.Info().current_w
 display_height = pygame.display.Info().current_h
 
-# 建立視窗
 screen = pygame.display.set_mode((display_width, display_height))
 
-# 視窗名稱
 pygame.display.set_caption("gametest")
 
-# 遊戲介面
 startbut = pygame.image.load("python\\射擊遊戲\\startbut.png")
 main_page = True
 gameing = False
 gameover = False
 
 
-# 角色
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -34,7 +29,7 @@ class Player(pygame.sprite.Sprite):
         self.hp = 100
 
     def update(self):
-        # 角色移動
+    
         keys = pygame.key.get_pressed()
         if gameing:
             if keys[pygame.K_w]:
@@ -54,7 +49,7 @@ class Player(pygame.sprite.Sprite):
             if self.rect.top > display_height:
                 self.rect.bottom = 0
 
-        # 射擊
+    
         self.cd -= 6
         if keys[pygame.K_SPACE]:
             if self.cd < 0:
@@ -64,7 +59,6 @@ class Player(pygame.sprite.Sprite):
                 self.cd = 200
 
 
-# 子彈
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -81,7 +75,6 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
-# 紅色敵人
 class Red(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -94,7 +87,7 @@ class Red(pygame.sprite.Sprite):
         self.speed_x = random.randrange(-2, 2)
 
     def update(self):
-        # 怪物移動
+    
         self.rect.y += self.speed_y
         self.rect.x += self.speed_x
         if self.rect.left > display_width:
@@ -107,7 +100,6 @@ class Red(pygame.sprite.Sprite):
             self.speed_y = random.randrange(1, 6)
 
 
-# 眼睛敵人
 class Eyes(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -126,7 +118,7 @@ class Eyes(pygame.sprite.Sprite):
         self.speed_x = random.randrange(2, 5)
 
     def update(self):
-        # 怪物移動
+    
         self.cd -= 4
         if self.left == True:
             self.rect.x += self.speed_x
@@ -143,7 +135,6 @@ class Eyes(pygame.sprite.Sprite):
             self.cd = 400
 
 
-# 魔法球
 class Ball(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -160,7 +151,6 @@ class Ball(pygame.sprite.Sprite):
             self.kill()
 
 
-# hp條
 def hpbar(surf, hp, x, y):
     if hp < 0:
         hp = 0
@@ -176,13 +166,10 @@ def hpbar(surf, hp, x, y):
     pygame.draw.rect(surf, (255, 255, 255), hpbox, 2)
 
 
-# 設定遊戲時鐘
 clock = pygame.time.Clock()
 
-# 載入圖片
 background_image = pygame.image.load("python\\射擊遊戲\\space.png")
 
-# 物件
 all_sprites = pygame.sprite.Group()
 reds = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
@@ -199,22 +186,20 @@ for i in range(10):
     all_sprites.add(eyes)
     eyesll.add(eyes)
 
-# 背景音樂
 background_sound = pygame.mixer.Sound("python\\射擊遊戲\\backgroundmusic.mp3")
 background_sound.play()
 
-# 建立主遊戲迴圈
 while True:
-    # 控制遊戲更新速度
+
     clock.tick(120)
-    # 事件迴圈
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
-            # startbut
+        
             if (
                 display_width / 2 - 85 <= mouse_pos[0] <= display_width / 2 + 85
                 and display_height / 2 - 47 <= mouse_pos[1] <= display_height / 2 + 47
@@ -227,11 +212,11 @@ while True:
                 pygame.quit()
                 sys.exit()
 
-    # 背景
+
     background_image = pygame.transform.scale(background_image, (display_width, display_height))
     screen.blit(background_image, (0, 0))
 
-    # 主頁面
+
     if main_page:
         startbut = pygame.transform.scale(startbut, (180, 180))
         screen.blit(startbut, (display_width / 2 - 90, display_height / 2 - 100))
@@ -239,12 +224,12 @@ while True:
         txt = font.render("SPACEWAR", True, (255, 0, 0))
         screen.blit(txt, [display_width / 2 - 410, display_height / 2 - 250])
 
-    # gamemode
+
     if gameing:
-        # 遊戲更新
+    
         all_sprites.draw(screen)
 
-    # gameover
+
     if gameover:
         gameover_image = pygame.image.load("python\\射擊遊戲\\gameover.png")
         gameover_image = pygame.transform.scale(gameover_image, (display_width, display_height))
@@ -253,9 +238,8 @@ while True:
         txt = font.render(f"YOUR SCORE:{score}", True, (255, 255, 255))
         screen.blit(txt, [140, 360])
 
-    # 分數/重新生成
     if gameing:
-        # 字體
+    
         font = pygame.font.Font(None, 80)
         txt = font.render(f"SCORE:{score}", True, (255, 255, 255))
         screen.blit(txt, [0, 0])
@@ -273,7 +257,7 @@ while True:
             eyes = Eyes()
             all_sprites.add(eyes)
             eyesll.add(eyes)
-        # hp
+    
         hurt1 = pygame.sprite.spritecollide(player, reds, False, pygame.sprite.collide_mask)
         hurt2 = pygame.sprite.spritecollide(player, balls, False, pygame.sprite.collide_mask)
         hurt3 = pygame.sprite.spritecollide(player, eyesll, False, pygame.sprite.collide_mask)

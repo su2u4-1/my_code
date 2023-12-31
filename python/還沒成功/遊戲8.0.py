@@ -113,7 +113,7 @@ class Button:
                     if self.holddown:
                         print("直")
                         self.do(self.do_something)
-                        self.time = 15
+                        self.time = 11
                     else:
                         do_something = (self, self.do_something)
                 if not self.holddown:
