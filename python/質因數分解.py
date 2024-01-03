@@ -1,4 +1,4 @@
-link = "python\\沒意義\\"
+link = "python\\data\\"
 print("正在讀取質數")
 f = open(link + "質數.txt", "r")
 a = []

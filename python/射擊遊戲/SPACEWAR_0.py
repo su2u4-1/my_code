@@ -29,7 +29,6 @@ class Player(pygame.sprite.Sprite):
         self.hp = 100
 
     def update(self):
-    
         keys = pygame.key.get_pressed()
         if gameing:
             if keys[pygame.K_w]:
@@ -49,7 +48,6 @@ class Player(pygame.sprite.Sprite):
             if self.rect.top > display_height:
                 self.rect.bottom = 0
 
-    
         self.cd -= 6
         if keys[pygame.K_SPACE]:
             if self.cd < 0:
@@ -87,7 +85,6 @@ class Red(pygame.sprite.Sprite):
         self.speed_x = random.randrange(-2, 2)
 
     def update(self):
-    
         self.rect.y += self.speed_y
         self.rect.x += self.speed_x
         if self.rect.left > display_width:
@@ -118,7 +115,6 @@ class Eyes(pygame.sprite.Sprite):
         self.speed_x = random.randrange(2, 5)
 
     def update(self):
-    
         self.cd -= 4
         if self.left == True:
             self.rect.x += self.speed_x
@@ -190,7 +186,6 @@ background_sound = pygame.mixer.Sound("python\\射擊遊戲\\backgroundmusic.mp3
 background_sound.play()
 
 while True:
-
     clock.tick(120)
 
     for event in pygame.event.get():
@@ -199,7 +194,7 @@ while True:
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
-        
+
             if (
                 display_width / 2 - 85 <= mouse_pos[0] <= display_width / 2 + 85
                 and display_height / 2 - 47 <= mouse_pos[1] <= display_height / 2 + 47
@@ -212,10 +207,8 @@ while True:
                 pygame.quit()
                 sys.exit()
 
-
     background_image = pygame.transform.scale(background_image, (display_width, display_height))
     screen.blit(background_image, (0, 0))
-
 
     if main_page:
         startbut = pygame.transform.scale(startbut, (180, 180))
@@ -224,11 +217,8 @@ while True:
         txt = font.render("SPACEWAR", True, (255, 0, 0))
         screen.blit(txt, [display_width / 2 - 410, display_height / 2 - 250])
 
-
     if gameing:
-    
         all_sprites.draw(screen)
-
 
     if gameover:
         gameover_image = pygame.image.load("python\\射擊遊戲\\gameover.png")
@@ -239,7 +229,6 @@ while True:
         screen.blit(txt, [140, 360])
 
     if gameing:
-    
         font = pygame.font.Font(None, 80)
         txt = font.render(f"SCORE:{score}", True, (255, 255, 255))
         screen.blit(txt, [0, 0])
@@ -257,7 +246,7 @@ while True:
             eyes = Eyes()
             all_sprites.add(eyes)
             eyesll.add(eyes)
-    
+
         hurt1 = pygame.sprite.spritecollide(player, reds, False, pygame.sprite.collide_mask)
         hurt2 = pygame.sprite.spritecollide(player, balls, False, pygame.sprite.collide_mask)
         hurt3 = pygame.sprite.spritecollide(player, eyesll, False, pygame.sprite.collide_mask)
