@@ -2,13 +2,13 @@ import pickle
 
 
 def rf(filename):
-    with open(f"python\\data\\{filename}.txt", "rb") as f:
-        return pickle.load(f)
+    with open(f"python\\data\\{filename}.txt", "r") as f:
+        return eval(f.read())
 
 
 def sf(filename, data):
-    with open(f"python\\data\\{filename}.txt", "wb") as f:
-        pickle.dump(data, f)
+    with open(f"python\\data\\{filename}.txt", "w+") as f:
+        f.write(str(data))
 
 
 sn = rf("surname")
