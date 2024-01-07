@@ -1,0 +1,25 @@
+from random import choices as ch
+
+link = "python\\data\\"
+
+with open(link + "surname.txt", "r", encoding="utf-8") as f:
+    surname = eval(f.read())
+with open(link + "name1.txt", "r", encoding="utf-8") as f:
+    name1 = eval(f.read())
+with open(link + "name2.txt", "r", encoding="utf-8") as f:
+    name2 = eval(f.read())
+with open(link + "name1_2.txt", "r", encoding="utf-8") as f:
+    name1_2 = eval(f.read())
+
+snk = surname.keys()
+snv = surname.values()
+n1k = name1.keys()
+n1v = name1.values()
+n2k = name2.keys()
+n2v = name2.values()
+n = int(input("數量:"))
+for _ in range(n):
+    sn = surname[ch(snk,snv)]
+    n1 = name1[ch(n1k,n1v)]
+    n2 = name2[ch(n2k,n2v)]
+    print(sn+n1+n2)
