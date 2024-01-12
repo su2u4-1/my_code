@@ -57,8 +57,7 @@ class Surface:
         for y in range(self.h):
             for x in range(self.w):
                 print(self.s[y][x], end="")
-            if y != self.h - 1:
-                print()
+            print()
 
 
 def move(key: str, s: Surface):
@@ -69,7 +68,7 @@ def move(key: str, s: Surface):
             i = s.b[n]
             if i == o:
                 continue
-            if i.y < o.y:
+            elif i.y < o.y:
                 nd = ((i.x - o.x) ** 2 + (i.y - o.y) ** 2) ** 0.5
                 if nd < d:
                     d = nd
@@ -81,7 +80,7 @@ def move(key: str, s: Surface):
             i = s.b[n]
             if i == o:
                 continue
-            if i.y > o.y:
+            elif i.y > o.y:
                 nd = ((i.x - o.x) ** 2 + (i.y - o.y) ** 2) ** 0.5
                 if nd < d:
                     d = nd
@@ -93,7 +92,7 @@ def move(key: str, s: Surface):
             i = s.b[n]
             if i == o:
                 continue
-            if i.x < o.x:
+            elif i.x < o.x:
                 nd = ((i.x - o.x) ** 2 + (i.y - o.y) ** 2) ** 0.5
                 if nd < d:
                     d = nd
@@ -105,7 +104,7 @@ def move(key: str, s: Surface):
             i = s.b[n]
             if i == o:
                 continue
-            if i.x > o.x:
+            elif i.x > o.x:
                 nd = ((i.x - o.x) ** 2 + (i.y - o.y) ** 2) ** 0.5
                 if nd < d:
                     d = nd
@@ -116,8 +115,9 @@ def move(key: str, s: Surface):
 surface = Surface(120, 30)
 surface.b.append(Button(5, 5, "按鈕", True))
 surface.b.append(Button(5, 10, "button", False))
-surface.b.append(Button(15, 8, "按鈕", True))
-surface.b.append(Button(15, 13, "button", False))
+surface.b.append(Button(15, 5, "按鈕", True))
+surface.b.append(Button(15, 10, "button", False))
+surface.display()
 while True:
-    surface.display()
     surface.c = move(keyboard.read_key(), surface)
+    surface.display()
