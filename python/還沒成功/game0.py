@@ -1,4 +1,4 @@
-import keyboard, os
+import keyboard, os, time
 
 
 class Button:
@@ -43,12 +43,12 @@ class Surface:
                 if b.x + i < self.w:
                     self.s[b.y][b.x + i] = b.text[i]
         if b == self.b[self.c]:
-            self.s[b.y][b.x] = "{"
+            self.s[b.y][b.x] = "\033[7m{"
             if b.x + b.w - 1 < self.w:
                 if b.chinese:
-                    self.s[b.y][b.x + b.w] = "}"
+                    self.s[b.y][b.x + b.w] = "}\033[0m"
                 else:
-                    self.s[b.y][b.x + b.w - 1] = "}"
+                    self.s[b.y][b.x + b.w - 1] = "}\033[0m"
 
     def display(self):
         for i in self.b:
@@ -58,58 +58,31 @@ class Surface:
             for x in range(self.w):
                 print(self.s[y][x], end="")
             print()
+        time.sleep(0.05)
 
 
 def move(key: str, s: Surface):
-    if key == "w":  # up
-        d = 100
-        o = s.b[s.c]
-        for n in range(len(s.b)):
-            i = s.b[n]
-            if i == o:
-                continue
-            elif i.y < o.y:
-                nd = ((i.x - o.x) ** 2 + (i.y - o.y) ** 2) ** 0.5
-                if nd < d:
-                    d = nd
-        return n
-    elif key == "s":  # down
-        d = 100
-        o = s.b[s.c]
-        for n in range(len(s.b)):
-            i = s.b[n]
-            if i == o:
-                continue
-            elif i.y > o.y:
-                nd = ((i.x - o.x) ** 2 + (i.y - o.y) ** 2) ** 0.5
-                if nd < d:
-                    d = nd
-        return n
-    elif key == "a":  # left
-        d = 100
-        o = s.b[s.c]
-        for n in range(len(s.b)):
-            i = s.b[n]
-            if i == o:
-                continue
-            elif i.x < o.x:
-                nd = ((i.x - o.x) ** 2 + (i.y - o.y) ** 2) ** 0.5
-                if nd < d:
-                    d = nd
-        return n
-    elif key == "d":  # right
-        d = 100
-        o = s.b[s.c]
-        for n in range(len(s.b)):
-            i = s.b[n]
-            if i == o:
-                continue
-            elif i.x > o.x:
-                nd = ((i.x - o.x) ** 2 + (i.y - o.y) ** 2) ** 0.5
-                if nd < d:
-                    d = nd
-        return n
-    return s.c
+    if key == "w":
+        condition = "i.y < o.y"
+    elif key == "a":
+        condition = "i.x < o.x"
+    elif key == "s":
+        condition = "i.y > o.y"
+    elif key == "d":
+        condition = "i.x > o.x"
+    d = 100
+    o = s.b[s.c]
+    en = s.c
+    for n in range(len(s.b)):
+        i = s.b[n]
+        if i == o:
+            continue
+        elif eval(condition):
+            nd = ((i.x - o.x) ** 2 + (i.y - o.y) ** 2) ** 0.5
+            if nd < d:
+                d = nd
+                en = n
+    return en
 
 
 surface = Surface(120, 30)
@@ -119,5 +92,7 @@ surface.b.append(Button(15, 5, "按鈕", True))
 surface.b.append(Button(15, 10, "button", False))
 surface.display()
 while True:
-    surface.c = move(keyboard.read_key(), surface)
-    surface.display()
+    key = keyboard.read_key()
+    if key == "w" or key == "a" or key == "s" or key == "d":
+        surface.c = move(key, surface)
+        surface.display()
