@@ -5,12 +5,12 @@ class Button:
     def __init__(self, x: int, y: int, text: str, chinese: bool):
         self.x = x
         self.y = y
-        self.text = f"[ {text} ]"
+        self.text = text
         self.chinese = chinese
         if chinese:
-            self.w = len(self.text) + len(text)
+            self.w = len(text)*2
         else:
-            self.w = len(self.text)
+            self.w = len(self)
 
 
 class Surface:
@@ -34,21 +34,18 @@ class Surface:
             self.s[b.y][b.x] = "["
             if b.x + b.w - 1 < self.w:
                 self.s[b.y][b.x + b.w] = "]"
-            for i in range(2, b.w - 1, 2):
+            for i in range(0, b.w, 2):
                 if b.x + i < self.w:
-                    self.s[b.y][b.x + i] = b.text[int(i / 2) + 1]
+                    self.s[b.y][b.x + i] = b.text[int(i / 2)]
                     self.s[b.y][b.x + i + 1] = ""
         else:
             for i in range(0, b.w):
                 if b.x + i < self.w:
                     self.s[b.y][b.x + i] = b.text[i]
         if b == self.b[self.c]:
-            self.s[b.y][b.x] = "\033[7m{"
+            self.s[b.y][b.x - 1] += "\033[7m"
             if b.x + b.w - 1 < self.w:
-                if b.chinese:
-                    self.s[b.y][b.x + b.w] = "}\033[0m"
-                else:
-                    self.s[b.y][b.x + b.w - 1] = "}\033[0m"
+                self.s[b.y][b.x + b.w + 1] += "\033[0m"
 
     def display(self):
         for i in self.b:
