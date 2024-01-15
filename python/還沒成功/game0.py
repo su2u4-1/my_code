@@ -10,30 +10,30 @@ class Button:
         if chinese:
             self.w = len(text)*2
         else:
-            self.w = len(self)
+            self.w = len(text)
 
 
 class Surface:
     def __init__(self, w: int, h: int):
         self.w = w
         self.h = h
+        self.b = []
+        self.c = 0
+        self.refresh()
+
+    def refresh(self):
         self.s = []
-        for y in range(h):
+        for y in range(self.h):
             a = []
-            for x in range(w):
-                if x == 0 or x == w - 1 or y == 0 or y == h - 1:
+            for x in range(self.w):
+                if x == 0 or x == self.w - 1 or y == 0 or y == self.h - 1:
                     a.append("=")
                 else:
                     a.append(" ")
             self.s.append(a)
-        self.b = []
-        self.c = 0
 
     def update(self, b: Button):
         if b.chinese:
-            self.s[b.y][b.x] = "["
-            if b.x + b.w - 1 < self.w:
-                self.s[b.y][b.x + b.w] = "]"
             for i in range(0, b.w, 2):
                 if b.x + i < self.w:
                     self.s[b.y][b.x + i] = b.text[int(i / 2)]
@@ -45,9 +45,10 @@ class Surface:
         if b == self.b[self.c]:
             self.s[b.y][b.x - 1] += "\033[7m"
             if b.x + b.w - 1 < self.w:
-                self.s[b.y][b.x + b.w + 1] += "\033[0m"
+                self.s[b.y][b.x + b.w - 1] += "\033[0m"
 
     def display(self):
+        self.refresh()
         for i in self.b:
             self.update(i)
         os.system("cls")
@@ -55,7 +56,7 @@ class Surface:
             for x in range(self.w):
                 print(self.s[y][x], end="")
             print()
-        time.sleep(0.05)
+        time.sleep(0.1)
 
 
 def move(key: str, s: Surface):
