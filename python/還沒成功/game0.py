@@ -1,8 +1,9 @@
-import keyboard, os, time
+import keyboard, os
+from time import sleep
 
 
 class Button:
-    def __init__(self, x: int, y: int, text: str, chinese: bool):
+    def __init__(self, x: int, y: int, text: str, chinese: bool, do = None):
         self.x = x
         self.y = y
         self.text = text
@@ -11,6 +12,7 @@ class Button:
             self.w = len(text)*2
         else:
             self.w = len(text)
+        self.do = do
 
 
 class Surface:
@@ -19,6 +21,7 @@ class Surface:
         self.h = h
         self.b = []
         self.c = 0
+        self.f = False
         self.refresh()
 
     def refresh(self):
@@ -54,9 +57,12 @@ class Surface:
         os.system("cls")
         for y in range(self.h):
             for x in range(self.w):
-                print(self.s[y][x], end="")
+                if self.s[y][x] == " " and self.f:
+                    print(str(x)[-1], end="")
+                else:
+                    print(self.s[y][x], end="")
             print()
-        time.sleep(0.1)
+        sleep(0.1)
 
 
 def move(key: str, s: Surface):
@@ -82,15 +88,27 @@ def move(key: str, s: Surface):
                 en = n
     return en
 
-
-surface = Surface(120, 30)
-surface.b.append(Button(5, 5, "按鈕", True))
-surface.b.append(Button(5, 10, "button", False))
-surface.b.append(Button(15, 5, "按鈕", True))
-surface.b.append(Button(15, 10, "button", False))
+W, H = 120 ,30
+surface = Surface(W, H)
+surface.b.append(Button(round(W/3)-4, round(H/3), "開新遊戲", True))
+surface.b.append(Button(round(W/3)-4, round(H/3*2)-1, "讀取存檔", True))
+surface.b.append(Button(round(W/3*2)-4, round(H/3), "儲存遊戲", True))
+surface.b.append(Button(round(W/3*2)-4, round(H/3*2)-1, "離開遊戲", True, exit))
 surface.display()
 while True:
     key = keyboard.read_key()
     if key == "w" or key == "a" or key == "s" or key == "d":
         surface.c = move(key, surface)
+        surface.display()
+    elif key == "enter":
+        do = surface.b[surface.c].do
+        if type(do) == str:
+            eval(do)
+        else:
+            do()
+    elif key == "f":
+        if surface.f:
+            surface.f = False
+        else:
+            surface.f = True
         surface.display()
