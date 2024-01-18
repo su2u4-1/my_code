@@ -1,17 +1,21 @@
-import keyboard, os
+from keyboard import read_key
+from os import system
 from time import sleep
 
 
 class Button:
-    def __init__(self, x: int, y: int, text: str, chinese: bool, do = None):
+    def __init__(self, x: int, y: int, text: str, chinese: bool, do=None):
         self.x = x
         self.y = y
         if chinese:
+            ntext = ""
             for i in range(len(text)):
                 if 19968 <= int(ord(text[i])) <= 40959:
-                    text = text[:i+1] + "\u200B" + text[i+1:]
-        self.text = text
-        self.w = len(text)
+                    ntext += text[i] + "\u200B"
+                else:
+                    ntext += text[i]
+        self.text = ntext
+        self.w = len(ntext)
         self.do = do
 
 
@@ -48,7 +52,7 @@ class Surface:
         self.refresh()
         for i in self.b:
             self.update(i)
-        os.system("cls")
+        system("cls")
         for y in range(self.h):
             for x in range(self.w):
                 if self.s[y][x] == " " and self.f:
@@ -82,15 +86,16 @@ def move(key: str, s: Surface):
                 en = n
     return en
 
-W, H = 120 ,30
+
+W, H = 120, 30
 surface = Surface(W, H)
-surface.b.append(Button(round(W/3)-4, round(H/3), "開新遊戲", True))
-surface.b.append(Button(round(W/3)-4, round(H/3*2)-1, "讀取存檔", True))
-surface.b.append(Button(round(W/3*2)-4, round(H/3), "儲存遊戲", True))
-surface.b.append(Button(round(W/3*2)-4, round(H/3*2)-1, "離開遊戲", True, exit))
+surface.b.append(Button(round(W / 3) - 4, round(H / 3), "開新遊戲", True))
+surface.b.append(Button(round(W / 3) - 4, round(H / 3 * 2) - 1, "讀取存檔", True))
+surface.b.append(Button(round(W / 3 * 2) - 4, round(H / 3), "儲存遊戲", True))
+surface.b.append(Button(round(W / 3 * 2) - 4, round(H / 3 * 2) - 1, "離開遊戲", True, exit))
 surface.display()
 while True:
-    key = keyboard.read_key()
+    key = read_key()
     if key == "w" or key == "a" or key == "s" or key == "d":
         surface.c = move(key, surface)
         surface.display()
