@@ -6,12 +6,12 @@ class Button:
     def __init__(self, x: int, y: int, text: str, chinese: bool, do = None):
         self.x = x
         self.y = y
-        self.text = text
-        self.chinese = chinese
         if chinese:
-            self.w = len(text)*2
-        else:
-            self.w = len(text)
+            for i in range(len(text)):
+                if 19968 <= int(ord(text[i])) <= 40959:
+                    text = text[:i+1] + "\u200B" + text[i+1:]
+        self.text = text
+        self.w = len(text)
         self.do = do
 
 
@@ -36,15 +36,9 @@ class Surface:
             self.s.append(a)
 
     def update(self, b: Button):
-        if b.chinese:
-            for i in range(0, b.w, 2):
-                if b.x + i < self.w:
-                    self.s[b.y][b.x + i] = b.text[int(i / 2)]
-                    self.s[b.y][b.x + i + 1] = ""
-        else:
-            for i in range(0, b.w):
-                if b.x + i < self.w:
-                    self.s[b.y][b.x + i] = b.text[i]
+        for i in range(0, b.w):
+            if b.x + i < self.w:
+                self.s[b.y][b.x + i] = b.text[i]
         if b == self.b[self.c]:
             self.s[b.y][b.x - 1] += "\033[7m"
             if b.x + b.w - 1 < self.w:
