@@ -4,7 +4,7 @@ from time import sleep
 
 
 class Button:
-    def __init__(self, x: int, y: int, text: str, chinese: bool, do=None):
+    def __init__(self, x: int, y: int, text: str, chinese: bool = True, do=None):
         self.x = x
         self.y = y
         if chinese:
@@ -14,18 +14,21 @@ class Button:
                     ntext += text[i] + "\u200B"
                 else:
                     ntext += text[i]
-        self.text = ntext
-        self.w = len(ntext)
+            self.text = ntext
+        else:
+            self.text = text
+        self.w = len(self.text)
         self.do = do
 
 
 class Surface:
-    def __init__(self, w: int, h: int):
+    def __init__(self, w: int, h: int, name: str = "surface"):
         self.w = w
         self.h = h
         self.b = []
         self.c = 0
         self.f = False
+        self.n = name
         self.refresh()
 
     def refresh(self):
@@ -60,7 +63,7 @@ class Surface:
                 else:
                     print(self.s[y][x], end="")
             print()
-        sleep(0.1)
+        sleep(0.2)
 
 
 def move(key: str, s: Surface):
@@ -87,24 +90,48 @@ def move(key: str, s: Surface):
     return en
 
 
+def newgame():
+    s = Surface(W, H, "name")
+    s.b.append(Button(round(W / 2), round(H / 2), "確認", True, "surface=main()"))
+    return s
+
+
+def main():
+    s = Surface(W, H, "main")
+    s.b.append(Button(round(W / 2), round(H / 2), "還沒做好", True, exit))
+    return s
+
+
 W, H = 120, 30
-surface = Surface(W, H)
-surface.b.append(Button(round(W / 3) - 4, round(H / 3), "開新遊戲", True))
+name = "player"
+surface = Surface(W, H, "start")
+surface.b.append(Button(round(W / 3) - 4, round(H / 3), "開新遊戲", True, "surface=newgame()"))
 surface.b.append(Button(round(W / 3) - 4, round(H / 3 * 2) - 1, "讀取存檔", True))
 surface.b.append(Button(round(W / 3 * 2) - 4, round(H / 3), "儲存遊戲", True))
 surface.b.append(Button(round(W / 3 * 2) - 4, round(H / 3 * 2) - 1, "離開遊戲", True, exit))
 surface.display()
 while True:
     key = read_key()
+    if surface.n == "name":
+        surface.display()
+        if key == "enter":
+            name = surface.b[0].text[4:]
+        elif key == "backspace":
+            surface.b[0].text = surface.b[0].text[:-1]
+            surface.b[0].w -= 1
+        else:
+            surface.b[0].text += key
+            surface.b[0].w += 1
     if key == "w" or key == "a" or key == "s" or key == "d":
         surface.c = move(key, surface)
         surface.display()
     elif key == "enter":
         do = surface.b[surface.c].do
         if type(do) == str:
-            eval(do)
+            exec(do)
         else:
             do()
+        surface.display()
     elif key == "f":
         if surface.f:
             surface.f = False
