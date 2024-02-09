@@ -113,7 +113,7 @@ def main():
                 elif maze[i][j] == 3:
                     print("終", end="")
                 elif maze[i][j] == 4:
-                    print("▉", end="")
+                    print("11", end="")
             print()
         if maze[px][py] == 3:
             print("\n你贏了")
