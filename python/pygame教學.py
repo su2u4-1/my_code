@@ -7,8 +7,8 @@ pygame.display.set_caption("視窗名稱")
 # 取得螢幕長寬,參考https://www.pygame.org/docs/ref/display.html#pygame.display.Info
 W = pygame.display.Info().current_w
 H = pygame.display.Info().current_h
-# 建立視窗,pygame.RESIZABLE是全螢幕,參考https://www.pygame.org/docs/ref/display.html#pygame.display.set_mode
-screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
+# 建立視窗,pygame.FULLSCREEN是全螢幕,參考https://www.pygame.org/docs/ref/display.html#pygame.display.set_mode
+screen = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
 # 建立時間物件，讓遊戲可以更新畫面
 clock = pygame.time.Clock()
 # 建立文字物件，讓文字可以顯示，但無法使用中文
