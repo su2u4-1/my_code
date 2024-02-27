@@ -1,9 +1,9 @@
-'''記得改檔名
-因為如果這個檔案叫pygame的話
-以後你在別的地方使用import pygame的話
-python就會呼叫這個檔案
-而不是正確的pygame模組
-所以記得把這個檔案改成一個你自己取的名字'''
+# 記得改檔名
+# 因為如果這個檔案叫pygame的話
+# 以後你在別的地方使用import pygame的話
+# python就會呼叫這個檔案
+# 而不是正確的pygame模組
+# 所以記得把這個檔案改成一個你自己取的名字
 
 import pygame
 
