@@ -51,19 +51,16 @@ f = True
 c = [0, 0, 0]
 pointList = []
 csum = 0
+t = 0
 for i in range(3):
     for r in range(0, 256, 3):
         c[i] += 1
         csum += 1
         pointList.append(Point(i, r))
+quantity = {}
 
 while True:
-    if f:
-        os.system("cls")
-        print(f"r {c[0]:3}/{csum} {c[0] / (csum) * 100:.3}%")
-        print(f"g {c[1]:3}/{csum} {c[1] / (csum) * 100:.3}%")
-        print(f"b {c[2]:3}/{csum} {c[2] / (csum) * 100:.3}%")
-    mx, my = pygame.mouse.get_pos()
+    t += 1
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -92,14 +89,11 @@ while True:
                         c[j.m] -= 1
                         c[i.m] += 1
                         j.trans(i.m)
-    txt = ""
     for p in pointList:
         color = [0, 0, 0]
         color[p.m] = 255
         pygame.draw.circle(screen, color, (p.x, p.y), R)
         pygame.draw.circle(screen, p.color, (p.x, p.y), R - 1)
-        if functionName(p.x, p.y, mx, my, R):
-            txt = f"{p.color}, ({p.x},{p.y})"
-    screen.blit(font.render(txt, True, (255, 255, 255)), [0, 0])
+    quantity[t] = c
     pygame.display.update()
     clock.tick(100)
