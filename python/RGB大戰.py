@@ -1,4 +1,4 @@
-import pygame, os
+import pygame, os, matplot
 from random import randint as ri
 
 
@@ -94,6 +94,10 @@ while True:
         color[p.m] = 255
         pygame.draw.circle(screen, color, (p.x, p.y), R)
         pygame.draw.circle(screen, p.color, (p.x, p.y), R - 1)
-    quantity[t] = c
+    if t%10 == 0:
+        quantity[t] = c
+    if t == 10000:
+        pygame.quit()
+        matplot.drawplot(quantity)
     pygame.display.update()
     clock.tick(100)
