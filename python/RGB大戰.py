@@ -1,5 +1,25 @@
-import pygame, os, matplot
+import pygame
+import matplotlib.pyplot as plt
 from random import randint as ri
+
+
+def drawplot():
+    t, r, g, b = [], [], [], []
+    for i in quantity.keys():
+        t.append(i)
+        r.append(quantity[i][0])
+        g.append(quantity[i][1])
+        b.append(quantity[i][2])
+    plt.plot(t, r, color="red", label="r")
+    plt.plot(t, g, color="green", label="g")
+    plt.plot(t, b, color="blue", label="b")
+    plt.xlim(0, 1000)
+    plt.ylim(0, 100)
+    plt.xlabel("時間", fontsize="10")
+    plt.ylabel("數量", fontsize="10")
+    plt.title("Plot title", fontsize="18")
+    plt.legend()
+    plt.show()
 
 
 class Point:
@@ -94,10 +114,10 @@ while True:
         color[p.m] = 255
         pygame.draw.circle(screen, color, (p.x, p.y), R)
         pygame.draw.circle(screen, p.color, (p.x, p.y), R - 1)
-    if t%10 == 0:
+    if t % 10 == 0:
         quantity[t] = c
     if t == 10000:
         pygame.quit()
-        matplot.drawplot(quantity)
+        drawplot(quantity)
     pygame.display.update()
     clock.tick(100)
