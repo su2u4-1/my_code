@@ -21,7 +21,7 @@ clock = pygame.time.Clock()
 # 建立文字物件,讓文字可以顯示,但無法使用中文
 font = pygame.font.Font(None, 20)
 # 可以使用中文的方式,字體路徑要檢查一下,但基本上不會變化
-font = pygame.font.Font("C:\\Windows\\Fonts\\kaiu.ttf", 48)
+font = pygame.font.Font("C:\\Windows\\Fonts\\kaiu.ttf", 30)
 
 # 遊戲主迴圈
 while True:
