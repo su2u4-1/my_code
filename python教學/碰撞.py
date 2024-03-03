@@ -34,7 +34,7 @@ clock = pygame.time.Clock()
 SPEED = 5
 ball = []
 for _ in range(100):
-    ball.append(Ball(ri(5, W - 5), ri(5, H - 5) , (ri(0, 255), ri(0, 255), ri(0, 255))))
+    ball.append(Ball(ri(5, W - 5), ri(5, H - 5), (ri(0, 255), ri(0, 255), ri(0, 255))))
 
 while True:
     for event in pygame.event.get():
