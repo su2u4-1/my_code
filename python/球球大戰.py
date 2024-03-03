@@ -1,4 +1,4 @@
-import pygame, os
+import pygame, os, math
 import matplotlib.pyplot as plt
 from random import randint as ri
 
@@ -43,10 +43,6 @@ class Point:
     def trans(self, tMode: int):
         self.m = tMode
         self.color = [COLOR[tMode][0] * 255, COLOR[tMode][1] * 255, COLOR[tMode][2] * 255]
-
-
-def functionName(x1, y1, x2, y2, r):
-    return x1 - r <= x2 <= x1 + r and y1 - r <= y2 <= y1 + r
 
 
 pygame.init()
@@ -98,7 +94,7 @@ while True:
             for j in pointList:
                 if i == j or i.m == j.m:
                     continue
-                if functionName(i.x, i.y, j.x, j.y, R):
+                if math.dist((i.x, i.y), (j.x, j.y)) <= R:
                     if i.m + 1 == j.m or i.m - CL + 1 == j.m:
                         c[i.m] -= 1
                         c[j.m] += 1
@@ -120,4 +116,4 @@ while True:
         drawplot(time, poi)
         exit()
     pygame.display.update()
-    clock.tick(10000)
+    clock.tick()

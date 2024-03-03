@@ -28,7 +28,7 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            print("score:",score)
+            print("score:", score)
             exit()
         if event.type == pygame.KEYDOWN:
             match event.key:
@@ -44,7 +44,7 @@ while True:
                     dire = (0, 0)
                 case pygame.K_ESCAPE:
                     pygame.quit()
-                    print("score:",score)
+                    print("score:", score)
                     exit()
 
     if dire != (0, 0) and f:

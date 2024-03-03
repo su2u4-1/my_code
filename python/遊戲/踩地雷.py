@@ -142,4 +142,4 @@ while True:
         )
     pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(mx * 50, my * 50, 50, 50), width=5)
     pygame.display.update()
-    clock.tick(10)
+    clock.tick(100)

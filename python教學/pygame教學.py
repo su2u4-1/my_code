@@ -68,7 +68,7 @@ while True:
     screen.blit(text1, [30, 90])
     # 更新畫面
     pygame.display.update()
-    # 設定畫面跟新速度,數字越大越快,其實10就很夠用了,100以上就主要取決於電腦執行速度了
+    # 設定每秒幀數上限,不給或給0代表無限制(有時候會很吃電腦效能)
     clock.tick(10)
 
 # 其餘請參考https://www.pygame.org/docs/
