@@ -8,24 +8,27 @@ for i in ab:
 f.close()
 print("質數讀取完畢")
 
+
 def func1(b):
     for i in a:
-        if b%i == 0:
+        if b % i == 0:
             break
     else:
         return True
     return False
 
-def func(c,b):
+
+def func(c, b):
     n = []
-    for i in range(c-(c%6),b+(6-b%6),6):
-        if func1(i+1):
-            a.append(i+1)
-            n.append(i+1)
-        if func1(i+5):
-            a.append(i+5)
-            n.append(i+5)
+    for i in range(c - (c % 6), b + (6 - b % 6), 6):
+        if func1(i + 1):
+            a.append(i + 1)
+            n.append(i + 1)
+        if func1(i + 5):
+            a.append(i + 5)
+            n.append(i + 5)
     return n
+
 
 def abc(n):
     try:
