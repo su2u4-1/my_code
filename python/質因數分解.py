@@ -8,17 +8,17 @@ for i in ab:
 f.close()
 print("質數讀取完畢")
 
-def func1(a):
+def func1(b):
     for i in a:
-        if a%i == 0:
+        if b%i == 0:
             break
     else:
         return True
     return False
 
-def func(a,b):
+def func(c,b):
     n = []
-    for i in range(a-(a%6),b+(6-b%6),6):
+    for i in range(c-(c%6),b+(6-b%6),6):
         if func1(i+1):
             a.append(i+1)
             n.append(i+1)
