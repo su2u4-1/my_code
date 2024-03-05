@@ -124,17 +124,7 @@ def SummonMods(lv, type, rank):
     else:
         type = "普通" + type
     exp = round(att + de + agi + Hp)
-    return [
-        round(att),
-        round(de),
-        round(agi),
-        round(Hp),
-        f"lv.{lv}{attribute}屬性{type}",
-        lv,
-        attribute_value,
-        k,
-        exp,
-    ]
+    return [round(att), round(de), round(agi), round(Hp), f"lv.{lv}{attribute}屬性{type}", lv, attribute_value, k, exp]
 
 
 def fighting(monster, player, monster_name, attribute):

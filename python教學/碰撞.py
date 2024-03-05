@@ -3,7 +3,9 @@ from math import sin, cos, pi
 from random import randint as ri
 
 
+# 球
 class Ball:
+    # 初始化球,主要是設定球的各項屬性
     def __init__(self, x: int | float, y: int | float, color: list[int] | tuple[int], r: int = 5, direction: int | float = -1):
         self.x = x
         self.y = y
@@ -14,6 +16,7 @@ class Ball:
         else:
             self.d = direction
 
+    # 讓球移動,同時偵測碰撞並改變方向
     def move(self, speed):
         self.x += sin(self.d / 180 * pi) * speed
         self.y += cos(self.d / 180 * pi) * speed
@@ -25,18 +28,19 @@ class Ball:
                 self.d -= 360
 
 
+# 設定pygame
 pygame.init()
 W = pygame.display.Info().current_w
 H = pygame.display.Info().current_h
 pygame.display.set_caption("碰撞")
 screen = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
 clock = pygame.time.Clock()
+# 設定球與移動速度
 SPEED = 5
-ball = []
-for _ in range(100):
-    ball.append(Ball(ri(5, W - 5), ri(5, H - 5), (ri(0, 255), ri(0, 255), ri(0, 255))))
+ball = Ball(ri(5, W - 5), ri(5, H - 5), (ri(0, 255), ri(0, 255), ri(0, 255)))
 
 while True:
+    # 如果視窗被關閉或esc被按下就關閉pygame且離開程式
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -46,10 +50,12 @@ while True:
                 pygame.quit()
                 exit()
 
+    # 清空畫面
     screen.fill((0, 0, 0))
-    for i in ball:
-        i.move(SPEED)
-    for i in ball:
-        pygame.draw.circle(screen, i.color, (round(i.x), round(i.y)), i.r)
+    # 讓球移動
+    ball.move(SPEED)
+    # 繪製新的球
+    pygame.draw.circle(screen, ball.color, (round(ball.x), round(ball.y)), ball.r)
+    # 更新畫面
     pygame.display.update()
     clock.tick(100)

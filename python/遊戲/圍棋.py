@@ -95,35 +95,11 @@ def main():
         screen.fill((238, 154, 73))
         for i in range(l):
             if i == 0 or i == l - 1:
-                pygame.draw.line(
-                    screen,
-                    (0, 0, 0),
-                    [i * 44 + 27, 27],
-                    [i * 44 + 27, (l - 1) * 44 + 27],
-                    4,
-                )
-                pygame.draw.line(
-                    screen,
-                    (0, 0, 0),
-                    [27, i * 44 + 27],
-                    [(l - 1) * 44 + 27, i * 44 + 27],
-                    4,
-                )
+                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, (l - 1) * 44 + 27], 4)
+                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [(l - 1) * 44 + 27, i * 44 + 27], 4)
             else:
-                pygame.draw.line(
-                    screen,
-                    (0, 0, 0),
-                    [i * 44 + 27, 27],
-                    [i * 44 + 27, (l - 1) * 44 + 27],
-                    2,
-                )
-                pygame.draw.line(
-                    screen,
-                    (0, 0, 0),
-                    [27, i * 44 + 27],
-                    [(l - 1) * 44 + 27, i * 44 + 27],
-                    2,
-                )
+                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, (l - 1) * 44 + 27], 2)
+                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [(l - 1) * 44 + 27, i * 44 + 27], 2)
         for i in range(l):
             for j in range(l):
                 if board[i][j] == 1:

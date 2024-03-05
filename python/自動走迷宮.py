@@ -1,26 +1,18 @@
 from random import randint as ri
-import heapq
-
-
-def heuristic(a, b):
-    return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
 
 def astar_search(grid, start, end):
     open_list = []
-    closed_set = set()
-    heapq.heappush(open_list, (0, start))
+    open_list.append((0, start))
+    open_list.sort(key=lambda x: x[0])
+    closed_list = []
     came_from = {}
-
     g_score = {pos: float("inf") for row in grid for pos in row}
     g_score[start] = 0
-
     f_score = {pos: float("inf") for row in grid for pos in row}
-    f_score[start] = heuristic(start, end)
-
+    f_score[start] = abs(start[0] - end[0]) + abs(start[1] - end[1])
     while open_list:
-        current = heapq.heappop(open_list)[1]
-
+        current = open_list.pop(0)[1]
         if current == end:
             path = []
             while current in came_from:
@@ -29,24 +21,19 @@ def astar_search(grid, start, end):
             path.append(start)
             path.reverse()
             return path
-
-        closed_set.add(current)
-
-        for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-            new_x, new_y = current[0] + dx, current[1] + dy
+        closed_list.append(current)
+        for d in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+            new_x, new_y = current[0] + d[0], current[1] + d[1]
             neighbor = (new_x, new_y)
-
             if 0 <= new_x < len(grid) and 0 <= new_y < len(grid[0]) and grid[new_x][new_y] != 1:
                 tentative_g_score = g_score[current] + 1
-
                 if tentative_g_score < g_score.get(neighbor, float("inf")):
                     came_from[neighbor] = current
                     g_score[neighbor] = tentative_g_score
-                    f_score[neighbor] = g_score[neighbor] + heuristic(neighbor, end)
-                    if neighbor not in closed_set:
-                        heapq.heappush(open_list, (f_score[neighbor], neighbor))
-
-    return None  # No path found
+                    f_score[neighbor] = g_score[neighbor] + abs(neighbor[0] - end[0]) + abs(neighbor[1] - end[1])
+                    if neighbor not in closed_list:
+                        open_list.append((f_score[neighbor], neighbor))
+                        open_list.sort(key=lambda x: x[0])
 
 
 def show(maze):

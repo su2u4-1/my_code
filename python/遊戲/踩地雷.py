@@ -120,26 +120,10 @@ while True:
     chickall()
     if flag == 1:
         txt = font.render("你輸了", True, (255, 0, 0))
-        screen.blit(
-            txt,
-            txt.get_rect(
-                center=(
-                    pygame.display.Info().current_w / 2,
-                    pygame.display.Info().current_h / 2,
-                )
-            ),
-        )
+        screen.blit(txt, txt.get_rect(center=(pygame.display.Info().current_w / 2, pygame.display.Info().current_h / 2)))
     elif flag == 2:
         txt = font.render("你贏了", True, (255, 0, 0))
-        screen.blit(
-            txt,
-            txt.get_rect(
-                center=(
-                    pygame.display.Info().current_w / 2,
-                    pygame.display.Info().current_h / 2,
-                )
-            ),
-        )
+        screen.blit(txt, txt.get_rect(center=(pygame.display.Info().current_w / 2, pygame.display.Info().current_h / 2)))
     pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(mx * 50, my * 50, 50, 50), width=5)
     pygame.display.update()
     clock.tick(100)

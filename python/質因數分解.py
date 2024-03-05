@@ -18,16 +18,15 @@ def func1(b):
     return False
 
 
-def func(c, b):
+def func(c, b, f):
     n = []
     for i in range(c - (c % 6), b + (6 - b % 6), 6):
         if func1(i + 1):
             a.append(i + 1)
-            n.append(i + 1)
+            f.write(i + 1)
         if func1(i + 5):
             a.append(i + 5)
-            n.append(i + 5)
-    return n
+            f.write(i + 5)
 
 
 def abc(n):
@@ -42,8 +41,7 @@ def abc(n):
     if n > a[-1]:
         print("正在計算新質數")
         f = open(link + "質數.txt", "a+")
-        for i in func(a[-1] + 1, n + 1):
-            f.write(i)
+        func(a[-1] + 1, n + 1, f)
         f.close()
         print("新質數記錄完畢")
     if n in a:

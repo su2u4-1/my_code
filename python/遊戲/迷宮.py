@@ -11,10 +11,8 @@ def astar_search(grid, start, end):
     g_score[start] = 0
     f_score = {pos: float("inf") for row in grid for pos in row}
     f_score[start] = abs(start[0] - end[0]) + abs(start[1] - end[1])
-
     while open_list:
         current = open_list.pop(0)[1]
-
         if current == end:
             path = []
             while current in came_from:
@@ -23,25 +21,19 @@ def astar_search(grid, start, end):
             path.append(start)
             path.reverse()
             return path
-
         closed_list.append(current)
         for d in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
             new_x, new_y = current[0] + d[0], current[1] + d[1]
             neighbor = (new_x, new_y)
-
             if 0 <= new_x < len(grid) and 0 <= new_y < len(grid[0]) and grid[new_x][new_y] != 1:
                 tentative_g_score = g_score[current] + 1
-
                 if tentative_g_score < g_score.get(neighbor, float("inf")):
                     came_from[neighbor] = current
                     g_score[neighbor] = tentative_g_score
                     f_score[neighbor] = g_score[neighbor] + abs(neighbor[0] - end[0]) + abs(neighbor[1] - end[1])
-
                     if neighbor not in closed_list:
                         open_list.append((f_score[neighbor], neighbor))
                         open_list.sort(key=lambda x: x[0])
-
-    return None
 
 
 def generatemaze(lx, ly):

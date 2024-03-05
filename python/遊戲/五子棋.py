@@ -9,46 +9,27 @@ def checking():
     n = 0
     for x in range(sl):
         for y in range(sl):
-            if chessBoard[x][y] == 1:
+            if chessBoard[x][y] == 1 or chessBoard[x][y] == 2:
                 for i in range(8):
                     x1 = x
                     y1 = y
                     for _ in range(4):
                         if x1 + a[i] < 0 or x1 + a[i] > 14 or y1 + b[i] < 0 or y1 + b[i] > 14:
                             break
-                        elif chessBoard[x1 + a[i]][y1 + b[i]] != 1:
+                        elif chessBoard[x1 + a[i]][y1 + b[i]] != chessBoard[x][y]:
                             break
                         x1 += a[i]
                         y1 += b[i]
                     else:
                         gameContinue = False
-                        winner = "Black wins"
-                        print("黑方獲勝")
+                        if chessBoard[x][y] == 1:
+                            winner = "Black wins"
+                            print("黑方獲勝")
+                        else:
+                            winner = "White wins"
+                            print("白方獲勝")
                         print(f"({x},{y})-({x1},{y1})")
-                        return [
-                            (x * 44 + 28, y * 44 + 28),
-                            (x1 * 44 + 28, y1 * 44 + 28),
-                        ]
-            elif chessBoard[x][y] == 2:
-                for i in range(8):
-                    x1 = x
-                    y1 = y
-                    for _ in range(4):
-                        if x1 + a[i] < 0 or x1 + a[i] > 14 or y1 + b[i] < 0 or y1 + b[i] > 14:
-                            break
-                        elif chessBoard[x1 + a[i]][y1 + b[i]] != 2:
-                            break
-                        x1 += a[i]
-                        y1 += b[i]
-                    else:
-                        gameContinue = False
-                        winner = "White wins"
-                        print("白方獲勝")
-                        print(f"({x},{y})-({x1},{y1})")
-                        return [
-                            (x * 44 + 28, y * 44 + 28),
-                            (x1 * 44 + 28, y1 * 44 + 28),
-                        ]
+                        return [(x * 44 + 28, y * 44 + 28), (x1 * 44 + 28, y1 * 44 + 28)]
             else:
                 n += 1
     if n == 0:
@@ -77,7 +58,6 @@ def main():
         for _ in range(sl):
             a.append(0)
         chessBoard.append(a)
-
     while True:
         mousex, mousey = pygame.mouse.get_pos()
         mx = fl(mousex / 44)
@@ -106,35 +86,11 @@ def main():
         screen.fill((238, 154, 73))
         for i in range(sl):
             if i == 0 or i == sl - 1:
-                pygame.draw.line(
-                    screen,
-                    (0, 0, 0),
-                    [i * 44 + 27, 27],
-                    [i * 44 + 27, (sl - 1) * 44 + 27],
-                    4,
-                )
-                pygame.draw.line(
-                    screen,
-                    (0, 0, 0),
-                    [27, i * 44 + 27],
-                    [(sl - 1) * 44 + 27, i * 44 + 27],
-                    4,
-                )
+                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, (sl - 1) * 44 + 27], 4)
+                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [(sl - 1) * 44 + 27, i * 44 + 27], 4)
             else:
-                pygame.draw.line(
-                    screen,
-                    (0, 0, 0),
-                    [i * 44 + 27, 27],
-                    [i * 44 + 27, (sl - 1) * 44 + 27],
-                    2,
-                )
-                pygame.draw.line(
-                    screen,
-                    (0, 0, 0),
-                    [27, i * 44 + 27],
-                    [(sl - 1) * 44 + 27, i * 44 + 27],
-                    2,
-                )
+                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, (sl - 1) * 44 + 27], 2)
+                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [(sl - 1) * 44 + 27, i * 44 + 27], 2)
         for i in range(sl):
             for j in range(sl):
                 if chessBoard[i][j] == 1:

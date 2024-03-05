@@ -59,9 +59,11 @@ while True:
     # 畫方形(視窗或畫布,顏色(r,g,b),座標(起點x,起點y,x軸邊長,y軸邊長),寬度(預設為0,表示填滿))
     # 其他形狀請參考https://www.pygame.org/docs/ref/draw.html
     pygame.draw.rect(screen, (255, 255, 255), (0, 0, 20, 20), 3)
+    # 取得此畫布的大小,回傳tuple(w, h)
+    size = screen.get_size()
     # 定義文字物件(文字內容,是否要開啟抗鋸齒,文字顏色(r,g,b),背景顏色(r,g,b)(這項可以不設))
-    text0 = font.render("text0", True, (0, 0, 0), (255, 0, 0))
-    text1 = font.render("text1", True, (0, 0, 0))
+    text0 = font.render(str(size), True, (0, 0, 0), (255, 0, 0))
+    text1 = font.render(f"({mousex},{mousey})", True, (0, 0, 0))
     # 顯示物件(物件,[x座標,y座標])
     screen.blit(img, [30, 30])
     screen.blit(text0, [30, 60])
