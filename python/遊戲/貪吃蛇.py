@@ -84,13 +84,13 @@ while True:
     # 如果蘋果數量未到上限就新增蘋果
     if len(apple) <= (W * H / 500) - (len(snake) / 10) and gameRun:
         a = [ri(0, W - 1), ri(0, H - 1)]
-        if a not in snake and (a[0] > 15 or a[1] > 1):
+        if a not in snake and a not in apple and (a[0] > 15 or a[1] > 1):
             apple.append(a)
 
     # 如果蛇撞到自己或撞到邊緣就停止遊戲
     if snake[-1] in snake[:-1]:
         gameRun = False
-    if snake[-1][0] < 0 or snake[-1][0] >= W or snake[-1][1] < 0 or snake[-1][0] >= H:
+    if snake[-1][0] < 0 or snake[-1][0] >= W or snake[-1][1] < 0 or snake[-1][1] >= H:
         gameRun = False
 
     # 清除畫面
