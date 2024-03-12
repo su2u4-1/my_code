@@ -509,8 +509,7 @@ def fighting(monster_ability, player_ability):  # atk,def,agi,HP
                     if monster_ability[a][6] == "土":
                         property = player_property[1]
                     atk = (
-                        monster_ability[a][1]
-                        - (monster_ability[a][1] * (player_ability[1] / monster_ability[a][2] + player_ability[1]))
+                        monster_ability[a][1] - (monster_ability[a][1] * (player_ability[1] / monster_ability[a][2] + player_ability[1]))
                     ) / property
                     if atk <= 0:
                         atk = 1

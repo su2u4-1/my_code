@@ -115,9 +115,7 @@ async def 升級(ctx, *m2):
         if player[uid].po >= add:
             if m2[1] == "1" or m2[1] == "攻擊" or m2[1] == "att":
                 a = random.randint(1, 2)
-                await ctx.send(
-                    f"<@{uid}>\n攻擊:{player[uid].at} -> {player[uid].at+add*a}\n升級點:{player[uid].po} -> {player[uid].po-add}"
-                )
+                await ctx.send(f"<@{uid}>\n攻擊:{player[uid].at} -> {player[uid].at+add*a}\n升級點:{player[uid].po} -> {player[uid].po-add}")
                 player[uid].at += add * a
             elif m2[1] == "2" or m2[1] == "防禦" or m2[1] == "def":
                 await ctx.send(f"<@{uid}>\n防禦:{player[uid].de} -> {player[uid].de+add}\n升級點:{player[uid].po} -> {player[uid].po-add}")
@@ -127,9 +125,7 @@ async def 升級(ctx, *m2):
                 player[uid].ag += add
             elif m2[1] == "4" or m2[1] == "血量" or m2[1] == "Hp" or m2[1] == "hp":
                 a = random.randint(5, 20)
-                await ctx.send(
-                    f"<@{uid}>\n血量:{player[uid].hp} -> {player[uid].hp+add*a}\n升級點:{player[uid].po} -> {player[uid].po-add}"
-                )
+                await ctx.send(f"<@{uid}>\n血量:{player[uid].hp} -> {player[uid].hp+add*a}\n升級點:{player[uid].po} -> {player[uid].po-add}")
                 player[uid].hp += add * a
             player[uid].po -= add
         else:
@@ -158,16 +154,7 @@ async def 冒險(ctx, *m2):
             player[uid].x -= 1
         elif m2[1] == "e" or m2[1] == "東":
             player[uid].x += 1
-        if (
-            m2[1] == "e"
-            or m2[1] == "東"
-            or m2[1] == "w"
-            or m2[1] == "西"
-            or m2[1] == "s"
-            or m2[1] == "南"
-            or m2[1] == "n"
-            or m2[1] == "北"
-        ):
+        if m2[1] == "e" or m2[1] == "東" or m2[1] == "w" or m2[1] == "西" or m2[1] == "s" or m2[1] == "南" or m2[1] == "n" or m2[1] == "北":
             e = random.choices(event_list, weights=[4, 2, 1, 1])[0]
             event = e[random.randint(0, len(e) - 1)]
             await ctx.send(f"<@{uid}>目前在({player[uid].x},{player[uid].x})，遇到{event}")

@@ -542,9 +542,7 @@ def PvE(m, p):  # bonus = [吸血,反擊,連擊,閃避,爆擊,擊暈,抗吸血,�
         n += 1
         if a == "m":
             element = ri(0, 4)
-            print(
-                f"{n}:{p['name']}剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%,{m['name']}剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%"
-            )
+            print(f"{n}:{p['name']}剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%,{m['name']}剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%")
             atk = m["att"] / (p["def"] + m["att"]) * b[element]
             f = True
             dodge = p["bonus"][3] - m["bonus"][9]
@@ -594,9 +592,7 @@ def PvE(m, p):  # bonus = [吸血,反擊,連擊,閃避,爆擊,擊暈,抗吸血,�
                 break
         elif a == "p":
             element = ri(0, 4)
-            print(
-                f"{n}:{m['name']}剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%,{p['name']}剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%"
-            )
+            print(f"{n}:{m['name']}剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%,{p['name']}剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%")
             atk = p["att"] / (m["def"] + p["att"]) / b[element]
             f = True
             dodge = m["bonus"][3] - p["bonus"][9]

@@ -7,6 +7,7 @@ for i in ab:
     a.append(int(i))
 f.close()
 print("質數讀取完畢")
+print(a[-1])
 
 
 def func1(b):
@@ -23,10 +24,10 @@ def func(c, b, f):
     for i in range(c - (c % 6), b + (6 - b % 6), 6):
         if func1(i + 1):
             a.append(i + 1)
-            f.write(i + 1)
+            f.write(str(i + 1) + "\n")
         if func1(i + 5):
             a.append(i + 5)
-            f.write(i + 5)
+            f.write(str(i + 5) + "\n")
 
 
 def abc(n):
