@@ -1,6 +1,6 @@
-black --line-length 135 桌面
+black -l 141 桌面
 
 pip install pygame
 pip install black
 cd Documents
-black --line-length 135 GitHub
+black -l 141 GitHub
