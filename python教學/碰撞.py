@@ -36,8 +36,9 @@ pygame.display.set_caption("碰撞")
 screen = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 # 設定球與移動速度
-SPEED = 5
-ball = Ball(ri(5, W - 5), ri(5, H - 5), (ri(0, 255), ri(0, 255), ri(0, 255)))
+SPEED = 10
+ball_1 = Ball(ri(5, W - 5), ri(5, H - 5), (ri(0, 255), ri(0, 255), ri(0, 255)))
+ball_2 = Ball(ri(5, W - 5), ri(5, H - 5), (ri(0, 255), ri(0, 255), ri(0, 255)))
 
 while True:
     # 如果視窗被關閉或esc被按下就關閉pygame且離開程式
@@ -53,9 +54,11 @@ while True:
     # 清空畫面
     screen.fill((0, 0, 0))
     # 讓球移動
-    ball.move(SPEED)
+    ball_1.move(SPEED)
+    ball_2.move(SPEED)
     # 繪製新的球
-    pygame.draw.circle(screen, ball.color, (round(ball.x), round(ball.y)), ball.r)
+    pygame.draw.circle(screen, ball_1.color, (round(ball_1.x), round(ball_1.y)), ball_1.r)
+    pygame.draw.circle(screen, ball_2.color, (round(ball_2.x), round(ball_1.y)), ball_2.r)
     # 更新畫面
     pygame.display.update()
     clock.tick(100)
