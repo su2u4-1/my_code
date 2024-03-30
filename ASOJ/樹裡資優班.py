@@ -7,18 +7,19 @@ for j in range(n):
         a = a.split()
         for i in range(len(a)):
             a[i] = int(a[i])
-            f[a[i]] = j + 1
+            f[a[i] - 1] = j + 1
         tree.append(a[1:])
     else:
         tree.append([])
 s = input()
-l = f.index(0)+1
+l = f.index(0) + 1
+print("f:", f)
 for c in range(len(s)):
     if s[c] == "P":
         if f[l] == 0:
             print(l)
             exit()
-        l = f[l]
+        l = f[l - 1]
     elif s[c] == "C":
         i = int(s[c + 1])
         if len(tree[l - 1]) < i:
@@ -26,21 +27,15 @@ for c in range(len(s)):
             exit()
         l = tree[l - 1][i - 1]
     elif s[c] == "R":
-        for j in range(len(tree)):
-            if l in tree[j]:
-                try:
-                    l = tree[j][tree[j].index(l) + 1]
-                except:
-                    print(l)
-                    exit()
-                break
+        if tree[f[l - 1]].index(l) - 1 in tree[f[l + 1]]:
+            l = tree[f[l - 1]][tree[f[l - 1]].index(l) + 1]
+        else:
+            print(l)
+            exit()
     elif s[c] == "L":
-        for j in range(len(tree)):
-            if l in tree[j]:
-                try:
-                    l = tree[j][tree[j].index(l) - 1]
-                except:
-                    print(l)
-                    exit()
-                break
+        if tree[f[l - 1]].index(l) - 1 in tree[f[l - 1]]:
+            l = tree[f[l - 1]][tree[f[l - 1]].index(l) - 1]
+        else:
+            print(l)
+            exit()
 print(l)
