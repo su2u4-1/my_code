@@ -1,28 +1,24 @@
 n = int(input())
-w = [i + 1 for i in range(n)]
+f = [0 for _ in range(n)]
 tree = []
-for _ in range(n):
+for j in range(n):
     a = input()
     if a != "0":
         a = a.split()
         for i in range(len(a)):
             a[i] = int(a[i])
-            if i != 0 and a[i] in w:
-                w.remove(a[i])
+            f[a[i]] = j + 1
         tree.append(a[1:])
     else:
         tree.append([])
 s = input()
-l = w[0]
+l = f.index(0)+1
 for c in range(len(s)):
     if s[c] == "P":
-        if l == w[0]:
+        if f[l] == 0:
             print(l)
             exit()
-        for j in range(len(tree)):
-            if l in tree[j]:
-                l = j + 1
-                break
+        l = f[l]
     elif s[c] == "C":
         i = int(s[c + 1])
         if len(tree[l - 1]) < i:

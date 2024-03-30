@@ -5,6 +5,5 @@ for i in range(4):
 b = map(int, input().split())
 for i in b:
     a = (i & 1) + ((i >> (n - 2)) & 2)
-    c = i - a
-    print(S, a, c)
+    c = (i >> 1) & ((1 << (n - 2)) - 1)
     print(S[a][c], end=" ")
