@@ -6,6 +6,9 @@ class register:
         self.r = [0, 0, 0]
         self.sp = 0
     def d(self):
+        if self.sp < 0:
+            print("error")
+            exit()
         if self.sp > len(self.r):
             self.r.append(0)
         for i in range(len(self.r)):
@@ -41,8 +44,11 @@ def preprocess(code):
 
 
 def run(code):
+    sp = 0
+    i = code[sp]
     reg = register()
-    for i in code:
+    while i != "e":
+        sp += 1
         if i == ">":
             reg.sp += 1
         elif i == "<":
@@ -51,6 +57,21 @@ def run(code):
             reg.r[reg.sp] += 1
         elif i == "-":
             reg.r[reg.sp] -= 1
+        elif i == ".":
+            print(ascii(reg.r[reg.sp]), end = "")
+        elif i == ",":
+            a = input()[0]
+            try:
+                reg.r[reg.sp] = ord(a)
+            except:
+                print("error")
+                exit()
+        elif i == "[":
+            pass
+        elif i == "]":
+            pass
+    reg.d()
+    i = code[sp]
 
 
 def main():
@@ -69,6 +90,7 @@ def main():
             f.close()
             print("file:",i)
             code = preprocess(sourceCode)
+            code += "e"
             run(code)
 
 
