@@ -1,4 +1,4 @@
-import os, Preprocessor, Parser, Compiler
+import os, re
 
 
 def listAllFiles(path: str):
@@ -26,11 +26,22 @@ def main():
             sourceCode = f.readlines()
             f.close()
             print("file:",i)
-            preprocess(sourceCode)
+            code = preprocess(sourceCode)
 
 
 def preprocess(code):
-    pass
+    def _flatten(nested, result):
+        for item in nested:
+            if isinstance(item, list):
+                _flatten(item, result)
+            else:
+                result.append(item)
+        return result
+
+    for i in range(len(code)):
+        code[i] = re.sub(r"\s+", " ", code[i].split())
+
+    return "".join(_flatten(code, []))
 
 
 if __name__ == "__main__":
