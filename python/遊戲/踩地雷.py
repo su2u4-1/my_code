@@ -21,7 +21,7 @@ def generatemap(ax, ay, n):
                 for d in range(-1, 2):
                     for e in range(-1, 2):
                         if c[i][j] != 9:
-                            if i + d >= 0 and i + d <= xl - 1 and j + e >= 0 and j + e <= yl - 1:
+                            if 0 <= i + d < xl and 0 <= j + e < yl:
                                 if c[i + d][j + e] == 9:
                                     c[i][j] += 1
     return c
@@ -30,7 +30,7 @@ def generatemap(ax, ay, n):
 def openpart(x, y):
     for f in range(-1, 2):
         for g in range(-1, 2):
-            if x + f >= 0 and x + f <= xl - 1 and y + g >= 0 and y + g <= yl - 1:
+            if 0 <= x + f < xl and 0 <= y + g < yl:
                 if showmap[x + f][y + g] == "d":
                     rightchick(x + f, y + g)
 
@@ -65,7 +65,9 @@ def chickall():
     n = 0
     for x in range(xl):
         for y in range(yl):
-            if showmap[x][y] == 10 and map[x][y] == 9:
+            if showmap[x][y] == 10 and map[x][y] != 9:
+                return
+            if showmap[x][y] == 10 or showmap[x][y] == "d":
                 n += 1
     if n == g:
         flag = 2
@@ -78,18 +80,14 @@ flag = 0
 pygame.init()
 xl = math.floor(pygame.display.Info().current_w / 50)
 yl = math.floor(pygame.display.Info().current_h / 50)
+xl, yl = 5, 5
 pygame.display.set_caption("踩地雷")
 screen = pygame.display.set_mode((xl * 50, yl * 50), pygame.RESIZABLE)
 clock = pygame.time.Clock()
 font = pygame.font.Font("C:\\Windows\\Fonts\\kaiu.ttf", 48)
 g = round((xl * yl) / 5)
 map = generatemap(xl, yl, g)
-showmap = []
-for i in range(xl):
-    f = []
-    for j in range(yl):
-        f.append("d")
-    showmap.append(f)
+showmap = [["d" for _ in range(yl)] for _ in range(xl)]
 img = []
 for i in range(11):
     img.append(pygame.image.load(os.path.dirname(os.path.realpath(__file__)) + "\\踩地雷圖片\\" + str(i) + ".png"))
@@ -119,11 +117,11 @@ while True:
                 screen.blit(img[showmap[i][j]], [i * 50, j * 50])
     chickall()
     if flag == 1:
-        txt = font.render("你輸了", True, (255, 0, 0))
+        txt = font.render("你輸了", True, (255, 0, 0), (0, 255, 0))
         screen.blit(txt, txt.get_rect(center=(pygame.display.Info().current_w / 2, pygame.display.Info().current_h / 2)))
     elif flag == 2:
-        txt = font.render("你贏了", True, (255, 0, 0))
+        txt = font.render("你贏了", True, (255, 0, 0), (0, 255, 0))
         screen.blit(txt, txt.get_rect(center=(pygame.display.Info().current_w / 2, pygame.display.Info().current_h / 2)))
     pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(mx * 50, my * 50, 50, 50), width=5)
     pygame.display.update()
-    clock.tick(100)
+    clock.tick(60)

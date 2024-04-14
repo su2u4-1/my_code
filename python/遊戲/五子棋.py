@@ -7,9 +7,11 @@ def checking():
     a = [1, 1, 1, 0, 0, -1, -1, -1]
     b = [-1, 0, 1, -1, 1, -1, 0, 1]
     n = 0
-    for x in range(sl):
-        for y in range(sl):
-            if chessBoard[x][y] == 1 or chessBoard[x][y] == 2:
+    for x in range(SL):
+        for y in range(SL):
+            if chessBoard[x][y] == 0:
+                n += 1
+            else:
                 for i in range(8):
                     x1 = x
                     y1 = y
@@ -24,40 +26,33 @@ def checking():
                         gameContinue = False
                         if chessBoard[x][y] == 1:
                             winner = "Black wins"
-                            print("黑方獲勝")
+                            print("\n黑方獲勝")
                         else:
                             winner = "White wins"
-                            print("白方獲勝")
+                            print("\n白方獲勝")
                         print(f"({x},{y})-({x1},{y1})")
                         return [(x * 44 + 28, y * 44 + 28), (x1 * 44 + 28, y1 * 44 + 28)]
-            else:
-                n += 1
     if n == 0:
         gameContinue = False
         winner = "draw"
-        print("平手")
+        print("\n平手")
         return
 
 
 def main():
-    global chessBoard, gameContinue, winner, sl
+    global chessBoard, gameContinue, winner, SL
     winner = ""
     mx = 0
     my = 0
     first = 0
     gameContinue = True
-    sl = 15
+    SL = 15
     pygame.init()
     pygame.display.set_caption("五子棋")
     screen = pygame.display.set_mode((670, 700), pygame.RESIZABLE)
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 30)
-    chessBoard = []
-    for _ in range(sl):
-        a = []
-        for _ in range(sl):
-            a.append(0)
-        chessBoard.append(a)
+    chessBoard = [[0 for _ in range(SL)] for _ in range(SL)]
     while True:
         mousex, mousey = pygame.mouse.get_pos()
         mx = fl(mousex / 44)
@@ -78,21 +73,21 @@ def main():
                     except:
                         pass
                 if 60 < mousex < 120 and 670 < mousey:
-                    print("exit game")
+                    print("\nexit game")
                     exit()
                 if mousex < 60 and 670 < mousey:
-                    print("reset game\n")
+                    print("\nreset game")
                     main()
         screen.fill((238, 154, 73))
-        for i in range(sl):
-            if i == 0 or i == sl - 1:
-                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, (sl - 1) * 44 + 27], 4)
-                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [(sl - 1) * 44 + 27, i * 44 + 27], 4)
+        for i in range(SL):
+            if i == 0 or i == SL - 1:
+                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, (SL - 1) * 44 + 27], 4)
+                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [(SL - 1) * 44 + 27, i * 44 + 27], 4)
             else:
-                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, (sl - 1) * 44 + 27], 2)
-                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [(sl - 1) * 44 + 27, i * 44 + 27], 2)
-        for i in range(sl):
-            for j in range(sl):
+                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, (SL - 1) * 44 + 27], 2)
+                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [(SL - 1) * 44 + 27, i * 44 + 27], 2)
+        for i in range(SL):
+            for j in range(SL):
                 if chessBoard[i][j] == 1:
                     pygame.draw.circle(screen, (0, 0, 0), (i * 44 + 28, j * 44 + 28), 13)
                 elif chessBoard[i][j] == 2:
@@ -121,7 +116,7 @@ def main():
             text = font.render(f"({mx},{my})  {winner}", True, (0, 0, 0))
         screen.blit(text, [125, 675])
         pygame.display.update()
-        clock.tick(100)
+        clock.tick(60)
 
 
 if __name__ == "__main__":

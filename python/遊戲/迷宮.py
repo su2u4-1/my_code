@@ -1,4 +1,8 @@
-import os, random
+from random import randint as ri
+from os import system
+
+DX = [0, 1, 0, -1]
+DY = [1, 0, -1, 0]
 
 
 def astar_search(grid, start, end):
@@ -37,46 +41,36 @@ def astar_search(grid, start, end):
 
 
 def generatemaze(lx, ly):
-    maze = []
-    for x in range(lx):
-        a = []
-        for y in range(ly):
-            if x % 2 == 0 or y % 2 == 0:
-                a.append(1)
-            else:
-                a.append(0)
-        maze.append(a)
+    s = ((lx - 1) / 2) * ((ly - 1) / 2)
+    maze = [[(1 if x % 2 == 0 or y % 2 == 0 else 0) for y in range(ly)] for x in range(lx)]
     a, b = [], []
     a.append([1, 1])
     b.append([2, 1, 1, 0])
     b.append([1, 2, 0, 1])
-    c = [0, 1, 0, -1]
-    d = [1, 0, -1, 0]
-    while True:
-        i = b[random.randint(0, len(b) - 1)]
-        if a.count([i[0] + i[2], i[1] + i[3]]) == 0:
+    while len(a) < s:
+        i = b[ri(0, len(b) - 1)]
+        if [i[0] + i[2], i[1] + i[3]] not in a:
             a.append([i[0] + i[2], i[1] + i[3]])
             b.remove(i)
             maze[i[0]][i[1]] = 0
             for e in range(4):
-                f = [i[0] + i[2] + c[e], i[1] + i[3] + d[e]]
-                if f[0] <= lx - 2 and f[0] >= 1 and f[1] <= ly - 2 and f[1] >= 1:
-                    if maze[i[0] + i[2] + c[e]][i[1] + i[3] + d[e]] == 1:
-                        b.append([i[0] + i[2] + c[e], i[1] + i[3] + d[e], c[e], d[e]])
+                f = [i[0] + i[2] + DX[e], i[1] + i[3] + DY[e]]
+                if 0 < f[0] < lx - 1 and 0 < f[1] < ly - 1:
+                    if maze[f[0]][f[1]] == 1:
+                        b.append([f[0], f[1], DX[e], DY[e]])
         else:
             b.remove(i)
         for x in range(lx):
             for y in range(ly):
                 if a.count([x, y]) > 1:
                     a.remove([x, y])
-        if len(a) == ((lx - 1) / 2) * ((ly - 1) / 2):
-            maze[1][1] = 2
-            maze[lx - 2][ly - 2] = 3
-            return maze
+    maze[1][1] = 2
+    maze[lx - 2][ly - 2] = 3
+    return maze
 
 
 def main():
-    os.system("cls")
+    system("cls")
     size = input("歡迎來走迷宮\n請輸入迷宮邊長(只接受大於5的奇數，填錯一率設為25):")
     c = size
     cheating = False
@@ -90,7 +84,7 @@ def main():
     px, py = 1, 1
 
     while True:
-        os.system("cls")
+        system("cls")
         print(f"歡迎來走迷宮\n請輸入迷宮邊長(只接受大於5的奇數，填錯一率設為25):{c}\n")
         for i in range(size):
             for j in range(size):

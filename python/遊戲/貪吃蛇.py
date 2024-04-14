@@ -10,7 +10,8 @@ W = round(W / 10) - 1
 H = round(H / 10) - 3
 screen = pygame.display.set_mode((W * 10, H * 10), pygame.RESIZABLE)
 clock = pygame.time.Clock()
-font = pygame.font.Font(None, 20)
+font20 = pygame.font.Font(None, 20)
+font40 = pygame.font.Font(None, 40)
 
 # 設定變數
 gameRun = True
@@ -18,13 +19,8 @@ score = 0
 snake = [[1, 1], [1, 2], [1, 3]]
 tail = [1, 0]
 dire = (0, 0)
-color = []
+color = [[ri(150, 200) for _ in range(H)] for _ in range(W)]
 apple = []
-for i in range(W):
-    a = []
-    for j in range(H):
-        a.append(ri(150, 200))
-    color.append(a)
 
 # 主迴圈
 while True:
@@ -76,7 +72,7 @@ while True:
             # 分數加一
             score += 1
             # 尾巴長出一格
-            snake = [tail] + snake
+            snake.insert(0, tail)
             # 移除蘋果
             apple.remove(i)
             break
@@ -109,11 +105,11 @@ while True:
         else:
             pygame.draw.rect(screen, (color[i[0]][i[1]], color[i[0]][i[1]], 0), (i[0] * 10 + 1, i[1] * 10 + 1, 8, 8))
     # 顯示文字
-    screen.blit(font.render(f"score:{score},apple:{len(apple)}", True, (255, 255, 255), (0, 0, 0)), (0, 0))
+    screen.blit(font20.render(f"score:{score},apple:{len(apple)}", True, (255, 255, 255), (0, 0, 0)), (0, 0))
     # 如果遊戲結束就顯示分數
     if not gameRun:
-        screen.blit(font.render("GAMEOVER", True, (255, 0, 0), (255, 255, 255)), (W / 2 * 10 - 40, H / 2 * 10 - 40))
-        screen.blit(font.render(f"score:{score}", True, (255, 0, 0), (255, 255, 255)), (W / 2 * 10 - 40, H / 2 * 10 - 20))
+        screen.blit(font40.render("GAMEOVER", True, (255, 0, 0), (255, 255, 255)), (W / 2 * 10 - 40, H / 2 * 10 - 40))
+        screen.blit(font20.render(f"score:{score}", True, (255, 0, 0), (255, 255, 255)), (W / 2 * 10 - 40, H / 2 * 10 - 10))
 
     # 更新畫面
     pygame.display.update()
