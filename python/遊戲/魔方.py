@@ -217,43 +217,79 @@ def r3d():
     r2("b")
 
 
-def ro(n):
+def ro(n, f = True):
     match n:
         case 1:
+            if f:
+                step.append(4)
             f1r()
         case 2:
+            if f:
+                step.append(5)
             f2r()
         case 3:
+            if f:
+                step.append(6)
             f3r()
         case 4:
+            if f:
+                step.append(1)
             f1l()
         case 5:
+            if f:
+                step.append(2)
             f2l()
         case 6:
+            if f:
+                step.append(3)
             f3l()
         case 7:
+            if f:
+                step.append(10)
             l1d()
         case 8:
+            if f:
+                step.append(11)
             l2d()
         case 9:
+            if f:
+                step.append(12)
             l3d()
         case 10:
+            if f:
+                step.append(7)
             l1u()
         case 11:
+            if f:
+                step.append(8)
             l2u()
         case 12:
+            if f:
+                step.append(9)
             l3u()
         case 13:
+            if f:
+                step.append(16)
             r1d()
         case 14:
+            if f:
+                step.append(17)
             r2d()
         case 15:
+            if f:
+                step.append(18)
             r3d()
         case 16:
+            if f:
+                step.append(13)
             r1u()
         case 17:
+            if f:
+                step.append(14)
             r2u()
         case 18:
+            if f:
+                step.append(15)
             r3u()
 
 
@@ -320,33 +356,34 @@ step = []
 button_list = []
 
 
-button_list.append(Button(x[7], y[4], 30, 20, "step.append(1)\nf1l()"))
-button_list.append(Button(x[7], y[6], 30, 20, "step.append(2)\nf2l()"))
-button_list.append(Button(x[7], y[8], 30, 20, "step.append(3)\nf3l()"))
-button_list.append(Button(x[8], y[4], 30, 20, "step.append(4)\nf1r()"))
-button_list.append(Button(x[8], y[6], 30, 20, "step.append(5)\nf2r()"))
-button_list.append(Button(x[8], y[8], 30, 20, "step.append(6)\nf3r()"))
-button_list.append(Button(x[6], y[2], 30, 20, "step.append(7)\nl1u()"))
-button_list.append(Button(x[5], y[1], 30, 20, "step.append(8)\nl2u()"))
-button_list.append(Button(x[4], y[0], 30, 20, "step.append(9)\nl3u()"))
-button_list.append(Button(x[2], y[12], 30, 20, "step.append(10)\nl1d()"))
-button_list.append(Button(x[1], y[11], 30, 20, "step.append(11)\nl2d()"))
-button_list.append(Button(x[0], y[10], 30, 20, "step.append(12)\nl3d()"))
-button_list.append(Button(x[0], y[2], 30, 20, "step.append(13)\nr1u()"))
-button_list.append(Button(x[1], y[1], 30, 20, "step.append(14)\nr2u()"))
-button_list.append(Button(x[2], y[0], 30, 20, "step.append(15)\nr3u()"))
-button_list.append(Button(x[4], y[12], 30, 20, "step.append(16)\nr1d()"))
-button_list.append(Button(x[5], y[11], 30, 20, "step.append(17)\nr2d()"))
-button_list.append(Button(x[6], y[10], 30, 20, "step.append(18)\nr3d()"))
-button_list.append(Button(150, 75, 100, 40, "if len(step)>0:\n\tro(step.pop())", "回上一步"))
-button_list.append(Button(75, 150, 60, 40, "for _ in range(10):\n\ta=ri(1,18)\n\tro(a)\n\tprint(a)", "轉亂"))
+button_list.append(Button(x[7], y[4], 30, 20, "ro(4)"))
+button_list.append(Button(x[7], y[6], 30, 20, "ro(5)"))
+button_list.append(Button(x[7], y[8], 30, 20, "ro(6)"))
+button_list.append(Button(x[8], y[4], 30, 20, "ro(1)"))
+button_list.append(Button(x[8], y[6], 30, 20, "ro(2)"))
+button_list.append(Button(x[8], y[8], 30, 20, "ro(3)"))
+button_list.append(Button(x[6], y[2], 30, 20, "ro(10)"))
+button_list.append(Button(x[5], y[1], 30, 20, "ro(11)"))
+button_list.append(Button(x[4], y[0], 30, 20, "ro(12)"))
+button_list.append(Button(x[2], y[12], 30, 20, "ro(7)"))
+button_list.append(Button(x[1], y[11], 30, 20, "ro(8)"))
+button_list.append(Button(x[0], y[10], 30, 20, "ro(9)"))
+button_list.append(Button(x[0], y[2], 30, 20, "ro(16)"))
+button_list.append(Button(x[1], y[1], 30, 20, "ro(17)"))
+button_list.append(Button(x[2], y[0], 30, 20, "ro(18)"))
+button_list.append(Button(x[4], y[12], 30, 20, "ro(13)"))
+button_list.append(Button(x[5], y[11], 30, 20, "ro(14)"))
+button_list.append(Button(x[6], y[10], 30, 20, "ro(15)"))
 
-button_list.append(Button(x[7] - 35, y[6], 30, 20, "step.append(1)\nstep.append(2)\nstep.append(3)\nf1l()\nf2l()\nf3l()"))
-button_list.append(Button(x[8] + 35, y[6], 30, 20, "step.append(4)\nstep.append(5)\nstep.append(6)\nf1r()\nf2r()\nf3r()"))
-button_list.append(Button(x[5] + 35, y[1] - 25, 30, 20, "step.append(7)\nstep.append(8)\nstep.append(9)\nl1u()\nl2u()\nl3u()"))
-button_list.append(Button(x[1] - 35, y[11] + 25, 30, 20, "step.append(10)\nstep.append(11)\nstep.append(12)\nl1d()\nl2d()\nl3d()"))
-button_list.append(Button(x[1] - 35, y[1] - 25, 30, 20, "step.append(13)\nstep.append(14)\nstep.append(15)\nr1u()\nr2u()\nr3u()"))
-button_list.append(Button(x[5] + 35, y[11] + 25, 30, 20, "step.append(16)\nstep.append(17)\nstep.append(18)\nr1d()\nr2d()\nr3d()"))
+button_list.append(Button(150, 75, 100, 40, "if len(step)>0:\n\tro(step.pop(), False)", "回上一步"))
+button_list.append(Button(75, 150, 60, 40, "for _ in range(10):\n\tro(ri(1,18))", "轉亂"))
+
+button_list.append(Button(x[7] - 35, y[6], 30, 20, "ro(4)\nro(5)\nro(6)"))
+button_list.append(Button(x[8] + 35, y[6], 30, 20, "ro(1)\nro(2)\nro(3)"))
+button_list.append(Button(x[5] + 35, y[1] - 25, 30, 20, "ro(10)\nro(11)\nro(12)"))
+button_list.append(Button(x[1] - 35, y[11] + 25, 30, 20, "ro(7)\nro(8)\nro(9)"))
+button_list.append(Button(x[1] - 35, y[1] - 25, 30, 20, "ro(16)\nro(17)\nro(18)"))
+button_list.append(Button(x[5] + 35, y[11] + 25, 30, 20, "ro(13)\nro(14)\nro(15)"))
 
 while True:
     mx, my = pygame.mouse.get_pos()
