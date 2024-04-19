@@ -217,7 +217,7 @@ def r3d():
     r2("b")
 
 
-def ro(n, f = True):
+def ro(n, f=True):
     match n:
         case 1:
             if f:

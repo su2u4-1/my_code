@@ -15,9 +15,10 @@ def difficulty():
             e.append(i + 1)
     return a, e, f
 
+
 def show(a, b, c, f):
     print()
-    for i in range(f-1, -1, -1):
+    for i in range(f - 1, -1, -1):
         d = a[i] if len(a) > i else "|"
         e = b[i] if len(b) > i else "|"
         f = c[i] if len(c) > i else "|"
@@ -45,12 +46,12 @@ while True:
     if d1 > 3 or d1 < 1 or d2 > 3 or d2 < 1 or d1 == d2:
         print("輸入錯誤: 輸入數字超過上限")
         continue
-    d = m[d1-1].pop()
-    if len(m[d2-1]) > 0 and d > m[d2-1][-1]:
+    d = m[d1 - 1].pop()
+    if len(m[d2 - 1]) > 0 and d > m[d2 - 1][-1]:
         print("輸入錯誤: 大的不能疊在小的上面")
-        m[d1-1].append(d)
+        m[d1 - 1].append(d)
         continue
-    m[d2-1].append(d)
+    m[d2 - 1].append(d)
     n += 1
     if m[1] == ans or m[2] == ans and len(m[0]) == 0:
         print(f"\n你贏了,移動了{n}次,最佳步驟為{(2 ** f) -1}次")
