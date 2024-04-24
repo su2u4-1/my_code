@@ -1,14 +1,19 @@
 import pygame
 from random import randint as ri
+from math import floor as fl
+
+# 邊長
+L = 15
 
 # 設定pygame
 pygame.init()
+W, H = pygame.display.get_desktop_sizes()[0]
+W = W // L - 1
+H = (H - 23) // L - 1
 pygame.display.set_caption("貪吃蛇")
-W = pygame.display.Info().current_w
-H = pygame.display.Info().current_h
-W = round(W / 10) - 1
-H = round(H / 10) - 3
-screen = pygame.display.set_mode((W * 10, H * 10), pygame.RESIZABLE)
+screen = pygame.display.set_mode((W * L, H * L), pygame.RESIZABLE)
+W -= 140 // L
+H -= 80 // L
 clock = pygame.time.Clock()
 font20 = pygame.font.Font(None, 20)
 font40 = pygame.font.Font(None, 40)
@@ -19,7 +24,7 @@ score = 0
 snake = [[1, 1], [1, 2], [1, 3]]
 tail = [1, 0]
 dire = (0, 0)
-color = [[ri(150, 200) for _ in range(H)] for _ in range(W)]
+c = [[ri(150, 200) for _ in range(H)] for _ in range(W)]
 apple = []
 
 # 主迴圈
@@ -78,9 +83,9 @@ while True:
             break
 
     # 如果蘋果數量未到上限就新增蘋果
-    if len(apple) <= (W * H / 500) - (len(snake) / 10) and gameRun:
+    if len(apple) <= (W * H / 500) - (len(snake) / L) and gameRun:
         a = [ri(0, W - 1), ri(0, H - 1)]
-        if a not in snake and a not in apple and (a[0] > 15 or a[1] > 1):
+        if a not in snake and a not in apple and (L > 15 or a[0] > 15 or a[1] > 1):
             apple.append(a)
 
     # 如果蛇撞到自己或撞到邊緣就停止遊戲
@@ -94,22 +99,22 @@ while True:
     # 畫地板
     for i in range(W):
         for j in range(H):
-            pygame.draw.rect(screen, (50, color[i][j], 0), (i * 10 + 1, j * 10 + 1, 8, 8))
+            pygame.draw.rect(screen, (50, c[i][j], 0), (fl(i * L * 1.1), fl(j * L * 1.1), fl(L * 0.8), fl(L * 0.8)))
     # 畫蘋果
     for i in apple:
-        pygame.draw.rect(screen, (200, 0, 0), (i[0] * 10 + 1, i[1] * 10 + 1, 8, 8))
+        pygame.draw.rect(screen, (200, 0, 0), (fl(i[0] * L * 1.1), fl(i[1] * L * 1.1), fl(L * 0.8), fl(L * 0.8)))
     # 畫蛇
     for i in snake:
         if i == snake[-1]:
-            pygame.draw.rect(screen, (0, 0, 0), (i[0] * 10 + 1, i[1] * 10 + 1, 8, 8))
+            pygame.draw.rect(screen, (0, 0, 0), (fl(i[0] * L * 1.1), fl(i[1] * L * 1.1), fl(L * 0.8), fl(L * 0.8)))
         else:
-            pygame.draw.rect(screen, (color[i[0]][i[1]], color[i[0]][i[1]], 0), (i[0] * 10 + 1, i[1] * 10 + 1, 8, 8))
+            pygame.draw.rect(screen, (c[i[0]][i[1]], c[i[0]][i[1]], 0), (fl(i[0] * L * 1.1), fl(i[1] * L * 1.1), fl(L * 0.8), fl(L * 0.8)))
     # 顯示文字
     screen.blit(font20.render(f"score:{score},apple:{len(apple)}", True, (255, 255, 255), (0, 0, 0)), (0, 0))
     # 如果遊戲結束就顯示分數
     if not gameRun:
-        screen.blit(font40.render("GAMEOVER", True, (255, 0, 0), (255, 255, 255)), (W / 2 * 10 - 40, H / 2 * 10 - 40))
-        screen.blit(font20.render(f"score:{score}", True, (255, 0, 0), (255, 255, 255)), (W / 2 * 10 - 40, H / 2 * 10 - 10))
+        screen.blit(font40.render("GAMEOVER", True, (255, 0, 0), (255, 255, 255)), (W / 2 * L - 40, H / 2 * L - 40))
+        screen.blit(font20.render(f"score:{score}", True, (255, 0, 0), (255, 255, 255)), (W / 2 * L - 40, H / 2 * L - 10))
 
     # 更新畫面
     pygame.display.update()

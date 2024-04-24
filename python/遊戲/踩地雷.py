@@ -80,7 +80,6 @@ flag = 0
 pygame.init()
 xl = math.floor(pygame.display.Info().current_w / 50)
 yl = math.floor(pygame.display.Info().current_h / 50)
-xl, yl = 5, 5
 pygame.display.set_caption("踩地雷")
 screen = pygame.display.set_mode((xl * 50, yl * 50), pygame.RESIZABLE)
 clock = pygame.time.Clock()
