@@ -26,3 +26,21 @@ for i in s:
     if sum(ha) > m:
         ans += 1
 print(ans)
+
+# 數學家的解
+n, m = map(int, input().split())
+s = input()
+a = dict(zip("WML", map(int, input().split())))
+b = dict(zip("WML", map(int, input().split())))
+
+xs = [0] * n
+h = 0
+cnt = 0
+for t, c in enumerate(s):
+    h += a[c]
+    if t + b[c] - 1 < n:
+        xs[t + b[c] - 1] += a[c]
+    cnt += h > m
+    h -= xs[t]
+
+print(cnt)
