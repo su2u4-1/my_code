@@ -1,6 +1,0 @@
-black -l 141 桌面
-
-pip install pygame
-pip install black
-cd Documents
-black -l 141 GitHub
