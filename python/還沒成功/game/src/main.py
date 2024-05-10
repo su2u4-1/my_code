@@ -2,15 +2,24 @@ import os, json
 from classlib import *
 
 
+def switch_language(language):
+    global TEXT
+    f = open(lan_dir + "\\" + language + ".json", "r")
+    data = json.load(f)
+    f.close()
+    TEXT = data
+
+
 def create_role():
     def load_archive():
         path = data_dir + "\\" + input("請輸入存檔名稱(=角色名稱):") + ".json"
         if os.path.isfile(path):
-            player = Player()
+            player = Player(TEXT)
             f = open(path, "r")
-            data = json.load(f.read())
+            data = json.load(f)
             player.__dict__ = data
             f.close()
+            switch_language(player.language)
             return player
         else:
             print("檔案不存在")
@@ -20,7 +29,7 @@ def create_role():
     if option == "1":
         return load_archive()
     elif option == "2":
-        return Player(input("請輸入角色名稱:"))
+        return Player(TEXT, input("請輸入角色名稱:"))
     else:
         print("輸入錯誤")
         return create_role()
@@ -82,16 +91,18 @@ def next_lv(lv: int):
 
 
 def main():
-    print("你好，歡迎遊玩極簡RPG")
+    print(TEXT["hello_message"])
     player = create_role()
-    print("player name:", player.name)
+    print(TEXT["player_name"], player.name)
     while True:
-        print("current location:", player.location)
-        if player.location == HOME:
-            option = input("1.出門\t2.素材商店\t3.道具商店\t4.打鐵舖\t5.銀行\t6.道館\t7.任務牆\t8.設定")
+        print(TEXT["current_location"], player.location)
+        if player.location == TEXT["home"]:
+            option = input(
+                f"1.{TEXT['ot_001']}\t2.{TEXT['ot_002']}\t3.{TEXT['ot_003']}\t4.{TEXT['ot_004']}\t5.{TEXT['ot_005']}\t6.{TEXT['ot_006']}\t7.{TEXT['ot_007']}\t8.{TEXT['ot_008']}:"
+            )
             match option:
                 case "1":
-                    player.location = LV + str(player.level)
+                    player.location = TEXT["lv"] + str(player.level)
                 case "2":
                     material_shop()
                 case "3":
@@ -109,10 +120,10 @@ def main():
                 case _:
                     print("輸入錯誤")
         else:
-            option = input("1.回家\t2.探索\t3.進入下一關\t4.設定")
+            option = input(f"1.{TEXT['ot_011']}\t2.{TEXT['ot_012']}\t3.{TEXT['ot_013']}\t4.{TEXT['ot_014']}:")
             match option:
                 case "1":
-                    player.location = HOME
+                    player.location = TEXT["home"]
                 case "2":
                     explore()
                 case "3":
@@ -125,4 +136,6 @@ def main():
 
 if __name__ == "__main__":
     data_dir = "\\".join(__file__.split("\\")[:-2] + ["data"])
+    lan_dir = "\\".join(__file__.split("\\")[:-2] + ["language"])
+    switch_language("zh-tw")
     main()

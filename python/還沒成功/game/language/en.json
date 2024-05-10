@@ -1,0 +1,19 @@
+{
+    "home": "city",
+    "lv": "Lv.",
+    "current_location": "current location:",
+    "hello_message": "Hello, welcome to minimalist RPG",
+    "player_name": "player(save) name:",
+    "ot_001": "go_out",
+    "ot_002": "material_store",
+    "ot_003": "prop_shop",
+    "ot_004": "blacksmith_shop",
+    "ot_005": "bank",
+    "ot_006": "gym",
+    "ot_007": "task_wall",
+    "ot_008": "settings",
+    "ot_011": "go_home",
+    "ot_012": "explore",
+    "ot_013": "next_level",
+    "ot_014": "settings"
+}

@@ -1,6 +1,7 @@
 {
     "name": "test",
-    "location": "home",
+    "location": "主城",
     "level": 0,
-    "lv": 0
+    "lv": 0,
+    "language": "zh-tw"
 }
