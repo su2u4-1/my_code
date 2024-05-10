@@ -1,4 +1,6 @@
 {
     "name": "test",
-    "location": "home"
+    "location": "home",
+    "level": 0,
+    "lv": 0
 }

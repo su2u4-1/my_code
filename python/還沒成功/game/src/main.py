@@ -91,7 +91,7 @@ def main():
             option = input("1.出門\t2.素材商店\t3.道具商店\t4.打鐵舖\t5.銀行\t6.道館\t7.任務牆\t8.設定")
             match option:
                 case "1":
-                    player.location = LV + "0"
+                    player.location = LV + str(player.level)
                 case "2":
                     material_shop()
                 case "3":
@@ -116,7 +116,7 @@ def main():
                 case "2":
                     explore()
                 case "3":
-                    next_lv(int(player.location[len(LV) :]))
+                    next_lv(player.level)
                 case "4":
                     setting()
                 case _:
