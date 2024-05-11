@@ -7,12 +7,17 @@ def switch_language(language):
     f = open(lan_dir + "\\" + language + ".json", "r")
     data = json.load(f)
     f.close()
-    TEXT = data
+    if language != default_language:
+        f = open(lan_dir + "\\" + default_language + ".json", "r")
+        TEXT = my_dict(data, json.load(f))
+        f.close()
+    else:
+        TEXT = my_dict(data)
 
 
 def create_role():
     def load_archive():
-        path = data_dir + "\\" + input("請輸入存檔名稱(=角色名稱):") + ".json"
+        path = data_dir + "\\" + input(TEXT["create_role_0"]) + ".json"
         if os.path.isfile(path):
             player = Player(TEXT)
             f = open(path, "r")
@@ -22,16 +27,16 @@ def create_role():
             switch_language(player.language)
             return player
         else:
-            print("檔案不存在")
+            print(TEXT["create_role_1"])
             return load_archive()
 
-    option = input("1.載入存檔\t2.建立角色:")
+    option = input(f"1.{TEXT['create_role_2']}\t2.{TEXT['create_role_3']}:")
     if option == "1":
         return load_archive()
     elif option == "2":
-        return Player(TEXT, input("請輸入角色名稱:"))
+        return Player(TEXT, input(TEXT["create_role_4"]))
     else:
-        print("輸入錯誤")
+        print(TEXT["input_error"])
         return create_role()
 
 
@@ -39,10 +44,10 @@ def save_archive(player: Player, path=None):
     if path is None:
         path = data_dir + f"\\{player.name}.json"
     if os.path.isfile(path):
-        inp = input("檔案已存在\t1.重命名\t2.覆蓋\t3.取消:")
+        inp = input(f"{TEXT['save_archive_0']}\t1.{TEXT['save_archive_1']}\t2.{TEXT['save_archive_2']}\t3.{TEXT['save_archive_3']}:")
         match inp:
             case "1":
-                path = data_dir + "\\" + input("請輸入存檔名稱:") + ".json"
+                path = data_dir + "\\" + input(TEXT["save_archive_4"]) + ".json"
                 save_archive(player, path)
                 return
             case "2":
@@ -55,7 +60,19 @@ def save_archive(player: Player, path=None):
 
 
 def material_shop():
-    pass
+    player.location = "material_shop"
+    print("歡迎來到素材商店")
+    while True:
+        option = input("1.買東西\t2.賣東西\t3.離開:")
+        match option:
+            case "1":
+                pass
+            case "2":
+                pass
+            case "3":
+                break
+            case _:
+                print(TEXT["input_error"])
 
 
 def prop_shop():
@@ -91,18 +108,22 @@ def next_lv(lv: int):
 
 
 def main():
+    global player
     print(TEXT["hello_message"])
     player = create_role()
     print(TEXT["player_name"], player.name)
     while True:
-        print(TEXT["current_location"], player.location)
-        if player.location == TEXT["home"]:
+        if player.location == "lv":
+            print(TEXT["current_location"], TEXT[player.location] + str(player.stage_lv))
+        else:
+            print(TEXT["current_location"], TEXT[player.location])
+        if player.location == "home":
             option = input(
-                f"1.{TEXT['ot_001']}\t2.{TEXT['ot_002']}\t3.{TEXT['ot_003']}\t4.{TEXT['ot_004']}\t5.{TEXT['ot_005']}\t6.{TEXT['ot_006']}\t7.{TEXT['ot_007']}\t8.{TEXT['ot_008']}:"
+                f"1.{TEXT['go_out']}\t2.{TEXT['material_shop']}\t3.{TEXT['prop_shop']}\t4.{TEXT['blacksmith_shop']}\t5.{TEXT['bank']}\t6.{TEXT['gym']}\t7.{TEXT['task_wall']}\t8.{TEXT['setting']}:"
             )
             match option:
                 case "1":
-                    player.location = TEXT["lv"] + str(player.level)
+                    player.location = "lv"
                 case "2":
                     material_shop()
                 case "3":
@@ -118,24 +139,25 @@ def main():
                 case "8":
                     setting()
                 case _:
-                    print("輸入錯誤")
+                    print(TEXT["input_error"])
         else:
-            option = input(f"1.{TEXT['ot_011']}\t2.{TEXT['ot_012']}\t3.{TEXT['ot_013']}\t4.{TEXT['ot_014']}:")
+            option = input(f"1.{TEXT['go_home']}\t2.{TEXT['explore']}\t3.{TEXT['next_lv']}\t4.{TEXT['setting']}:")
             match option:
                 case "1":
-                    player.location = TEXT["home"]
+                    player.location = "home"
                 case "2":
                     explore()
                 case "3":
-                    next_lv(player.level)
+                    next_lv(player.stage_lv)
                 case "4":
                     setting()
                 case _:
-                    print("輸入錯誤")
+                    print(TEXT["input_error"])
 
 
 if __name__ == "__main__":
     data_dir = "\\".join(__file__.split("\\")[:-2] + ["data"])
     lan_dir = "\\".join(__file__.split("\\")[:-2] + ["language"])
-    switch_language("zh-tw")
+    default_language = "zh-tw"
+    switch_language(default_language)
     main()
