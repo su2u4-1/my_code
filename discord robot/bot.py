@@ -102,9 +102,7 @@ async def 賭(ctx, *m2):
 async def 升級(ctx, *m2):
     uid = ctx.author.id
     if len(m2) == 1:
-        await ctx.send(
-            f"<@{uid}>目前屬性為:\n攻擊:{player[uid].at}\n防禦:{player[uid].de}\n速度:{player[uid].ag}\n血量:{player[uid].hp}\n剩餘點數:{player[uid].po}"
-        )
+        await ctx.send(f"<@{uid}>目前屬性為:\n攻擊:{player[uid].at}\n防禦:{player[uid].de}\n速度:{player[uid].ag}\n血量:{player[uid].hp}\n剩餘點數:{player[uid].po}")
     elif len(m2) == 2:
         pass  # help 升級
     elif len(m2) == 3:

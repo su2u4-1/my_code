@@ -3,21 +3,9 @@ import os
 
 
 def attributepage():
-    print(
-        f"\n1.攻擊力:{player.att}\n2.防禦力:{player.Def}\n3.速度:{player.agi}\n4.血量:{player.hp}\n5.金:{player.metal}\n6.木:{player.wood}\n7.水:{player.water}\n8.火:{player.fire}\n9.土:{player.earth}\n基礎屬性剩餘點:{player.rp1}\n五行屬性剩餘點:{player.rp2}\n"
-    )
+    print(f"\n1.攻擊力:{player.att}\n2.防禦力:{player.Def}\n3.速度:{player.agi}\n4.血量:{player.hp}\n5.金:{player.metal}\n6.木:{player.wood}\n7.水:{player.water}\n8.火:{player.fire}\n9.土:{player.earth}\n基礎屬性剩餘點:{player.rp1}\n五行屬性剩餘點:{player.rp2}\n")
     option = input("\n輸入你要加點的屬性名稱或編號\n輸入10離開\n")
-    if (
-        option == "1"
-        or option == "2"
-        or option == "3"
-        or option == "4"
-        or option == "5"
-        or option == "6"
-        or option == "7"
-        or option == "8"
-        or option == "9"
-    ):
+    if option == "1" or option == "2" or option == "3" or option == "4" or option == "5" or option == "6" or option == "7" or option == "8" or option == "9":
         option1 = input("\n輸入你要加的點數\n")
         try:
             option1 = int(option1)
@@ -191,20 +179,7 @@ def goout():
     elif option == "n" or option == "N" or option == "北":
         player.y -= 1
     x, y = player.x + 500, player.y + 500
-    if (
-        option == "e"
-        or option == "E"
-        or option == "東"
-        or option == "w"
-        or option == "W"
-        or option == "西"
-        or option == "s"
-        or option == "S"
-        or option == "南"
-        or option == "n"
-        or option == "N"
-        or option == "北"
-    ):
+    if option == "e" or option == "E" or option == "東" or option == "w" or option == "W" or option == "西" or option == "s" or option == "S" or option == "南" or option == "n" or option == "N" or option == "北":
         if map[x][y][1] == "山地":
             option1 = input("\n遇上山地,是否要花費一條繩索爬山\n請輸入(y/n)或(T/F)或(1/2)\n")
             if option1 == "y" or option1 == "Y" or option1 == "t" or option1 == "T" or option1 == "1":
@@ -576,9 +551,7 @@ def PvE(m, p):  # bonus = [吸血,反擊,連擊,閃避,爆擊,擊暈,抗吸血,�
                 print(f"  {p['name']}受到了來自{m['name']}的{atk}點{c[element]}屬性普攻傷害\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%")
             if ri(1, 100) <= suckblood:
                 mnowhp += round(atk * (suckblood / 100))
-                print(
-                    f"  {p['name']}被{m['name']}吸血,{m['name']}回復了{round(atk*(suckblood/100))}血\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%"
-                )
+                print(f"  {p['name']}被{m['name']}吸血,{m['name']}回復了{round(atk*(suckblood/100))}血\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%")
             if ri(1, 100) <= stun:
                 a = "m"
                 print(f"  {p['name']}被{m['name']}擊暈,下回合無法攻擊")
@@ -626,9 +599,7 @@ def PvE(m, p):  # bonus = [吸血,反擊,連擊,閃避,爆擊,擊暈,抗吸血,�
                 print(f"  {m['name']}受到了來自{p['name']}的{atk}點{c[element]}屬性普攻傷害\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%")
             if ri(1, 100) <= suckblood:
                 pnowhp += round(atk * (suckblood / 100))
-                print(
-                    f"  {m['name']}被{p['name']}吸血,{p['name']}回復了{round(atk*(suckblood/100))}血\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%"
-                )
+                print(f"  {m['name']}被{p['name']}吸血,{p['name']}回復了{round(atk*(suckblood/100))}血\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%")
             if ri(1, 100) <= stun:
                 a = "p"
                 print(f"  {m['name']}被{p['name']}擊暈,下回合無法攻擊")

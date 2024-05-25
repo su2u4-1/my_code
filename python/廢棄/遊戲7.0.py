@@ -295,9 +295,7 @@ def CreateSurface(Surface, Size, ButtonRange, other):
             button_size = button_size_original[i]
             text_size = text_size_original
             f0 = False
-        if (W / 2) + Button_range[i][0] <= mx <= (W / 2) + Button_range[i][1] and (H / 2) + Button_range[i][2] <= my <= (
-            H / 2
-        ) + Button_range[i][3]:
+        if (W / 2) + Button_range[i][0] <= mx <= (W / 2) + Button_range[i][1] and (H / 2) + Button_range[i][2] <= my <= (H / 2) + Button_range[i][3]:
             text_color = text_color_change
             if pygame.mouse.get_pressed()[0]:
                 if Sl[-1] == "Start":

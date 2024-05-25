@@ -73,13 +73,7 @@ class summonlife:
                 cx = self.x
                 cy = self.y
                 for i in range(4):
-                    if (
-                        map[self.x + b1[i]][self.y + b2[i]] > c
-                        and self.x + b1[i] < xl
-                        and self.x + b1[i] > 0
-                        and self.y + b2[i] < yl
-                        and self.y + b2[i] > 0
-                    ):
+                    if map[self.x + b1[i]][self.y + b2[i]] > c and self.x + b1[i] < xl and self.x + b1[i] > 0 and self.y + b2[i] < yl and self.y + b2[i] > 0:
                         c = map[self.x + b1[i]][self.y + b2[i]]
                         cx = self.x + b1[i]
                         cy = self.y + b2[i]
@@ -99,13 +93,7 @@ class summonlife:
                 cx = self.x
                 cy = self.y
                 for i in range(4):
-                    if (
-                        map[self.x + b1[i]][self.y + b2[i]] > c
-                        and self.x + b1[i] < xl
-                        and self.x + b1[i] > 0
-                        and self.y + b2[i] < yl
-                        and self.y + b2[i] > 0
-                    ):
+                    if map[self.x + b1[i]][self.y + b2[i]] > c and self.x + b1[i] < xl and self.x + b1[i] > 0 and self.y + b2[i] < yl and self.y + b2[i] > 0:
                         c = map[self.x + b1[i]][self.y + b2[i]]
                         cx = self.x + b1[i]
                         cy = self.y + b2[i]

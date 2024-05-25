@@ -100,10 +100,7 @@ def divination(text):
     if d == e:
         return s + f"占卜到了【{F[d][1]}】\n解釋:\n{URL2}{F[d][0]}.html\n{URL4}{F[d][0]}\n原文:\n{URL1}{F[d][1]}\n詳細解釋:\n{URL3}{F[d][0]}"
     else:
-        return (
-            s
-            + f"占卜到了【{F[d][1]}之{F[e][1]}】\n解釋:\n{URL2}{F[d][0]}-{F[e][0]}.html\n{URL4}{F[d][0]}\n{URL4}{F[e][0]}\n原文:\n{URL1}{F[d][1]}\n{URL1}{F[e][1]}\n詳細解釋:\n{URL3}{F[d][0]}\n{URL3}{F[e][0]}"
-        )
+        return s + f"占卜到了【{F[d][1]}之{F[e][1]}】\n解釋:\n{URL2}{F[d][0]}-{F[e][0]}.html\n{URL4}{F[d][0]}\n{URL4}{F[e][0]}\n原文:\n{URL1}{F[d][1]}\n{URL1}{F[e][1]}\n詳細解釋:\n{URL3}{F[d][0]}\n{URL3}{F[e][0]}"
 
 
 while True:
