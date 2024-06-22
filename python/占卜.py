@@ -1,4 +1,4 @@
-from random import randint as ri
+from random import choices as ch
 
 F = {
     "111111": ("01", "乾"),
@@ -70,27 +70,26 @@ URL1 = "https://zh.wikisource.org/zh-hant/周易/"
 URL2 = "https://zhouyipro.com/gua"
 URL3 = "https://www.eee-learning.com/book/neweee"
 URL4 = "https://www.eee-learning.com/simple64/"
-B = [[39] * 11 + [43] * 36, [3] * 10 + [7] * 9, [3] * 11 + [7] * 10, [3] * 8 + [7] * 7, [3] * 9 + [7] * 8]
 
 
 def divination(text):
     d = ""
     e = ""
     for _ in range(6):
-        b = B[0]
-        a = b[ri(0, len(b) - 1)]  # 一變39,43
+        # 一變39,43
+        a = ch((39, 43), (11, 36))
+        # 二變31,35,39
         if a == 39:
-            b = B[1]
+            a -= ch((3, 7), (10, 9)) + 1
         elif a == 43:
-            b = B[2]
-        a -= b[ri(0, len(b) - 1)] + 1  # 二變31,35,39
+            a -= ch((3, 7), (11, 10)) + 1
+        # 三變24,28,32,36
         if a == 31:
-            b = B[3]
+            a -= ch((3, 7), (8, 7))
         elif a == 35:
-            b = B[4]
+            a -= ch((3, 7), (9, 8))
         elif a == 39:
-            b = B[1]
-        a -= b[ri(0, len(b) - 1)]  # 三變24,28,32,36
+            a -= ch((3, 7), (10, 9))
         d += str(a % 8)
         e += str(0 if a > 30 else 1)
     if len(text) < 1:
@@ -104,4 +103,7 @@ def divination(text):
 
 
 while True:
-    print(divination(iter(input("請輸入你要占卜的事件(輸入exit離開):"), "exit")))
+    a = input("請輸入你要占卜的事件(輸入exit離開):")
+    if a == "exit":
+        break
+    print(divination(a))

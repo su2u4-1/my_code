@@ -3,8 +3,12 @@ from random import randint as ri
 DX = [0, 1, 0, -1]
 DY = [1, 0, -1, 0]
 
+POS = tuple[int, int]
+MAZE = list[list[int]]
+ST = tuple[str, str, str, str, str, str]
 
-def astar_search(grid, start, end):
+
+def astar_search(grid:MAZE, start:POS, end:POS)->list[POS]:
     open_list = []
     open_list.append((0, start))
     open_list.sort(key=lambda x: x[0])
@@ -39,21 +43,25 @@ def astar_search(grid, start, end):
                         open_list.sort(key=lambda x: x[0])
 
 
-def show(maze, symbol_table=["1", " ", "3", "N"]):
+def show(maze:MAZE, symbol_table:ST=(" ", "1", "3", "N", "S", "E"), start:POS=(1, 1), end:POS=(1, 1))->None:
     for x in maze:
         for y in x:
-            if y == 1:
-                print(symbol_table[0], end="")
+            if start == (x, y):
+                print(symbol_table[4], end="")
+            elif end == (x, y):
+                print(symbol_table[5], end="")
             elif y == 0:
+                print(symbol_table[0], end="")
+            elif y == 1:
                 print(symbol_table[1], end="")
             elif y == 2:
                 print(symbol_table[2], end="")
             else:
                 print(symbol_table[3], end="")
-        print(end="\n")
+        print()
 
 
-def generatemaze(lx, ly):
+def generatemaze(lx:int=25, ly:int=25)->MAZE:
     s = ((lx - 1) / 2) * ((ly - 1) / 2)
     maze = [[(1 if x % 2 == 0 or y % 2 == 0 else 0) for y in range(ly)] for x in range(lx)]
     a, b = [], []
@@ -77,18 +85,16 @@ def generatemaze(lx, ly):
             for y in range(ly):
                 if a.count([x, y]) > 1:
                     a.remove([x, y])
-    maze[1][1] = 2
-    maze[lx - 2][ly - 2] = 3
     return maze
 
 
 size = 25
 maze = generatemaze(size, size)
-start = (1, 1)
-end = (size - 2, size - 2)
+start:POS = (1, 1)
+end:POS = (size - 2, size - 2)
+show(maze, ("  ", "牆", "路", "NN", "起", "終"), start, end)
 path = astar_search(maze, start, end)
-show(maze, ["牆", "  ", "路", "NN"])
 print()
 for i in path:
     maze[i[0]][i[1]] = 2
-show(maze, ["牆", "  ", "路", "NN"])
+show(maze, ("  ", "牆", "路", "NN", "起", "終"), start, end)

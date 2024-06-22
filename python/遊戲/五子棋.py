@@ -2,7 +2,7 @@ import pygame
 from math import floor as fl
 
 
-def checking():
+def checking() -> tuple[tuple[int, int], tuple[int, int]]|None:
     global gameContinue, winner
     a = [1, 1, 1, 0, 0, -1, -1, -1]
     b = [-1, 0, 1, -1, 1, -1, 0, 1]
@@ -31,7 +31,7 @@ def checking():
                             winner = "White wins"
                             print("\n白方獲勝")
                         print(f"({x},{y})-({x1},{y1})")
-                        return [(x * 44 + 28, y * 44 + 28), (x1 * 44 + 28, y1 * 44 + 28)]
+                        return ((x * 44 + 28, y * 44 + 28), (x1 * 44 + 28, y1 * 44 + 28))
     if n == 0:
         gameContinue = False
         winner = "draw"
@@ -39,19 +39,17 @@ def checking():
         return
 
 
-def main():
-    global chessBoard, gameContinue, winner, SL
-    winner = ""
-    mx = 0
-    my = 0
-    first = 0
-    gameContinue = True
-    SL = 15
+def main()->None:
+    global chessBoard, gameContinue, winner
     pygame.init()
     pygame.display.set_caption("五子棋")
     screen = pygame.display.set_mode((670, 700), pygame.RESIZABLE)
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 30)
+    winner = ""
+    mx, my = 0, 0
+    first = 0
+    gameContinue = True
     chessBoard = [[0 for _ in range(SL)] for _ in range(SL)]
     while True:
         mousex, mousey = pygame.mouse.get_pos()
@@ -81,11 +79,11 @@ def main():
         screen.fill((238, 154, 73))
         for i in range(SL):
             if i == 0 or i == SL - 1:
-                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, (SL - 1) * 44 + 27], 4)
-                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [(SL - 1) * 44 + 27, i * 44 + 27], 4)
+                pygame.draw.line(screen, (0, 0, 0), (i * 44 + 27, 27), (i * 44 + 27, (SL - 1) * 44 + 27), 4)
+                pygame.draw.line(screen, (0, 0, 0), (27, i * 44 + 27), ((SL - 1) * 44 + 27, i * 44 + 27), 4)
             else:
-                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, (SL - 1) * 44 + 27], 2)
-                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [(SL - 1) * 44 + 27, i * 44 + 27], 2)
+                pygame.draw.line(screen, (0, 0, 0), (i * 44 + 27, 27), (i * 44 + 27, (SL - 1) * 44 + 27), 2)
+                pygame.draw.line(screen, (0, 0, 0), (27, i * 44 + 27), ((SL - 1) * 44 + 27, i * 44 + 27), 2)
         for i in range(SL):
             for j in range(SL):
                 if chessBoard[i][j] == 1:
@@ -100,12 +98,12 @@ def main():
         else:
             turn = "White"
             pygame.draw.circle(screen, (255, 255, 255), (mx * 44 + 28, my * 44 + 28), 15, width=3)
-        if not gameContinue and type(winner_line) == list:
+        if not gameContinue and type(winner_line) == tuple:
             pygame.draw.line(screen, (255, 0, 0), winner_line[0], winner_line[1], width=3)
         pygame.draw.rect(screen, (0, 0, 0), (0, 670, 60, 30), 5)
-        screen.blit(font.render("reset", True, (0, 0, 0)), [5, 675])
+        screen.blit(font.render("reset", True, (0, 0, 0)), (5, 675))
         pygame.draw.rect(screen, (0, 0, 0), (60, 670, 60, 30), 5)
-        screen.blit(font.render("exit", True, (0, 0, 0)), [70, 675])
+        screen.blit(font.render("exit", True, (0, 0, 0)), (70, 675))
         if 60 < mousex < 120 and 670 < mousey:
             pygame.draw.rect(screen, (255, 255, 255), (60, 670, 60, 30), 5)
         if mousex < 60 and 670 < mousey:
@@ -114,10 +112,11 @@ def main():
             text = font.render(f"({mx},{my})  {turn}", True, (0, 0, 0))
         else:
             text = font.render(f"({mx},{my})  {winner}", True, (0, 0, 0))
-        screen.blit(text, [125, 675])
+        screen.blit(text, (125, 675))
         pygame.display.update()
         clock.tick(60)
 
 
 if __name__ == "__main__":
+    SL = 15
     main()

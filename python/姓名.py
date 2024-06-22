@@ -1,33 +1,22 @@
 from random import choices as ch
 
 
-def getlist(dict, n):
-    a = []
-    if n == "key" or n == "keys" or n == "k":
-        for i in dict.keys():
-            a.append(i)
-    if n == "value" or n == "values" or n == "v":
-        for i in dict.values():
-            a.append(i)
-    return a
-
-
 link = "python\\data\\"
 with open(link + "surname.txt", "r", encoding="utf-8") as f:
-    surname = eval(f.read())
+    surname:dict[str,int] = eval(f.read())
 with open(link + "name1.txt", "r", encoding="utf-8") as f:
-    name1 = eval(f.read())
+    name1:dict[str,int] = eval(f.read())
 with open(link + "name2.txt", "r", encoding="utf-8") as f:
-    name2 = eval(f.read())
+    name2:dict[str,int] = eval(f.read())
 with open(link + "name1_2.txt", "r", encoding="utf-8") as f:
-    name1_2 = eval(f.read())
+    name1_2:dict[str,dict[str,int]] = eval(f.read())
 
-snk = getlist(surname, "k")
-snv = getlist(surname, "v")
-n1k = getlist(name1, "k")
-n1v = getlist(name1, "v")
-n2k = getlist(name2, "k")
-n2v = getlist(name2, "v")
+snk = list(surname.keys())
+snv = list(surname.values())
+n1k = list(name1.keys())
+n1v = list(name1.values())
+n2k = list(name2.keys())
+n2v = list(name2.values())
 n = int(input("數量:"))
 for _ in range(n):
     sn = ch(snk, snv)[0]
@@ -37,8 +26,8 @@ for _ in range(n):
         if n2 == "None":
             n2 = ""
     else:
-        n12k = getlist(name1_2[n1], "k")
-        n12v = getlist(name1_2[n1], "v")
+        n12k = list(name1_2[n1].keys())
+        n12v = list(name1_2[n1].values())
         n2 = ch(n12k, n12v)[0]
         n2 += "(根據第一字)"
         if n2 == "None(根據第一字)":

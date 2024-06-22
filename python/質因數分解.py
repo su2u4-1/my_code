@@ -1,10 +1,7 @@
 link = "python\\data\\"
 print("正在讀取質數")
 f = open(link + "質數.txt", "r")
-a = []
-ab = f.readlines()
-for i in ab:
-    a.append(int(i))
+a = list(map(int, f.readlines()))
 f.close()
 print("質數讀取完畢")
 print(a[-1])
