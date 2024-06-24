@@ -11,6 +11,6 @@ while True:
             a = rr(19968, 40917)
             print(chr(a), end="")
         else:
-            print(B[d-1][rr(0, A[d-1])], end="")
+            print(B[d - 1][rr(0, A[d - 1])], end="")
     print()
     sl(rr(1, 51) / 100)

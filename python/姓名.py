@@ -3,13 +3,13 @@ from random import choices as ch
 
 link = "python\\data\\"
 with open(link + "surname.txt", "r", encoding="utf-8") as f:
-    surname:dict[str,int] = eval(f.read())
+    surname: dict[str, int] = eval(f.read())
 with open(link + "name1.txt", "r", encoding="utf-8") as f:
-    name1:dict[str,int] = eval(f.read())
+    name1: dict[str, int] = eval(f.read())
 with open(link + "name2.txt", "r", encoding="utf-8") as f:
-    name2:dict[str,int] = eval(f.read())
+    name2: dict[str, int] = eval(f.read())
 with open(link + "name1_2.txt", "r", encoding="utf-8") as f:
-    name1_2:dict[str,dict[str,int]] = eval(f.read())
+    name1_2: dict[str, dict[str, int]] = eval(f.read())
 
 snk = list(surname.keys())
 snv = list(surname.values())

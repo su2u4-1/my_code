@@ -1,9 +1,23 @@
-from typing import Any, Self, Iterable, Optional, Literal, Mapping
+from typing import Any, Self
+import numbers
 
-class Fraction:
-    def __init__(self, numerator, denominator=1):
+N = int | float | Self | Any
+
+
+def gcd(a: int, b: int) -> int:
+    if b == 0:
+        return a
+    return gcd(b, a % b)
+
+
+def lcm(a: int, b: int) -> int:
+    return a * b / gcd(a, b)
+
+
+class Fraction(numbers.Number):
+    def __init__(self, numerator: N, denominator: N = 1) -> None:
         if type(numerator) == float:
-            while numerator - int(numerator) != 0:
+            while not numerator.is_integer():
                 denominator *= 10
                 numerator *= 10
             numerator = int(numerator)
@@ -11,13 +25,9 @@ class Fraction:
             denominator *= numerator.denominator
             numerator = numerator.numerator
         elif type(numerator) != int:
-            try:
-                numerator = int(numerator)
-            except:
-                raise TypeError()
-
+            numerator = int(numerator)
         if type(denominator) == float:
-            while denominator - int(denominator) != 0:
+            while not denominator.is_integer():
                 denominator *= 10
                 numerator *= 10
             denominator = int(denominator)
@@ -25,14 +35,263 @@ class Fraction:
             numerator *= denominator.denominator
             denominator = denominator.numerator
         elif type(denominator) != int:
-            try:
-                denominator = int(denominator)
-            except:
-                raise TypeError()
+            denominator = int(denominator)
+        self.numerator = numerator
+        self.denominator = denominator
         self.approx()
 
-    def approx(self):
-        for i in range(2, min(self.numerator, self.denominator)+1):
+    def __add__(self, other: N) -> Self:
+        if type(other) != Fraction:
+            try:
+                other = Fraction(other)
+            except:
+                return NotImplemented
+        denominator = lcm(self.denominator, other.denominator)
+        numerator = self.numerator * (denominator / self.denominator) + other.numerator * (denominator / other.denominator)
+        return Fraction(numerator, denominator)
+
+    def __sub__(self, other: N) -> Self:
+        if type(other) != Fraction:
+            try:
+                other = Fraction(other)
+            except:
+                return NotImplemented
+        denominator = lcm(self.denominator, other.denominator)
+        numerator = self.numerator * (denominator / self.denominator) - other.numerator * (denominator / other.denominator)
+        return Fraction(numerator, denominator)
+
+    def __mul__(self, other: N) -> Self:
+        if type(other) != Fraction:
+            try:
+                other = Fraction(other)
+            except:
+                return NotImplemented
+        return Fraction(self.numerator * other.numerator, self.denominator * other.denominator)
+
+    def __truediv__(self, other: N) -> Self:
+        if type(other) != Fraction:
+            try:
+                other = Fraction(other)
+            except:
+                return NotImplemented
+        return Fraction(self.numerator * other.denominator, self.denominator * other.numerator)
+
+    def __floordiv__(self, other: N) -> int:
+        if type(other) != Fraction:
+            try:
+                other = Fraction(other)
+            except:
+                return NotImplemented
+        return (self.numerator * other.denominator) // (self.denominator * other.numerator)
+
+    def __mod__(self, other: N) -> Self:
+        return self.__sub__(self.__truediv__(other))
+
+    def __divmod__(self, other: N) -> tuple[int, Self]:
+        return self.__floordiv__(other), self.__sub__(self.__truediv__(other))
+
+    def __pow__(self, other: N, mod: N = None) -> Self:
+        t = Fraction(self)
+        if type(other) == int or type(other) == float:
+            t.numerator**other
+            t.denominator**other
+        else:
+            if type(other) != Fraction:
+                try:
+                    other = Fraction(other)
+                except:
+                    return NotImplemented
+            t.numerator**other.numerator
+            t.numerator ** (1 / other.denominator)
+            t.denominator**other.numerator
+            t.denominator ** (1 / other.denominator)
+        if mod is None:
+            return t
+        return t.__mod__(mod)
+
+    def __radd__(self, other: N) -> Self:
+        return self.__add__(other)
+
+    def __rsub__(self, other: N) -> Self:
+        if type(other) != Fraction:
+            try:
+                other = Fraction(other)
+            except:
+                return NotImplemented
+        denominator = lcm(self.denominator, other.denominator)
+        numerator = other.numerator * (denominator / other.denominator) - self.numerator * (denominator / self.denominator)
+        return Fraction(numerator, denominator)
+
+    def __rmul__(self, other: N) -> Self:
+        return self.__mul__(other)
+
+    def __rtruediv__(self, other: N) -> Self:
+        if type(other) != Fraction:
+            try:
+                other = Fraction(other)
+            except:
+                return NotImplemented
+        return Fraction(self.denominator * other.numerator, self.numerator * other.denominator)
+
+    def __rfloordiv__(self, other: N) -> int:
+        t = self.__rtruediv__(other)
+        return t.numerator // t.denominator
+
+    def __rmod__(self, other: N) -> Self:
+        t = self.__rtruediv__(other)
+        t.numerator %= t.denominator
+        return t
+
+    def __rdivmod__(self, other: N) -> tuple[int, Self]:
+        t = self.__rtruediv__(other)
+        f = t.numerator // t.denominator
+        t.numerator %= t.denominator
+        return f, t
+
+    def __rpow__(self, other: N, mod: N = None) -> Self:
+        try:
+            t = Fraction(other)
+        except:
+            return NotImplemented
+        t.numerator**self.numerator
+        t.numerator ** (1 / self.denominator)
+        t.denominator**self.numerator
+        t.denominator ** (1 / self.denominator)
+        if mod is None:
+            return t
+        return t.__rmod__(mod)
+
+    def __iadd__(self, other: N) -> Self:
+        return self.__add__(other)
+
+    def __isub__(self, other: N) -> Self:
+        return self.__sub__(other)
+
+    def __imul__(self, other: N) -> Self:
+        return self.__mul__(other)
+
+    def __itruediv__(self, other: N) -> Self:
+        return self.__truediv__(other)
+
+    def __ifloordiv__(self, other: N) -> int:
+        return self.__floordiv__(other)
+
+    def __imod__(self, other: N) -> Self:
+        return self.__mod__(other)
+
+    def __ipow__(self, other: N, modulo) -> Self:
+        return self.__pow__(other, modulo)
+
+    def __neg__(self) -> Self:
+        return self * -1
+
+    def __pos__(self) -> Self:
+        return self
+
+    def __abs__(self) -> Self:
+        if self < 0:
+            return self.__neg__()
+        return self
+
+    def __complex__(self) -> complex:
+        return complex(self.__float__())
+
+    def __int__(self) -> int:
+        return self.numerator // self.denominator
+
+    def __float__(self) -> float:
+        return self.numerator / self.denominator
+
+    def __index__(self) -> int:
+        return self.__int__()
+
+    def __round__(self, ndigits: int | None = None) -> int | float:
+        if ndigits is None:
+            return self.__int__()
+        return round(self.__float__())
+
+    def __trunc__(self) -> int:
+        if self < 0:
+            return self.__ceil__()
+        return self.__floor__()
+
+    def __floor__(self) -> int:
+        t = self.__float__()
+        if t.is_integer():
+            return int(t)
+        return int(t) - 1
+
+    def __ceil__(self) -> int:
+        t = self.__float__()
+        if t.is_integer():
+            return int(t)
+        return int(t) + 1
+
+    def __lt__(self, other: N) -> bool:
+        if type(other) != Fraction:
+            try:
+                other = Fraction(other)
+            except:
+                return NotImplemented
+        denominator = lcm(self.denominator, other.denominator)
+        return self.numerator * (denominator / self.denominator) < other.numerator * (denominator / other.denominator)
+
+    def __le__(self, other: N) -> bool:
+        return self.__eq__(other) or self.__lt__(other)
+
+    def __eq__(self, value: N) -> bool:
+        if type(value) != Fraction:
+            try:
+                value = Fraction(value)
+            except:
+                return NotImplemented
+        return self.numerator == value.numerator and self.denominator == value.denominator
+
+    def __ne__(self, value: N) -> bool:
+        if type(value) != Fraction:
+            try:
+                value = Fraction(value)
+            except:
+                return NotImplemented
+        return self.numerator != value.numerator or self.denominator != value.denominator
+
+    def __gt__(self, other: N) -> bool:
+        if type(other) != Fraction:
+            try:
+                other = Fraction(other)
+            except:
+                return NotImplemented
+        denominator = lcm(self.denominator, other.denominator)
+        return self.numerator * (denominator / self.denominator) > other.numerator * (denominator / other.denominator)
+
+    def __ge__(self, other: N) -> bool:
+        return self.__eq__(other) or self.__gt__(other)
+
+    def __str__(self) -> str:
+        if self.denominator == 1:
+            return str(self.numerator)
+        return f"{self.numerator}/{self.denominator}"
+
+    def __repr__(self) -> str:
+        return f"Fraction({self.numerator}/{self.denominator})"
+
+    def __format__(self, _) -> str:
+        return self.__str__()
+
+    def __hash__(self) -> int:
+        return hash((self.numerator, self.denominator))
+
+    def approx(self) -> None:
+        t = 1
+        if self.numerator < 0:
+            t = -1
+            self.numerator = -self.numerator
+        if self.denominator < 0:
+            t *= -1
+            self.denominator = -self.denominator
+        for i in range(2, min(self.numerator, self.denominator) + 1):
             if self.numerator % i == 0 and self.denominator % i == 0:
                 self.denominator /= i
                 self.numerator /= i
+        self.numerator = int(self.numerator * t)
+        self.denominator = int(self.denominator)

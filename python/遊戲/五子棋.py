@@ -2,7 +2,7 @@ import pygame
 from math import floor as fl
 
 
-def checking() -> tuple[tuple[int, int], tuple[int, int]]|None:
+def checking() -> tuple[tuple[int, int], tuple[int, int]] | None:
     global gameContinue, winner
     a = [1, 1, 1, 0, 0, -1, -1, -1]
     b = [-1, 0, 1, -1, 1, -1, 0, 1]
@@ -39,7 +39,7 @@ def checking() -> tuple[tuple[int, int], tuple[int, int]]|None:
         return
 
 
-def main()->None:
+def main() -> None:
     global chessBoard, gameContinue, winner
     pygame.init()
     pygame.display.set_caption("五子棋")

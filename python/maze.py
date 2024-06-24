@@ -8,7 +8,7 @@ MAZE = list[list[int]]
 ST = tuple[str, str, str, str, str, str]
 
 
-def astar_search(grid:MAZE, start:POS, end:POS)->list[POS]:
+def astar_search(grid: MAZE, start: POS, end: POS) -> list[POS]:
     open_list = []
     open_list.append((0, start))
     open_list.sort(key=lambda x: x[0])
@@ -43,7 +43,7 @@ def astar_search(grid:MAZE, start:POS, end:POS)->list[POS]:
                         open_list.sort(key=lambda x: x[0])
 
 
-def show(maze:MAZE, symbol_table:ST=(" ", "1", "3", "N", "S", "E"), start:POS=(1, 1), end:POS=(1, 1))->None:
+def show(maze: MAZE, symbol_table: ST = (" ", "1", "3", "N", "S", "E"), start: POS = (1, 1), end: POS = (1, 1)) -> None:
     for x in maze:
         for y in x:
             if start == (x, y):
@@ -61,7 +61,7 @@ def show(maze:MAZE, symbol_table:ST=(" ", "1", "3", "N", "S", "E"), start:POS=(1
         print()
 
 
-def generatemaze(lx:int=25, ly:int=25)->MAZE:
+def generatemaze(lx: int = 25, ly: int = 25) -> MAZE:
     s = ((lx - 1) / 2) * ((ly - 1) / 2)
     maze = [[(1 if x % 2 == 0 or y % 2 == 0 else 0) for y in range(ly)] for x in range(lx)]
     a, b = [], []
@@ -90,8 +90,8 @@ def generatemaze(lx:int=25, ly:int=25)->MAZE:
 
 size = 25
 maze = generatemaze(size, size)
-start:POS = (1, 1)
-end:POS = (size - 2, size - 2)
+start: POS = (1, 1)
+end: POS = (size - 2, size - 2)
 show(maze, ("  ", "牆", "路", "NN", "起", "終"), start, end)
 path = astar_search(maze, start, end)
 print()
