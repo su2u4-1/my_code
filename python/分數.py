@@ -9,6 +9,11 @@ class Fraction:
                 pass
             elif type(args[0]) == Fraction:
                 pass
+            else:
+                try:
+                    int(args[0])
+                except:
+                    raise TypeError()
         elif len(args) == 2:
             pass
         else:
