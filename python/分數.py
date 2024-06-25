@@ -85,10 +85,11 @@ class Fraction(numbers.Number):
         return (self.numerator * other.denominator) // (self.denominator * other.numerator)
 
     def __mod__(self, other: N) -> Self:
-        return self.__sub__(self.__truediv__(other))
+        return self.__sub__(self.__floordiv__(other)*other)
 
     def __divmod__(self, other: N) -> tuple[int, Self]:
-        return self.__floordiv__(other), self.__sub__(self.__truediv__(other))
+        t = self.__floordiv__(other)
+        return t, self.__sub__(t*other)
 
     def __pow__(self, other: N, mod: N = None) -> Self:
         t = Fraction(self)
