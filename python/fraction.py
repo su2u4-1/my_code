@@ -216,7 +216,7 @@ class Fraction(numbers.Number):
         return complex(self.__float__())
 
     def __int__(self) -> int:
-        return self.numerator // self.denominator
+        return int(self.__float__())
 
     def __float__(self) -> float:
         return self.numerator / self.denominator
@@ -226,8 +226,8 @@ class Fraction(numbers.Number):
 
     def __round__(self, ndigits: int | None = None) -> int | float:
         if ndigits is None:
-            return self.__int__()
-        return round(self.__float__())
+            return round(self.__float__())
+        return round(self.__float__(), ndigits)
 
     def __trunc__(self) -> int:
         if self < 0:
@@ -235,16 +235,22 @@ class Fraction(numbers.Number):
         return self.__floor__()
 
     def __floor__(self) -> int:
-        t = self.__float__()
-        if t.is_integer():
-            return int(t)
-        return int(t) - 1
+        if self.numerator < 0:
+            t = self.__float__()
+            if t.is_integer():
+                return int(t)
+            return int(t) - 1
+        else:
+            return self.__int__()
 
     def __ceil__(self) -> int:
-        t = self.__float__()
-        if t.is_integer():
-            return int(t)
-        return int(t) + 1
+        if self.numerator > 0:
+            t = self.__float__()
+            if t.is_integer():
+                return int(t)
+            return int(t) + 1
+        else:
+            return self.__int__()
 
     def __lt__(self, other: N) -> bool:
         if type(other) != Fraction:
