@@ -85,27 +85,37 @@ class Fraction(numbers.Number):
         return (self.numerator * other.denominator) // (self.denominator * other.numerator)
 
     def __mod__(self, other: N) -> Self:
-        return self.__sub__(self.__floordiv__(other)*other)
+        return self - other * (self // other)
 
     def __divmod__(self, other: N) -> tuple[int, Self]:
-        t = self.__floordiv__(other)
-        return t, self.__sub__(t*other)
+        return self.__floordiv__(other), self.__mod__(other)
 
     def __pow__(self, other: N, mod: N = None) -> Self:
+        if self.numerator < 0:
+            raise ValueError()
+        if self.numerator == 0:
+            if other == 0:
+                raise ValueError()
+            return 0
+        if self.numerator == 1:
+            return 1
         t = Fraction(self)
         if type(other) == int or type(other) == float:
-            t.numerator**other
-            t.denominator**other
+            t.numerator = t.numerator**other
+            t.denominator = t.denominator**other
+            if type(other) == float:
+                t.approx()
         else:
             if type(other) != Fraction:
                 try:
                     other = Fraction(other)
                 except:
                     return NotImplemented
-            t.numerator**other.numerator
-            t.numerator ** (1 / other.denominator)
-            t.denominator**other.numerator
-            t.denominator ** (1 / other.denominator)
+            t.numerator = t.numerator**other.numerator
+            t.numerator = t.numerator ** (1 / other.denominator)
+            t.denominator = t.denominator**other.numerator
+            t.denominator = t.denominator ** (1 / other.denominator)
+            t.approx()
         if mod is None:
             return t
         return t.__mod__(mod)
@@ -135,32 +145,40 @@ class Fraction(numbers.Number):
         return Fraction(self.denominator * other.numerator, self.numerator * other.denominator)
 
     def __rfloordiv__(self, other: N) -> int:
-        t = self.__rtruediv__(other)
-        return t.numerator // t.denominator
+        if type(other) == int or type(other) == float:
+            return self.denominator * other // self.numerator
+        if type(other) != Fraction:
+            try:
+                other = Fraction(other)
+            except:
+                return NotImplemented
+        return self.denominator * other.numerator // self.numerator * other.denominator
 
     def __rmod__(self, other: N) -> Self:
-        t = self.__rtruediv__(other)
-        t.numerator %= t.denominator
-        return t
+        if type(other) != Fraction:
+            try:
+                other = Fraction(other)
+            except:
+                return NotImplemented
+        return other.__mod__(self)
 
     def __rdivmod__(self, other: N) -> tuple[int, Self]:
-        t = self.__rtruediv__(other)
-        f = t.numerator // t.denominator
-        t.numerator %= t.denominator
-        return f, t
+        return self.__rfloordiv__(other), self.__rmod__(other)
 
     def __rpow__(self, other: N, mod: N = None) -> Self:
-        try:
-            t = Fraction(other)
-        except:
-            return NotImplemented
-        t.numerator**self.numerator
-        t.numerator ** (1 / self.denominator)
-        t.denominator**self.numerator
-        t.denominator ** (1 / self.denominator)
+        if type(other) != Fraction:
+            try:
+                other = Fraction(other)
+            except:
+                return NotImplemented
+        other.numerator = other.numerator**self.numerator
+        other.numerator = other.numerator ** (1 / self.denominator)
+        other.denominator = other.denominator**self.numerator
+        other.denominator = other.denominator ** (1 / self.denominator)
+        other.approx()
         if mod is None:
-            return t
-        return t.__rmod__(mod)
+            return other
+        return other.__mod__(mod)
 
     def __iadd__(self, other: N) -> Self:
         return self.__add__(other)
@@ -269,6 +287,8 @@ class Fraction(numbers.Number):
         return self.__eq__(other) or self.__gt__(other)
 
     def __str__(self) -> str:
+        if self.numerator == 0:
+            return "0"
         if self.denominator == 1:
             return str(self.numerator)
         return f"{self.numerator}/{self.denominator}"
@@ -290,9 +310,6 @@ class Fraction(numbers.Number):
         if self.denominator < 0:
             t *= -1
             self.denominator = -self.denominator
-        for i in range(2, min(self.numerator, self.denominator) + 1):
-            if self.numerator % i == 0 and self.denominator % i == 0:
-                self.denominator /= i
-                self.numerator /= i
-        self.numerator = int(self.numerator * t)
-        self.denominator = int(self.denominator)
+        i = gcd(self.numerator, self.denominator)
+        self.numerator = int(self.numerator / i * t)
+        self.denominator = int(self.denominator / i)

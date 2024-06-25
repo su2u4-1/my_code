@@ -1,43 +1,87 @@
 from math import trunc, floor, ceil
-from 分數 import Fraction
+from fraction import Fraction
 
-a = "Fraction(3, 2)"
+a = Fraction(3, 2)
 aa = 1.5
-b = "Fraction(3, 4)"
-ba = 0.75
-c = 2
-d = 2.5
-tq = [a, b, c, d]
-ta = [aa, ba, c, d]
+b = Fraction(-3, 4)
+ba = -0.75
+c = 2.5
+tq = [a, b, c]
+ta = [aa, ba, c]
 
+for i in range(3):
+    for j in range(3):
+        print(tq[i], tq[j])
+        print("+")
+        if (tq[i] + tq[j]) != (ta[i] + ta[j]):
+            print("+", tq[i] + tq[j], end=", ans: ")
+            print(ta[i] + ta[j])
+        print("-")
+        if (tq[i] - tq[j]) != (ta[i] - ta[j]):
+            print("-", tq[i] - tq[j], end=", ans: ")
+            print(ta[i] - ta[j])
+        print("*")
+        if (tq[i] * tq[j]) != (ta[i] * ta[j]):
+            print("*", tq[i] * tq[j], end=", ans: ")
+            print(ta[i] * ta[j])
+        print("/")
+        if (tq[i] / tq[j]) != (ta[i] / ta[j]):
+            print("/", tq[i] / tq[j], end=", ans: ")
+            print(ta[i] / ta[j])
+        print("//")
+        if (tq[i] // tq[j]) != (ta[i] // ta[j]):
+            print("//", tq[i] // tq[j], end=", ans: ")
+            print(ta[i] // ta[j])
+        print("%")
+        if (tq[i] % tq[j]) != (ta[i] % ta[j]):
+            print("%", tq[i] % tq[j], end=", ans: ")
+            print(ta[i] % ta[j])
+        print("**")
+        if (abs(tq[i]) ** tq[j]) != (abs(ta[i]) ** ta[j]):
+            t = abs(tq[i]) ** tq[j]
+            t1 = abs(ta[i]) ** ta[j]
+            if round(t.numerator / t.denominator, 5) != round(t1, 5):
+                print("**", t, end=", ans: ")
+                print(t1)
+                print(t.numerator / t.denominator, t1, (t.numerator / t.denominator) == t1)
+        print("<")
+        if (tq[i] < tq[j]) != (ta[i] < ta[j]):
+            print("<", tq[i] < tq[j], end=", ans: ")
+            print(ta[i] < ta[j])
+        print("<=")
+        if (tq[i] <= tq[j]) != (ta[i] <= ta[j]):
+            print("<=", tq[i] <= tq[j], end=", ans: ")
+            print(ta[i] <= ta[j])
+        print("==")
+        if (tq[i] == tq[j]) != (ta[i] == ta[j]):
+            print("==", tq[i] == tq[j], end=", ans: ")
+            print(ta[i] == ta[j])
+        print("!=")
+        if (tq[i] != tq[j]) != (ta[i] != ta[j]):
+            print("!=", tq[i] != tq[j], end=", ans: ")
+            print(ta[i] != ta[j])
+        print(">")
+        if (tq[i] > tq[j]) != (ta[i] > ta[j]):
+            print(">", tq[i] > tq[j], end=", ans: ")
+            print(ta[i] > ta[j])
+        print(">=")
+        if (tq[i] >= tq[j]) != (ta[i] >= ta[j]):
+            print(">=", tq[i] >= tq[j], end=", ans: ")
+            print(ta[i] >= ta[j])
+        print("divmod")
+        if divmod(tq[i], tq[j]) != divmod(ta[i], ta[j]):
+            print("divmod", divmod(tq[i], tq[j]), end=", ans: ")
+            print(divmod(ta[i], ta[j]))
 
-t2 = ["print({0}+{1})",
-"print({0}-{1})",
-"print({0}*{1})",
-"print({0}/{1})",
-"print({0}//{1})",
-"print({0}%{1})",
-"print(divmod({0}, {1}))",
-"print({0}**{1})",
-"print({0}-{1})",
-"print({0}+{1})",
-"print({0}<{1})",
-"print({0}<={1})",
-"print({0}=={1})",
-"print({0}!={1})",
-"print({0}>{1})",
-"print({0}>={1})"]
-
-t1 = [
-"print(abs({0}))",
-"print(complex({0}))",
-"print(int({0}))",
-"print(float({0}))",
-"print(round({0}))",
-"print(trunc({0}))",
-"print(floor({0}))",
-"print(ceil({0}))",
-"print(str({0}))",
-"print(repr({0}))",
-"print('{{0}}'.format({0}))",
-"print(hash({0}))"]
+"""print(abs())
+print(complex())
+print(int())
+print(float())
+print(round())
+print(trunc())
+print(floor())
+print(ceil())
+print(str())
+print(repr())
+print('{}'.format())
+print(hash())"""
