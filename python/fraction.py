@@ -1,7 +1,7 @@
 from typing import Any, Self
 import numbers
 
-N = int | float | Self | Any
+N = int | float | Self
 
 
 def gcd(a: int, b: int) -> int:
