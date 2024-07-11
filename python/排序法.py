@@ -57,7 +57,7 @@ def selection_sort(l: list[int]) -> list[int]:
     return l
 
 
-# 插入排序法(error)
+# 插入排序法
 @t
 def insertion_sort(l: list[int]) -> list[int]:
     for i in range(1, len(l)):
@@ -72,8 +72,8 @@ def insertion_sort(l: list[int]) -> list[int]:
 def merge_sort(l: list[int]) -> list[int]:
     if len(l) <= 1:
         return l
-    rl = merge_sort(l[: len(l) // 2])
-    ll = merge_sort(l[len(l) // 2 :])
+    ll = merge_sort(l[: len(l) // 2])
+    rl = merge_sort(l[len(l) // 2 :])
     t = []
     rp, lp = 0, 0
     for _ in range(len(l)):
@@ -92,19 +92,39 @@ def merge_sort(l: list[int]) -> list[int]:
     return t
 
 
+# 快速排序法
+def quick_sort(l: list[int]) -> list[int]:
+    if len(l) <= 1:
+        return l
+    m = l[len(l) // 2]
+    rl, ll = [], []
+    for i in range(len(l)):
+        if i == len(l) // 2:
+            continue
+        elif l[i] < m:
+            ll.append(l[i])
+        else:
+            rl.append(l[i])
+    rl = quick_sort(rl)
+    ll = quick_sort(ll)
+    return ll + [m] + rl
+
+
 l = []
-for _ in range(10000):
+for _ in range(9999):
     l.append(ri(0, 99))
 ans = sorted(l)
 
 bubble_time = bubble_sort(l)
 cocktail_time = cocktail_sort(l)
 selection_time = selection_sort(l)
-merge_time = t(merge_sort)(l)
 insertion_time = insertion_sort(l)
+merge_time = t(merge_sort)(l)
+quick_time = t(quick_sort)(l)
 
 print("氣泡排序法所花時間:", bubble_time)
 print("雞尾酒排序法所花時間:", cocktail_time)
 print("選擇排序法所花時間:", selection_time)
-print("合併排序法所花時間:", merge_time)
 print("插入排序法所花時間:", insertion_time)
+print("合併排序法所花時間:", merge_time)
+print("快速排序法所花時間:", quick_time)
