@@ -1,11 +1,16 @@
 from random import randint as ri
 from os import system
+from time import sleep
+import keyboard
 
 DX = [0, 1, 0, -1]
 DY = [1, 0, -1, 0]
+Y = ("y", "Y", "yes", "Yes", "YES")
+POS = tuple[int, int]
+MAZE = list[list[int]]
 
 
-def astar_search(grid, start, end):
+def astar_search(grid: MAZE, start: POS, end: POS) -> list[POS]:
     open_list = []
     open_list.append((0, start))
     open_list.sort(key=lambda x: x[0])
@@ -40,40 +45,75 @@ def astar_search(grid, start, end):
                         open_list.sort(key=lambda x: x[0])
 
 
-def generatemaze(lx, ly):
+def generatemaze(lx: int = 25, ly: int = 25) -> MAZE:
     s = ((lx - 1) / 2) * ((ly - 1) / 2)
     maze = [[(1 if x % 2 == 0 or y % 2 == 0 else 0) for y in range(ly)] for x in range(lx)]
     a, b = [], []
-    a.append([1, 1])
-    b.append([2, 1, 1, 0])
-    b.append([1, 2, 0, 1])
+    a.append((1, 1))
+    b.append((2, 1, 1, 0))
+    b.append((1, 2, 0, 1))
     while len(a) < s:
         i = b[ri(0, len(b) - 1)]
-        if [i[0] + i[2], i[1] + i[3]] not in a:
-            a.append([i[0] + i[2], i[1] + i[3]])
+        if (i[0] + i[2], i[1] + i[3]) not in a:
+            a.append((i[0] + i[2], i[1] + i[3]))
             b.remove(i)
             maze[i[0]][i[1]] = 0
             for e in range(4):
-                f = [i[0] + i[2] + DX[e], i[1] + i[3] + DY[e]]
+                f = (i[0] + i[2] + DX[e], i[1] + i[3] + DY[e])
                 if 0 < f[0] < lx - 1 and 0 < f[1] < ly - 1:
                     if maze[f[0]][f[1]] == 1:
-                        b.append([f[0], f[1], DX[e], DY[e]])
+                        b.append((f[0], f[1], DX[e], DY[e]))
         else:
             b.remove(i)
-        for x in range(lx):
-            for y in range(ly):
-                if a.count([x, y]) > 1:
-                    a.remove([x, y])
     maze[1][1] = 2
     maze[lx - 2][ly - 2] = 3
     return maze
 
 
-def main():
+def showmaze(maze: MAZE, player: POS, size: int) -> None:
     system("cls")
+    print("按wasd移動，按e離開，按h作弊")
+    for i in range(max(player[0] - 10, 0), min(player[0] + 10, size)):
+        for j in range(max(player[1] - 10, 0), min(player[1] + 10, size)):
+            if (i, j) == player:
+                print("人", end="")
+            elif maze[i][j] == 1:
+                print("牆", end="")
+            elif maze[i][j] == 0:
+                print("  ", end="")
+            elif maze[i][j] == 2:
+                print("起", end="")
+            elif maze[i][j] == 3:
+                print("終", end="")
+            elif maze[i][j] == 4:
+                print("11", end="")
+        print()
+
+
+def key_pressed() -> str:
+    key = None
+    while True:
+        event = keyboard.read_event()
+        if event.event_type == keyboard.KEY_DOWN:
+            key = event.name
+        elif event.event_type == keyboard.KEY_UP and key is not None:
+            return key
+
+
+def flush_input():
+    try:
+        import msvcrt
+
+        while msvcrt.kbhit():
+            msvcrt.getch()
+    except ImportError:
+        import sys, termios
+
+        termios.tcflush(sys.stdin, termios.TCIOFLUSH)
+
+
+def main() -> None:
     size = input("歡迎來走迷宮\n請輸入迷宮邊長(只接受大於5的奇數，填錯一率設為25):")
-    c = size
-    cheating = False
     try:
         size = int(size)
     except:
@@ -83,59 +123,46 @@ def main():
     maze = generatemaze(size, size)
     px, py = 1, 1
 
+    showmaze(maze, (px, py), size)
     while True:
-        system("cls")
-        print(f"歡迎來走迷宮\n請輸入迷宮邊長(只接受大於5的奇數，填錯一率設為25):{c}\n")
-        for i in range(size):
-            for j in range(size):
-                if i == px and j == py:
-                    print("人", end="")
-                elif maze[i][j] == 1:
-                    print("牆", end="")
-                elif maze[i][j] == 0:
-                    print("  ", end="")
-                elif maze[i][j] == 2:
-                    print("起", end="")
-                elif maze[i][j] == 3:
-                    print("終", end="")
-                elif maze[i][j] == 4:
-                    print("11", end="")
-            print()
         if maze[px][py] == 3:
             print("\n你贏了")
-            break
-        if cheating:
-            print("\n你輸了")
-            break
-        walk = input("\n要往哪走(請用wasd):")
-        if walk == "w" or walk == "W":
+            return
+        key = key_pressed()
+        if key == "w":
             if maze[px - 1][py] != 1:
                 px -= 1
-        elif walk == "a" or walk == "A":
+                showmaze(maze, (px, py), size)
+        elif key == "a":
             if maze[px][py - 1] != 1:
                 py -= 1
-        elif walk == "s" or walk == "S":
+                showmaze(maze, (px, py), size)
+        elif key == "s":
             if maze[px + 1][py] != 1:
                 px += 1
-        elif walk == "d" or walk == "D":
+                showmaze(maze, (px, py), size)
+        elif key == "d":
             if maze[px][py + 1] != 1:
                 py += 1
-        elif walk == "exit":
-            print("\n離開遊戲")
+                showmaze(maze, (px, py), size)
+        elif key == "e":
+            print("\n關閉此局")
             return
-        elif walk == "help":
-            ch = input("\n作弊不好喔，確定要作弊嗎(y/n):")
-            if ch == "y" or ch == "Y" or ch == "yes" or ch == "Yes" or ch == "YES":
-                path = astar_search(maze, (1, 1), (size - 2, size - 2))
-                for i in path:
+        elif key == "h":
+            flush_input()
+            if input("\n作弊不好喔，確定要作弊嗎(y/n):") in Y:
+                for i in astar_search(maze, (1, 1), (size - 2, size - 2)):
                     maze[i[0]][i[1]] = 4
-                cheating = True
-    ch = input("\n要再玩一次嗎(y/n):")
-    if ch == "y" or ch == "Y" or ch == "yes" or ch == "Yes" or ch == "YES":
-        main()
-    else:
-        return
+                showmaze(maze, (px, py), size)
+                print("\n你輸了")
+                return
+        sleep(0.1)
 
 
 if __name__ == "__main__":
-    main()
+    while True:
+        main()
+        flush_input()
+        if input("\n要再玩一次嗎(y/n):") not in Y:
+            print("離開遊戲")
+            break
