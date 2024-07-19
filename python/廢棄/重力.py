@@ -70,8 +70,8 @@ while True:
                 dx = j.x - i.x
                 dy = j.y - i.y
                 if -250 < dx < 250 and -250 < dy < 250:
-                    r = (dx**2 + dy**2) ** 0.5
-                    cr = 10 / (r**2)
+                    r = dx**2 + dy**2
+                    cr = 10 / r
                     cx = dx * cr * t
                     cy = dy * cr * t
                     if cx >= 0:
