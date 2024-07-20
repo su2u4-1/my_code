@@ -19,12 +19,10 @@ t = 1
 pygame.init()
 W = pygame.display.Info().current_w
 H = pygame.display.Info().current_h
-screen = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
 pygame.display.set_caption("重力")
 font = pygame.font.Font(None, 40)
 clock = pygame.time.Clock()
-W = pygame.display.Info().current_w
-H = pygame.display.Info().current_h
 
 while True:
     for event in pygame.event.get():
@@ -32,6 +30,9 @@ while True:
             pygame.quit()
             sys.exit()
         elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                exit()
             if event.key == pygame.K_SPACE:
                 for i in point:
                     del i
@@ -64,44 +65,47 @@ while True:
         f = 1
     for i in point:
         for j in point:
-            if j.x - 1 <= i.x <= j.x + 1 and j.y - 1 <= i.y <= j.y + 1:
+            if i.x == j.x and i.y == j.y:
                 continue
+            dx = j.x - i.x
+            dy = j.y - i.y
+            if dx == 0:
+                dx = 1
+            if dy == 0:
+                dy = 1
+            if 5 < abs(dx) and 5 < abs(dy):
+                r = dx**2 + dy**2
+                cr = 1 / r
+                cx = dx * cr * t
+                cy = dy * cr * t
+                if cx >= 0:
+                    if cx > dx:
+                        cx = dx
+                else:
+                    if cx < dx:
+                        cx = dx
+                if cy >= 0:
+                    if cy > dy:
+                        cy = dy
+                else:
+                    if cy < dy:
+                        cy = dy
+                i.move.append([cx, cy])
             else:
-                dx = j.x - i.x
-                dy = j.y - i.y
-                if -250 < dx < 250 and -250 < dy < 250:
-                    r = dx**2 + dy**2
-                    cr = 10 / r
-                    cx = dx * cr * t
-                    cy = dy * cr * t
-                    if cx >= 0:
-                        if cx > dx:
-                            cx = dx
-                    else:
-                        if cx < dx:
-                            cx = dx
-                    if cy >= 0:
-                        if cy > dy:
-                            cy = dy
-                    else:
-                        if cy < dy:
-                            cy = dy
-                    i.move.append([cx, cy])
+                i.move.append([-(10000 / dx), -(10000 / dy)])
     for i in point:
         for j in i.move:
             i.x += j[0] * f
             i.y += j[1] * f
-            if i.x >= W:
-                i.x = W
-            elif i.x <= 0:
-                i.x = 0
-            if i.y >= H:
-                i.y = H
-            elif i.y <= 0:
-                i.y = 0
+        if i.x >= W or i.x < 0:
+            i.x = ri(0, W - 1)
+            i.y = ri(0, H - 1)
+        if i.y >= H or i.y < 0:
+            i.x = ri(0, W - 1)
+            i.y = ri(0, H - 1)
         i.move = []
     screen.fill((0, 0, 0))
     for i in point:
-        screen.set_at((round(i.x), round(i.y)), i.color)
+        pygame.draw.circle(screen, i.color, (i.x, i.y), 5)
     pygame.display.update()
     clock.tick(100)
