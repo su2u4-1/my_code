@@ -53,40 +53,50 @@ def generatemaze(lx: int = 25, ly: int = 25) -> MAZE:
     b.append((2, 1, 1, 0))
     b.append((1, 2, 0, 1))
     while len(a) < s:
-        i = b[ri(0, len(b) - 1)]
+        i = b.pop(ri(0, len(b) - 1))
         if (i[0] + i[2], i[1] + i[3]) not in a:
             a.append((i[0] + i[2], i[1] + i[3]))
-            b.remove(i)
             maze[i[0]][i[1]] = 0
             for e in range(4):
                 f = (i[0] + i[2] + DX[e], i[1] + i[3] + DY[e])
-                if 0 < f[0] < lx - 1 and 0 < f[1] < ly - 1:
-                    if maze[f[0]][f[1]] == 1:
-                        b.append((f[0], f[1], DX[e], DY[e]))
-        else:
-            b.remove(i)
+                if 0 < f[0] < lx - 1 and 0 < f[1] < ly - 1 and maze[f[0]][f[1]] == 1:
+                    b.append((f[0], f[1], DX[e], DY[e]))
     maze[1][1] = 2
     maze[lx - 2][ly - 2] = 3
     return maze
 
 
-def showmaze(maze: MAZE, player: POS, size: int) -> None:
+def showmaze(maze: MAZE, player: POS, size: int, f: bool = True) -> None:
     system("cls")
     print("按wasd移動，按e離開，按h作弊")
-    for i in range(max(player[0] - 10, 0), min(player[0] + 10, size)):
-        for j in range(max(player[1] - 10, 0), min(player[1] + 10, size)):
-            if (i, j) == player:
-                print("人", end="")
-            elif maze[i][j] == 1:
-                print("牆", end="")
-            elif maze[i][j] == 0:
-                print("  ", end="")
-            elif maze[i][j] == 2:
-                print("起", end="")
-            elif maze[i][j] == 3:
-                print("終", end="")
-            elif maze[i][j] == 4:
-                print("11", end="")
+    if f:
+        for i in range(0, size):
+            for j in range(0, size):
+                if (i, j) == player:
+                    print("人", end="")
+                elif maze[i][j] == 1:
+                    print("牆", end="")
+                elif maze[i][j] == 0:
+                    print("  ", end="")
+                elif maze[i][j] == 2:
+                    print("起", end="")
+                elif maze[i][j] == 3:
+                    print("終", end="")
+                elif maze[i][j] == 4:
+                    print("11", end="")
+    else:
+        for i in range(max(player[0] - 10, 0), min(player[0] + 10, size)):
+            for j in range(max(player[1] - 10, 0), min(player[1] + 10, size)):
+                if (i, j) == player:
+                    print("人", end="")
+                elif maze[i][j] == 1:
+                    print("牆", end="")
+                elif maze[i][j] == 0:
+                    print("  ", end="")
+                elif maze[i][j] == 2:
+                    print("起", end="")
+                elif maze[i][j] == 3:
+                    print("終", end="")
         print()
 
 
@@ -153,7 +163,7 @@ def main() -> None:
             if input("\n作弊不好喔，確定要作弊嗎(y/n):") in Y:
                 for i in astar_search(maze, (1, 1), (size - 2, size - 2)):
                     maze[i[0]][i[1]] = 4
-                showmaze(maze, (px, py), size)
+                showmaze(maze, (px, py), size, True)
                 print("\n你輸了")
                 return
         sleep(0.1)
