@@ -1,16 +1,22 @@
-n, k, c = map(int, input().split())
-r = list(map(int, input().split()))
-ans = 0
-while True:
-    ans += 1
-    r[0] -= c
-    a = r[0]
-    b = r[0]
-    for i in range(1, n):
-        r[i] -= c
-        a = max(r[i], a + r[i])
+def f(t) -> int:
+    a = R[0] - (C * t)
+    b = R[0] - (C * t)
+    for i in range(1, N):
+        a = max(R[i] - (C * t), a + R[i] - (C * t))
+        if a >= K:
+            return K
         if a > b:
             b = a
-    if b < k:
-        print(ans)
-        break
+    return b
+
+
+N, K, C = map(int, input().split())
+R = tuple(map(int, input().split()))
+l, r = 0, max(R)
+while l < r:
+    m = (l + r) // 2
+    if f(m) < K:
+        r = m
+    else:
+        l = m + 1
+print(l)
