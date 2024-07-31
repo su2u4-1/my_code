@@ -1,4 +1,4 @@
-import pygame, random, sys
+import pygame, random, os.path
 
 pygame.init()
 pygame.mixer.init()
@@ -8,12 +8,13 @@ H = pygame.display.Info().current_h
 screen = pygame.display.set_mode((W, H))
 pygame.display.set_caption("gametest")
 clock = pygame.time.Clock()
+path = os.path.abspath(".")
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("python\\射擊遊戲\\plane_up.png")
+        self.image = pygame.image.load(path + "\\plane_up.png")
         self.image = pygame.transform.scale(self.image, (120, 120))
         self.rect = self.image.get_rect()
         self.rect.center = (W / 2, H * 4 / 5)
@@ -53,7 +54,7 @@ class Player(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("python\\射擊遊戲\\bullet.png")
+        self.image = pygame.image.load(path + "\\bullet.png")
         self.image = pygame.transform.scale(self.image, (80, 80))
         self.rect = self.image.get_rect()
         self.rect.centerx = x
@@ -69,7 +70,7 @@ class Bullet(pygame.sprite.Sprite):
 class Red(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("python\\射擊遊戲\\redmonster_0.png")
+        self.image = pygame.image.load(path + "\\redmonster_0.png")
         self.image = pygame.transform.scale(self.image, (130, 130))
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(0, W - self.rect.width)
@@ -93,7 +94,7 @@ class Red(pygame.sprite.Sprite):
 class Eyes(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("python\\射擊遊戲\\eyesmonster.png")
+        self.image = pygame.image.load(path + "\\eyesmonster.png")
         self.image = pygame.transform.scale(self.image, (130, 130))
         self.rect = self.image.get_rect()
         self.cd = 200
@@ -127,7 +128,7 @@ class Eyes(pygame.sprite.Sprite):
 class Ball(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("python\\射擊遊戲\\ball.png")
+        self.image = pygame.image.load(path + "\\ball.png")
         self.image = pygame.transform.scale(self.image, (80, 80))
         self.rect = self.image.get_rect()
         self.rect.centerx = x
@@ -155,13 +156,13 @@ def hpbar(surf, hp, x, y):
     pygame.draw.rect(surf, (255, 255, 255), hpbox, 2)
 
 
-background_sound = pygame.mixer.Sound("python\\射擊遊戲\\backgroundmusic.mp3")
+background_sound = pygame.mixer.Sound(path + "\\backgroundmusic.mp3")
 background_sound.play()
-startbut = pygame.image.load("python\\射擊遊戲\\startbut.png")
+startbut = pygame.image.load(path + "\\startbut.png")
 main_page = True
 gameing = False
 gameover = False
-background_image = pygame.image.load("python\\射擊遊戲\\space.png")
+background_image = pygame.image.load(path + "\\space.png")
 all_sprites = pygame.sprite.Group()
 reds = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
@@ -182,7 +183,7 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            sys.exit()
+            exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             if W / 2 - 85 <= mouse_pos[0] <= W / 2 + 85 and H / 2 - 47 <= mouse_pos[1] <= H / 2 + 47:
@@ -192,7 +193,7 @@ while True:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
-                sys.exit()
+                exit()
     background_image = pygame.transform.scale(background_image, (W, H))
     screen.blit(background_image, (0, 0))
     if main_page:
@@ -204,7 +205,7 @@ while True:
     if gameing:
         all_sprites.draw(screen)
     if gameover:
-        gameover_image = pygame.image.load("python\\射擊遊戲\\gameover.png")
+        gameover_image = pygame.image.load(path + "\\gameover.png")
         gameover_image = pygame.transform.scale(gameover_image, (W, H))
         screen.blit(gameover_image, (0, 0))
         font = pygame.font.Font(None, 200)
