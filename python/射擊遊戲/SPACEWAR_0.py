@@ -8,7 +8,7 @@ H = pygame.display.Info().current_h
 screen = pygame.display.set_mode((W, H))
 pygame.display.set_caption("gametest")
 clock = pygame.time.Clock()
-path = os.path.abspath(".")
+path = os.path.dirname(os.path.abspath(__file__))
 
 
 class Player(pygame.sprite.Sprite):
