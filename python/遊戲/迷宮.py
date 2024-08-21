@@ -84,6 +84,7 @@ def showmaze(maze: MAZE, player: POS, size: int, f: bool = True) -> None:
                     print("終", end="")
                 elif maze[i][j] == 4:
                     print("11", end="")
+            print()
     else:
         for i in range(max(player[0] - 10, 0), min(player[0] + 10, size)):
             for j in range(max(player[1] - 10, 0), min(player[1] + 10, size)):
@@ -97,7 +98,7 @@ def showmaze(maze: MAZE, player: POS, size: int, f: bool = True) -> None:
                     print("起", end="")
                 elif maze[i][j] == 3:
                     print("終", end="")
-        print()
+            print()
 
 
 def key_pressed() -> str:
