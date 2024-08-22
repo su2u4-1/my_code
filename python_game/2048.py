@@ -1,8 +1,10 @@
-from keyboard import read_key
 from os import system
 from random import randrange, choices
 from sys import stdin, stdout
 from time import sleep
+from typing import Callable
+
+from keyboard import read_key
 
 # from textgame import Game
 
@@ -100,32 +102,26 @@ class Game2048:
         if o in ("Y", "y", "Yes", "yes"):
             o = input("change size?[y/n]: ")
             if o in ("Y", "y", "Yes", "yes"):
-                while True:
-                    s = input("size: ")
-                    try:
-                        s = int(s)
-                        if s > 1:
-                            break
-                        else:
-                            print("input error")
-                    except:
-                        print("input error")
+                s = get_int("size: ", lambda x: x > 1)
             else:
                 s = self.R
             self.init(s)
             self.main()
 
 
-if __name__ == "__main__":
+def get_int(text: str, condition: Callable[[int], bool]):
     while True:
-        s = input("size: ")
+        s = input(text)
         try:
             s = int(s)
-            if s > 1:
-                break
+            if condition(s):
+                return s
             else:
                 print("input error")
         except:
             print("input error")
-    game = Game2048(s)
+
+
+if __name__ == "__main__":
+    game = Game2048(get_int("size: ", lambda x: x > 1))
     game.main()
