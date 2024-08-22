@@ -99,7 +99,7 @@ class Game_2048:
         if o in ("Y", "y", "Yes", "yes"):
             o = input("change size?[y/n]: ")
             if o in ("Y", "y", "Yes", "yes"):
-                s = get_int("size: ", lambda x: x > 1)
+                s = get_int("size: ", "must be great than 1", lambda x: x > 1)
             else:
                 s = self.R
             self.init(s)
@@ -107,5 +107,5 @@ class Game_2048:
 
 
 if __name__ == "__main__":
-    game = Game_2048(get_int("size: ", lambda x: x > 1))
+    game = Game_2048(get_int("size: ", "must be great than 1", lambda x: x > 1))
     game.main()

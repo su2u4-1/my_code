@@ -21,9 +21,9 @@ class Game:
     def main(self) -> None:
         d = ""
         while True:
-            if d == "":
+            if d == "...":
                 ...
-            elif d == "":
+            elif d == "...":
                 ...
             ...
             if self.check():
@@ -46,7 +46,7 @@ class Game:
 """
 
 
-def get_int(text: str, condition: Callable[[int], bool]):
+def get_int(text: str, error_text: str, condition: Callable[[int], bool]):
     while True:
         s = input(text)
         try:
@@ -54,6 +54,6 @@ def get_int(text: str, condition: Callable[[int], bool]):
             if condition(s):
                 return s
             else:
-                print("input error")
+                print("input error:", error_text)
         except:
-            print("input error")
+            print("input error: must be an integer")

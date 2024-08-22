@@ -101,8 +101,8 @@ class Game_maze:
         if o in ("Y", "y", "Yes", "yes"):
             o = input("change size?[y/n]: ")
             if o in ("Y", "y", "Yes", "yes"):
-                w = get_int("w: ", lambda x: x > 0)
-                h = get_int("h: ", lambda x: x > 0)
+                w = get_int("w: ", "must be great than 0", lambda x: x > 0)
+                h = get_int("h: ", "must be great than 0", lambda x: x > 0)
             else:
                 w, h = self.w, self.h
             self.init(w, h, (0, 0), (w - 1, h - 1), self.symbol)
@@ -110,7 +110,7 @@ class Game_maze:
 
 
 if __name__ == "__main__":
-    w = get_int("w: ", lambda x: x > 0)
-    h = get_int("h: ", lambda x: x > 0)
+    w = get_int("w: ", "must be great than 0", lambda x: x > 0)
+    h = get_int("h: ", "must be great than 0", lambda x: x > 0)
     maze = Game_maze(w, h, (0, 0), (w - 1, h - 1), ("  ", "▓▓", "SP", "EP", "PL"))
     maze.main()
