@@ -1,16 +1,13 @@
 from os import system
 from random import randrange, choices
-from sys import stdin, stdout
 from time import sleep
-from typing import Callable
 
 from keyboard import read_key
 
-# from textgame import Game
+from textgame import get_int
 
 
-# class Game2048(Game):
-class Game2048:
+class Game_2048:
     def __init__(self, r: int) -> None:
         self.init(r)
 
@@ -18,6 +15,7 @@ class Game2048:
         self.D = [(-1, 0), (0, -1), (1, 0), (0, 1)]
         self.R = r
         self.m = [[0 for _ in range(r)] for _ in range(r)]
+        self.add()
         self.add()
 
     def check(self) -> int:
@@ -75,7 +73,6 @@ class Game2048:
 
     def main(self) -> None:
         d = ""
-        t = 0
         while True:
             if d == "w" or d == "up":
                 t = self.move(range(1, self.R), range(self.R), 0)
@@ -85,6 +82,8 @@ class Game2048:
                 t = self.move(range(self.R - 2, -1, -1), range(self.R), 2)
             elif d == "d" or d == "right":
                 t = self.move(range(self.R), range(self.R - 2, -1, -1), 3)
+            else:
+                t = 1
             if t == 2:
                 print("game over")
                 break
@@ -96,8 +95,6 @@ class Game2048:
         self.again()
 
     def again(self) -> None:
-        stdin.flush()
-        stdout.flush()
         o = input("again?[y/n]: ")
         if o in ("Y", "y", "Yes", "yes"):
             o = input("change size?[y/n]: ")
@@ -109,19 +106,6 @@ class Game2048:
             self.main()
 
 
-def get_int(text: str, condition: Callable[[int], bool]):
-    while True:
-        s = input(text)
-        try:
-            s = int(s)
-            if condition(s):
-                return s
-            else:
-                print("input error")
-        except:
-            print("input error")
-
-
 if __name__ == "__main__":
-    game = Game2048(get_int("size: ", lambda x: x > 1))
+    game = Game_2048(get_int("size: ", lambda x: x > 1))
     game.main()
