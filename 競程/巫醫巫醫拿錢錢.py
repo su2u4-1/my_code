@@ -1,3 +1,4 @@
+# 15/69 WA https://tioj.ck.tp.edu.tw/problems/2340
 n, m = map(int, input().split())
 s, t = map(int, input().split())
 su, sd = False, False
