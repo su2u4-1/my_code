@@ -12,17 +12,20 @@ class Game_guess_number:
         self.ans = randint(a, b)
         self.a = a
         self.b = b
+        self.n = 0
 
     def main(self) -> None:
         while True:
             a = get_int("guess a number: ", "must be within range", lambda x: self.a <= x <= self.b)
+            self.n += 1
             if a > self.ans:
-                print("too big")
+                print("\033[31mtoo big\033[0m")
             elif a < self.ans:
-                print("too small")
+                print("\033[34mtoo small\033[0m")
             else:
-                print("you win")
+                print("\033[32myou win\033[0m")
                 print("game over")
+                print("round:", self.n)
                 break
         self.again()
 
