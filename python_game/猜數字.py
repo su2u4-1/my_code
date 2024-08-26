@@ -1,7 +1,7 @@
 from os import system
 from random import randint
 
-from textgame import get_int
+from Game import get_int
 
 
 class Game_guess_number:

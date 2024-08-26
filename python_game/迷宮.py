@@ -4,10 +4,9 @@ from time import sleep
 
 from keyboard import read_key
 
-from textgame import get_int
+from Game import get_int, D4
 
-DX = (0, 1, 0, -1)
-DY = (1, 0, -1, 0)
+
 CHANGE = {(0, 0): 4, (0, 1): 2, (0, 2): 1, (0, 3): 8, (1, 0): 1, (1, 1): 8, (1, 2): 4, (1, 3): 2}
 
 
@@ -31,8 +30,8 @@ class Game_maze:
         a: list[tuple[int, int]] = [self.sp]
         b: list[tuple[int, int, int, int, int, int]] = []
         for i in range(4):
-            if 0 <= a[0][0] + DY[i] < self.h and 0 <= a[0][1] + DX[i] < self.w:
-                b.append((a[0][0], a[0][1], DY[i], DX[i], CHANGE[(0, i)], CHANGE[(1, i)]))
+            if 0 <= a[0][0] + D4[i][1] < self.h and 0 <= a[0][1] + D4[i][0] < self.w:
+                b.append((a[0][0], a[0][1], D4[i][1], D4[i][0], CHANGE[(0, i)], CHANGE[(1, i)]))
         while True:
             if len(b) > 0:
                 s = b.pop(randrange(len(b)))
@@ -41,8 +40,8 @@ class Game_maze:
                     self.maze[s[0] + s[2]][s[1] + s[3]] += s[5]
                     a.append((s[0] + s[2], s[1] + s[3]))
                     for i in range(4):
-                        if 0 <= a[-1][0] + DY[i] < self.h and 0 <= a[-1][1] + DX[i] < self.w:
-                            b.append((a[-1][0], a[-1][1], DY[i], DX[i], CHANGE[(0, i)], CHANGE[(1, i)]))
+                        if 0 <= a[-1][0] + D4[i][1] < self.h and 0 <= a[-1][1] + D4[i][0] < self.w:
+                            b.append((a[-1][0], a[-1][1], D4[i][1], D4[i][0], CHANGE[(0, i)], CHANGE[(1, i)]))
             else:
                 break
 

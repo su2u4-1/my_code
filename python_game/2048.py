@@ -4,7 +4,7 @@ from time import sleep
 
 from keyboard import read_key
 
-from textgame import get_int
+from Game import get_int, D4
 
 
 class Game_2048:
@@ -12,7 +12,6 @@ class Game_2048:
         self.init(r)
 
     def init(self, r: int) -> None:
-        self.D = [(-1, 0), (0, -1), (1, 0), (0, 1)]
         self.R = r
         self.m = [[0 for _ in range(r)] for _ in range(r)]
         self.add()
@@ -25,8 +24,8 @@ class Game_2048:
         for i in range(self.R):
             for j in range(self.R):
                 for k in range(4):
-                    if 0 <= i + self.D[k][0] < self.R and 0 <= j + self.D[k][1] < self.R:
-                        if self.m[i][j] == self.m[i + self.D[k][0]][j + self.D[k][1]]:
+                    if 0 <= i + D4[k][0] < self.R and 0 <= j + D4[k][1] < self.R:
+                        if self.m[i][j] == self.m[i + D4[k][0]][j + D4[k][1]]:
                             return 1
         return 2
 
@@ -59,15 +58,15 @@ class Game_2048:
                     continue
                 now_i, now_j = i, j
                 while True:
-                    if self.m[now_i + self.D[d][0]][now_j + self.D[d][1]] == 0:
-                        self.m[now_i + self.D[d][0]][now_j + self.D[d][1]] = self.m[now_i][now_j]
+                    if self.m[now_i + D4[d][0]][now_j + D4[d][1]] == 0:
+                        self.m[now_i + D4[d][0]][now_j + D4[d][1]] = self.m[now_i][now_j]
                         self.m[now_i][now_j] = 0
-                    elif self.m[now_i][now_j] == self.m[now_i + self.D[d][0]][now_j + self.D[d][1]]:
+                    elif self.m[now_i][now_j] == self.m[now_i + D4[d][0]][now_j + D4[d][1]]:
                         self.m[now_i][now_j] = 0
-                        self.m[now_i + self.D[d][0]][now_j + self.D[d][1]] *= 2
+                        self.m[now_i + D4[d][0]][now_j + D4[d][1]] *= 2
                         break
-                    now_i, now_j = now_i + self.D[d][0], now_j + self.D[d][1]
-                    if now_i + self.D[d][0] < 0 or now_i + self.D[d][0] >= self.R or now_j + self.D[d][1] < 0 or now_j + self.D[d][1] >= self.R:
+                    now_i, now_j = now_i + D4[d][0], now_j + D4[d][1]
+                    if now_i + D4[d][0] < 0 or now_i + D4[d][0] >= self.R or now_j + D4[d][1] < 0 or now_j + D4[d][1] >= self.R:
                         break
         return self.check()
 
