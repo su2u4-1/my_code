@@ -18,16 +18,13 @@ class Game_2048:
         self.add()
 
     def check(self) -> int:
-        for i in self.m:
-            if 0 in i:
-                return 0
         for i in range(self.R):
             for j in range(self.R):
                 for k in range(4):
                     if 0 <= i + D4[k][0] < self.R and 0 <= j + D4[k][1] < self.R:
                         if self.m[i][j] == self.m[i + D4[k][0]][j + D4[k][1]]:
-                            return 1
-        return 2
+                            return True
+        return False
 
     def add(self) -> None:
         while True:
@@ -39,10 +36,7 @@ class Game_2048:
     def show(self) -> None:
         system("cls")
         str_m = [[str(j) for j in i] for i in self.m]
-        long = 1
-        for i in str_m:
-            for j in range(self.R):
-                long = max(long, len(i[j]))
+        long = max(max(len(j) for j in i) for i in str_m)
         for i in self.m:
             for j in range(self.R):
                 if i[j] == 0:
@@ -52,6 +46,7 @@ class Game_2048:
             print()
 
     def move(self, range1: range, range2: range, d: int) -> int:
+        f = False
         for i in range1:
             for j in range2:
                 if self.m[i][j] == 0:
@@ -61,26 +56,35 @@ class Game_2048:
                     if self.m[now_i + D4[d][0]][now_j + D4[d][1]] == 0:
                         self.m[now_i + D4[d][0]][now_j + D4[d][1]] = self.m[now_i][now_j]
                         self.m[now_i][now_j] = 0
+                        f = True
                     elif self.m[now_i][now_j] == self.m[now_i + D4[d][0]][now_j + D4[d][1]]:
                         self.m[now_i][now_j] = 0
                         self.m[now_i + D4[d][0]][now_j + D4[d][1]] *= 2
+                        f = True
+                        break
+                    else:
                         break
                     now_i, now_j = now_i + D4[d][0], now_j + D4[d][1]
                     if now_i + D4[d][0] < 0 or now_i + D4[d][0] >= self.R or now_j + D4[d][1] < 0 or now_j + D4[d][1] >= self.R:
                         break
-        return self.check()
+        if f:
+            return 0
+        elif self.check():
+            return 1
+        else:
+            return 2
 
     def main(self) -> None:
         d = ""
         while True:
             if d == "w" or d == "up":
-                t = self.move(range(1, self.R), range(self.R), 0)
+                t = self.move(range(1, self.R), range(self.R), 3)
             elif d == "a" or d == "left":
-                t = self.move(range(self.R), range(1, self.R), 1)
+                t = self.move(range(self.R), range(1, self.R), 2)
             elif d == "s" or d == "down":
-                t = self.move(range(self.R - 2, -1, -1), range(self.R), 2)
+                t = self.move(range(self.R - 2, -1, -1), range(self.R), 1)
             elif d == "d" or d == "right":
-                t = self.move(range(self.R), range(self.R - 2, -1, -1), 3)
+                t = self.move(range(self.R), range(self.R - 2, -1, -1), 0)
             else:
                 t = 1
             if t == 2:
