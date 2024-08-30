@@ -43,7 +43,8 @@ class Game_guess_number:
             self.main()
 
 
-a = get_int("lower limit: ", "must be greater than or equal to 0", lambda x: x >= 0)
-b = get_int("upper limit: ", "must be greater than or equal to the lower limit", lambda x: x >= a)
-game = Game_guess_number(a, b)
-game.main()
+if __name__ == "__main__":
+    a = get_int("lower limit: ", "must be greater than or equal to 0", lambda x: x >= 0)
+    b = get_int("upper limit: ", "must be greater than or equal to the lower limit", lambda x: x >= a)
+    game = Game_guess_number(a, b)
+    game.main()
