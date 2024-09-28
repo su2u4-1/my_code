@@ -96,7 +96,11 @@ class Button:
 
     def check(self, mx, my, start_x, start_y):
         global do_something
-        if start_x + self.x_ <= mx <= start_x + self.x_ + self.w_ and start_y + self.y_ <= my <= start_y + self.y_ + self.h_ and surface_dict[surface_list[-1]] == self.surface:
+        if (
+            start_x + self.x_ <= mx <= start_x + self.x_ + self.w_
+            and start_y + self.y_ <= my <= start_y + self.y_ + self.h_
+            and surface_dict[surface_list[-1]] == self.surface
+        ):
             self.text_color_ = self.text_color2
             self.frame_ = True
             if pygame.mouse.get_pressed()[0] and self.time <= 10:
@@ -497,12 +501,24 @@ def add_surface(surface_name):
             surface.object.append(Label(50, 350, 150, 40, "剩餘點數:{0}", "player.remaining_points", surface))
         case "Base":
             surface = Surface(surface_name, 680, 450)
-            surface.object.append(Button(50, 50, 50, 50, "設定", False, surface, "print(f'button {self.text} is pressed')\nadd_surface('Settings')"))
-            surface.object.append(Button(500, 50, 130, 50, "出門", False, surface, "print(f'button {self.text} is pressed')\nadd_surface('Map')"))
-            surface.object.append(Button(500, 125, 130, 50, "角色", False, surface, "print(f'button {self.text} is pressed')\nadd_surface('Character')"))
-            surface.object.append(Button(500, 200, 130, 50, "合成", False, surface, "print(f'button {self.text} is pressed')\nadd_surface('Synthesis')"))
-            surface.object.append(Button(500, 275, 130, 50, "鍛造", False, surface, "print(f'button {self.text} is pressed')\nadd_surface('Forging')"))
-            surface.object.append(Button(500, 350, 130, 50, "倉庫", False, surface, "print(f'button {self.text} is pressed')\nadd_surface('Warehouse')"))
+            surface.object.append(
+                Button(50, 50, 50, 50, "設定", False, surface, "print(f'button {self.text} is pressed')\nadd_surface('Settings')")
+            )
+            surface.object.append(
+                Button(500, 50, 130, 50, "出門", False, surface, "print(f'button {self.text} is pressed')\nadd_surface('Map')")
+            )
+            surface.object.append(
+                Button(500, 125, 130, 50, "角色", False, surface, "print(f'button {self.text} is pressed')\nadd_surface('Character')")
+            )
+            surface.object.append(
+                Button(500, 200, 130, 50, "合成", False, surface, "print(f'button {self.text} is pressed')\nadd_surface('Synthesis')")
+            )
+            surface.object.append(
+                Button(500, 275, 130, 50, "鍛造", False, surface, "print(f'button {self.text} is pressed')\nadd_surface('Forging')")
+            )
+            surface.object.append(
+                Button(500, 350, 130, 50, "倉庫", False, surface, "print(f'button {self.text} is pressed')\nadd_surface('Warehouse')")
+            )
         case "Settings":
             pass
         case _:
