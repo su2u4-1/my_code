@@ -11,7 +11,14 @@ CHANGE = {(0, 0): 4, (0, 1): 2, (0, 2): 1, (0, 3): 8, (1, 0): 1, (1, 1): 8, (1, 
 
 
 class Game_maze:
-    def __init__(self, w: int, h: int, start_point: tuple[int, int], end_point: tuple[int, int], symbol: tuple[str, str, str, str, str] = (" ", "▓", "S", "E", "P")):
+    def __init__(
+        self,
+        w: int,
+        h: int,
+        start_point: tuple[int, int],
+        end_point: tuple[int, int],
+        symbol: tuple[str, str, str, str, str] = (" ", "▓", "S", "E", "P"),
+    ):
         self.init(w, h, start_point, end_point, symbol)
 
     def init(self, w: int, h: int, start_point: tuple[int, int], end_point: tuple[int, int], symbol: tuple[str, str, str, str, str]):

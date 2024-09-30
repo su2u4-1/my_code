@@ -302,7 +302,9 @@ def judgment(option):
                 judgment(line)
                 time.sleep(0.5)
                 with open("C:/_game_/%s.txt" % (line), "w+") as f:
-                    f.write(f"{level}\n{player_agi}\n{player_atk}\n{player_def}\n{player_HP}\n{player_name}\n{player_property[0]}\n{player_property[1]}\n{player_property[2]}\n{player_property[3]}\n{player_property[4]}\n{exp}\n{money}\n{residualfivepoints}\n{residualpoints}\n{difficulty}")
+                    f.write(
+                        f"{level}\n{player_agi}\n{player_atk}\n{player_def}\n{player_HP}\n{player_name}\n{player_property[0]}\n{player_property[1]}\n{player_property[2]}\n{player_property[3]}\n{player_property[4]}\n{exp}\n{money}\n{residualfivepoints}\n{residualpoints}\n{difficulty}"
+                    )
             except FileNotFoundError:
                 print("\n路徑出錯,檔案未儲存")
             except:
@@ -471,7 +473,9 @@ def fighting(monster_ability, player_ability):  # atk,def,agi,HP
                         property = player_property[2]
                     if monster_ability[a][6] == "土":
                         property = player_property[1]
-                    atk = (player_ability[0] - (player_ability[0] * (monster_ability[a][2] / monster_ability[a][2] + player_ability[1]))) * property
+                    atk = (
+                        player_ability[0] - (player_ability[0] * (monster_ability[a][2] / monster_ability[a][2] + player_ability[1]))
+                    ) * property
                     if atk <= 0:
                         atk = 1
                         time.sleep(0.25)
@@ -504,7 +508,9 @@ def fighting(monster_ability, player_ability):  # atk,def,agi,HP
                         property = player_property[2]
                     if monster_ability[a][6] == "土":
                         property = player_property[1]
-                    atk = (monster_ability[a][1] - (monster_ability[a][1] * (player_ability[1] / monster_ability[a][2] + player_ability[1]))) / property
+                    atk = (
+                        monster_ability[a][1] - (monster_ability[a][1] * (player_ability[1] / monster_ability[a][2] + player_ability[1]))
+                    ) / property
                     if atk <= 0:
                         atk = 1
                     time.sleep(0.25)
