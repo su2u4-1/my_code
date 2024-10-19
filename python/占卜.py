@@ -72,24 +72,24 @@ URL3 = "https://www.eee-learning.com/book/neweee"
 URL4 = "https://www.eee-learning.com/simple64/"
 
 
-def divination(text):
+def divination(text: str):
     d = ""
     e = ""
     for _ in range(6):
         # 一變39,43
-        a = ch((39, 43), (11, 36))
+        a = ch((39, 43), (11, 36))[0]
         # 二變31,35,39
         if a == 39:
-            a -= ch((3, 7), (10, 9)) + 1
+            a -= ch((3, 7), (10, 9))[0] + 1
         elif a == 43:
-            a -= ch((3, 7), (11, 10)) + 1
+            a -= ch((3, 7), (11, 10))[0] + 1
         # 三變24,28,32,36
         if a == 31:
-            a -= ch((3, 7), (8, 7))
+            a -= ch((3, 7), (8, 7))[0]
         elif a == 35:
-            a -= ch((3, 7), (9, 8))
+            a -= ch((3, 7), (9, 8))[0]
         elif a == 39:
-            a -= ch((3, 7), (10, 9))
+            a -= ch((3, 7), (10, 9))[0]
         d += str(a % 8)
         e += str(0 if a > 30 else 1)
     if len(text) < 1:

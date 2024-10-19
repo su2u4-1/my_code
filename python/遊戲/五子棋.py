@@ -51,6 +51,7 @@ def main() -> None:
     first = 0
     gameContinue = True
     chessBoard = [[0 for _ in range(SL)] for _ in range(SL)]
+    winner_line = None
     while True:
         mousex, mousey = pygame.mouse.get_pos()
         mx = fl(mousex / 44)
@@ -98,7 +99,7 @@ def main() -> None:
         else:
             turn = "White"
             pygame.draw.circle(screen, (255, 255, 255), (mx * 44 + 28, my * 44 + 28), 15, width=3)
-        if not gameContinue and type(winner_line) == tuple:
+        if not gameContinue and winner_line is not None:
             pygame.draw.line(screen, (255, 0, 0), winner_line[0], winner_line[1], width=3)
         pygame.draw.rect(screen, (0, 0, 0), (0, 670, 60, 30), 5)
         screen.blit(font.render("reset", True, (0, 0, 0)), (5, 675))

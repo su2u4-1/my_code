@@ -4,7 +4,7 @@ from time import time
 from typing import Callable
 
 
-def t(f: Callable) -> Callable:
+def t(f: Callable[[list[int]], list[int]]) -> Callable[[list[int]], float | int]:
     def t1(l: list[int]) -> float | int:
         s = time()
         result = f(l.copy())
@@ -74,7 +74,7 @@ def merge_sort(l: list[int]) -> list[int]:
         return l
     ll = merge_sort(l[: len(l) // 2])
     rl = merge_sort(l[len(l) // 2 :])
-    t = []
+    t: list[int] = []
     rp, lp = 0, 0
     for _ in range(len(l)):
         if rl[rp] < ll[lp]:
@@ -97,7 +97,8 @@ def quick_sort(l: list[int]) -> list[int]:
     if len(l) <= 1:
         return l
     m = l[len(l) // 2]
-    rl, ll = [], []
+    ll: list[int] = []
+    rl: list[int] = []
     for i in range(len(l)):
         if i == len(l) // 2:
             continue
@@ -110,9 +111,7 @@ def quick_sort(l: list[int]) -> list[int]:
     return ll + [m] + rl
 
 
-l = []
-for _ in range(9999):
-    l.append(ri(0, 99))
+l = [ri(0, 99) for _ in range(9999)]
 ans = sorted(l)
 
 bubble_time = bubble_sort(l)

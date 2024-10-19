@@ -4,20 +4,18 @@ from random import randint as ri
 
 # 設定pygame
 pygame.init()
-W = pygame.display.Info().current_w
-H = pygame.display.Info().current_h
-W = round(W / 10) - 1
-H = round(H / 10) - 3
+W = round(pygame.display.Info().current_w / 10) - 1
+H = round(pygame.display.Info().current_h / 10) - 3
 screen = pygame.display.set_mode((W * 10, H * 10), pygame.RESIZABLE)
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 40)
 
 # 設定變數
 score = 0
-snake = [[1, 1], [1, 2], [1, 3]]
-tail = [1, 0]
-dire = [0, 0]
-apple = []
+snake = [(1, 1), (1, 2), (1, 3)]
+tail = (1, 0)
+dire = (0, 0)
+apple: list[tuple[int, int]] = []
 
 # 主迴圈
 while True:
@@ -29,22 +27,20 @@ while True:
             exit()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
-                dire = [0, -1]
+                dire = (0, -1)
             elif event.key == pygame.K_a:
-                dire = [-1, 0]
+                dire = (-1, 0)
             elif event.key == pygame.K_s:
-                dire = [0, 1]
+                dire = (0, 1)
             elif event.key == pygame.K_d:
-                dire = [1, 0]
+                dire = (1, 0)
             elif event.key == pygame.K_SPACE:
-                dire = [0, 0]
+                dire = (0, 0)
 
     # 更新內容
-    if dire != [0, 0]:
-        head = snake[-1].copy()
-        head[0] += dire[0]
-        head[1] += dire[1]
-        snake.append(head)
+    if dire != (0, 0):
+        head = snake[-1]
+        snake.append((head[0] + dire[0], head[1] + dire[1]))
         tail = snake.pop(0)
 
     for i in apple:
@@ -64,7 +60,7 @@ while True:
         exit()
 
     if len(apple) < 50:
-        a = [ri(0, W - 1), ri(0, H - 1)]
+        a = (ri(0, W - 1), ri(0, H - 1))
         if a not in apple and a not in snake:
             apple.append(a)
 

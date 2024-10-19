@@ -7,13 +7,11 @@ L = 15
 
 # 設定pygame
 pygame.init()
-W, H = pygame.display.get_desktop_sizes()[0]
-W = W // L - 1
-H = (H - 23) // L - 1
+w, h = pygame.display.get_desktop_sizes()[0]
 pygame.display.set_caption("貪吃蛇")
-screen = pygame.display.set_mode((W * L, H * L), pygame.RESIZABLE)
-W -= 140 // L
-H -= 80 // L
+screen = pygame.display.set_mode(((w // L - 1) * L, ((h - 23) // L - 1) * L), pygame.RESIZABLE)
+W = w // L - 1 - 140 // L
+H = (h - 50) // L - 1 - 80 // L
 clock = pygame.time.Clock()
 font20 = pygame.font.Font(None, 20)
 font40 = pygame.font.Font(None, 40)
@@ -21,11 +19,11 @@ font40 = pygame.font.Font(None, 40)
 # 設定變數
 gameRun = True
 score = 0
-snake = [[1, 1], [1, 2], [1, 3]]
-tail = [1, 0]
+snake = [(1, 1), (1, 2), (1, 3)]
+tail = (1, 0)
 dire = (0, 0)
 c = [[ri(150, 200) for _ in range(H)] for _ in range(W)]
-apple = []
+apple: list[tuple[int, int]] = []
 
 # 主迴圈
 while True:
@@ -60,14 +58,14 @@ while True:
                     pygame.quit()
                     print("score:", score)
                     exit()
+                case _:
+                    pass
 
     # 如果方向不是停且遊戲執行中
     if dire != (0, 0) and gameRun:
         # 從頭部往移動方向延伸一格
-        head = snake[-1].copy()
-        head[0] += dire[0]
-        head[1] += dire[1]
-        snake.append(head)
+        head = snake[-1]
+        snake.append((head[0] + dire[0], head[1] + dire[1]))
         # 去掉尾巴一格
         tail = snake.pop(0)
 
@@ -84,7 +82,7 @@ while True:
 
     # 如果蘋果數量未到上限就新增蘋果
     if len(apple) <= (W * H / 500) - (len(snake) / L) and gameRun:
-        a = [ri(0, W - 1), ri(0, H - 1)]
+        a = (ri(0, W - 1), ri(0, H - 1))
         if a not in snake and a not in apple and (L > 15 or a[0] > 15 or a[1] > 1):
             apple.append(a)
 

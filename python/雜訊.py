@@ -11,12 +11,7 @@ pygame.display.set_caption("雜訊")
 font = pygame.font.Font(None, 40)
 clock = pygame.time.Clock()
 
-map = []
-for x in range(round(W / w)):
-    a = []
-    for y in range(round(L / w)):
-        a.append([128, 128, 128])
-    map.append(a)
+map = [[[128, 128, 128] for _ in range(round(L / w))] for _ in range(round(W / w))]
 
 a1 = [1, 0, -1, 0]
 a2 = [0, 1, 0, -1]

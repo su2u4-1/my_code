@@ -1,13 +1,8 @@
 import pygame, sys, math, random, os
 
 
-def generatemap(ax, ay, n):
-    c = []
-    for i in range(ax):
-        a = []
-        for j in range(ay):
-            a.append(0)
-        c.append(a)
+def generatemap(ax: int, ay: int, n: int):
+    c = [[0 for _ in range(ay)] for _ in range(ax)]
     for i in range(n):
         while True:
             x = random.randint(0, xl - 1)
@@ -20,18 +15,16 @@ def generatemap(ax, ay, n):
             if c[i][j] == 0:
                 for d in range(-1, 2):
                     for e in range(-1, 2):
-                        if c[i][j] != 9:
-                            if 0 <= i + d < xl and 0 <= j + e < yl:
-                                if c[i + d][j + e] == 9:
-                                    c[i][j] += 1
+                        if 0 <= i + d < xl and 0 <= j + e < yl and c[i + d][j + e] == 9:
+                            c[i][j] += 1
     return c
 
 
-def openpart(x, y):
+def openpart(x: int, y: int):
     for f in range(-1, 2):
         for g in range(-1, 2):
             if 0 <= x + f < xl and 0 <= y + g < yl:
-                if showmap[x + f][y + g] == "d":
+                if showmap[x + f][y + g] == -1:
                     rightchick(x + f, y + g)
 
 
@@ -44,7 +37,7 @@ def openall():
                 showmap[x][y] = map[x][y]
 
 
-def rightchick(x, y):
+def rightchick(x: int, y: int):
     if showmap[x][y] != 10:
         showmap[x][y] = map[x][y]
         if map[x][y] == 9:
@@ -53,10 +46,10 @@ def rightchick(x, y):
             openpart(x, y)
 
 
-def leftchick(x, y):
+def leftchick(x: int, y: int):
     if showmap[x][y] == 10:
-        showmap[x][y] = "d"
-    elif showmap[x][y] == "d":
+        showmap[x][y] = -1
+    elif showmap[x][y] == -1:
         showmap[x][y] = 10
 
 
@@ -67,7 +60,7 @@ def chickall():
         for y in range(yl):
             if showmap[x][y] == 10 and map[x][y] != 9:
                 return
-            if showmap[x][y] == 10 or showmap[x][y] == "d":
+            if showmap[x][y] == 10 or showmap[x][y] == -1:
                 n += 1
     if n == g:
         flag = 2
@@ -86,8 +79,8 @@ clock = pygame.time.Clock()
 font = pygame.font.Font("C:\\Windows\\Fonts\\kaiu.ttf", 48)
 g = round((xl * yl) / 5)
 map = generatemap(xl, yl, g)
-showmap = [["d" for _ in range(yl)] for _ in range(xl)]
-img = []
+showmap = [[-1 for _ in range(yl)] for _ in range(xl)]
+img: list[pygame.Surface] = []
 for i in range(11):
     img.append(pygame.image.load(os.path.dirname(os.path.realpath(__file__)) + "\\踩地雷圖片\\" + str(i) + ".png"))
 
@@ -110,7 +103,7 @@ while True:
     screen.fill((255, 255, 255))
     for i in range(xl):
         for j in range(yl):
-            if showmap[i][j] == "d":
+            if showmap[i][j] == -1:
                 pygame.draw.rect(screen, (0, 0, 0), (i * 50 + 1, j * 50 + 1, 48, 48))
             else:
                 screen.blit(img[showmap[i][j]], [i * 50, j * 50])

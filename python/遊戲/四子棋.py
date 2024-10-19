@@ -4,7 +4,7 @@ row, col = 6, 7
 board = np.zeros((row, col), int)
 
 
-def pc():
+def pc() -> int:
     op = input(f"\n輪到玩家{side+1}\n請在1~7間選一個數字:")
     try:
         op = int(op)
@@ -21,7 +21,7 @@ def pc():
         return op
 
 
-def drop(x, y):
+def drop(x: int, y: int) -> None:
     while True:
         if x + 1 <= row - 1 and board[x + 1][y] == 0:
             board[x + 1][y] = board[x][y]
@@ -54,15 +54,12 @@ while True:
     if side == 0:
         p = pc() - 1
         board[0][p] = 1
-    elif side == 1:
+    else:
         p = pc() - 1
         board[0][p] = 2
     drop(0, p)
     print(f"\n{board}")
-    if side == 0:
-        side = 1
-    elif side == 1:
-        side = 0
+    side = 1 if side == 0 else 0
     win = check()
     if win != None:
         break

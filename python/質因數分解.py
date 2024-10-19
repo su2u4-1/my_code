@@ -1,50 +1,49 @@
+from typing import TextIO
+
 link = "python\\data\\"
 print("正在讀取質數")
-f = open(link + "質數.txt", "r")
-a = list(map(int, f.readlines()))
-f.close()
+with open(link + "質數.txt", "r") as f:
+    a = list(map(int, f.readlines()))
 print("質數讀取完畢")
 print(a[-1])
 
 
-def func1(b):
+def f2(b: int):
     for i in a:
         if b % i == 0:
-            break
+            return False
     else:
         return True
-    return False
 
 
-def func(c, b, f):
-    n = []
+def f1(c: int, b: int, f: TextIO):
     for i in range(c - (c % 6), b + (6 - b % 6), 6):
-        if func1(i + 1):
+        if f2(i + 1):
             a.append(i + 1)
             f.write(str(i + 1) + "\n")
-        if func1(i + 5):
+        if f2(i + 5):
             a.append(i + 5)
             f.write(str(i + 5) + "\n")
 
 
-def abc(n):
+def f0(c: str) -> dict[int, int] | str:
     try:
-        n = int(n)
+        n = int(c)
     except:
-        return {"error": "須為正整數"}
+        return "error: 須為正整數"
     if n <= 0:
-        return {"error": "須為正整數"}
+        return "error: 須為正整數"
     if n == 1:
         return {1: 1}
     if n > a[-1]:
         print("正在計算新質數")
         f = open(link + "質數.txt", "a+")
-        func(a[-1] + 1, n + 1, f)
+        f1(a[-1] + 1, n + 1, f)
         f.close()
         print("新質數記錄完畢")
     if n in a:
         return {n: 1}
-    b = {}
+    b: dict[int, int] = {}
     while n > 1:
         for i in a:
             if i > n:
@@ -58,4 +57,4 @@ def abc(n):
     return b
 
 
-print(abc(input("要計算的數:")))
+print(f0(input("要計算的數:")))

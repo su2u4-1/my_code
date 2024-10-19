@@ -1,7 +1,10 @@
+from typing import Sequence
 import pygame
 
 
-def check_click(a: list[int | float] | tuple[int | float], b: list[int | float] | tuple[int | float]):
+def check_click(a: Sequence[int | float], b: Sequence[int | float]) -> float:
+    if len(a) != 2 or len(b) != 2:
+        raise Exception("The length must be two")
     return (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 < 100
 
 

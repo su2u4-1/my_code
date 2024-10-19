@@ -12,10 +12,10 @@ class Point:
 
 
 pygame.init()
-W = pygame.display.Info().current_w
-H = pygame.display.Info().current_h
+# W = pygame.display.Info().current_w
+# H = pygame.display.Info().current_h
 W, H = 800, 600
-screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
+screen = pygame.display.set_mode((800, 600), pygame.RESIZABLE)
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 20)
 point = [Point() for _ in range(500)]
@@ -27,7 +27,7 @@ flag_1 = False
 
 def f1():
     global line
-    line = []
+    line: list[tuple[tuple[int, int, int], tuple[int, int], tuple[int, int]]] = []
     for i in p:
         i.son = []
     for i in point:
@@ -36,24 +36,24 @@ def f1():
         t.son.append(i)
         line.append((t.color, i.xy, t.xy))
     for i in p:
-        tx = []
-        ty = []
+        tx: list[int] = []
+        ty: list[int] = []
         for j in i.son:
             tx.append(j.x)
             ty.append(j.y)
         if len(tx) == 0:
             i.x = ri(0, W - 1)
         else:
-            i.x = sum(tx) / len(tx)
+            i.x = sum(tx) // len(tx)
         if len(ty) == 0:
             i.y = ri(0, H - 1)
         else:
-            i.y = sum(ty) / len(ty)
+            i.y = sum(ty) // len(ty)
         i.xy = (i.x, i.y)
 
 
 def f2():
-    t = []
+    t: list[tuple[int, int]] = []
     for i in point:
         mi = (10000, -1, -1)
         for j in point:
@@ -63,7 +63,7 @@ def f2():
             r2 = dx**2 + dy**2
             if r2 < mi[0]:
                 mi = (r2**0.5, dx, dy)
-        t.append((mi[1] / mi[0] * 10, mi[2] / mi[0] * 10))
+        t.append((mi[1] // mi[0] * 10, mi[2] // mi[0] * 10))
     for i, e in zip(point, t):
         i.x += e[0]
         i.y += e[1]

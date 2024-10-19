@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load(path + "\\plane_up.png")
         self.image = pygame.transform.scale(self.image, (120, 120))
         self.rect = self.image.get_rect()
-        self.rect.center = (W / 2, H * 4 / 5)
+        self.rect.center = (W // 2, H * 4 // 5)
         self.speed_y = 3
         self.cd = 200
         self.hp = 100
@@ -52,7 +52,7 @@ class Player(pygame.sprite.Sprite):
 
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x: int, y: int):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(path + "\\bullet.png")
         self.image = pygame.transform.scale(self.image, (80, 80))
@@ -126,7 +126,7 @@ class Eyes(pygame.sprite.Sprite):
 
 
 class Ball(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x: int, y: int):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(path + "\\ball.png")
         self.image = pygame.transform.scale(self.image, (80, 80))
@@ -141,7 +141,7 @@ class Ball(pygame.sprite.Sprite):
             self.kill()
 
 
-def hpbar(surf, hp, x, y):
+def hpbar(surf: pygame.Surface, hp: int, x: int, y: int):
     if hp < 0:
         hp = 0
     bar_length = 200

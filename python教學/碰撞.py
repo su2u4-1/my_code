@@ -1,12 +1,14 @@
-import pygame
+from typing import Sequence
 from math import sin, cos, pi
 from random import randint as ri
+
+import pygame
 
 
 # 球
 class Ball:
     # 初始化球,主要是設定球的各項屬性
-    def __init__(self, x: int | float, y: int | float, color: list[int] | tuple[int], r: int = 5, direction: int | float = -1):
+    def __init__(self, x: int | float, y: int | float, color: Sequence[int], r: int = 5, direction: int | float = -1):
         self.x = x
         self.y = y
         self.color = color
@@ -17,7 +19,7 @@ class Ball:
             self.d = direction
 
     # 讓球移動,同時偵測碰撞並改變方向
-    def move(self, speed):
+    def move(self, speed: int):
         self.x += sin(self.d / 180 * pi) * speed
         self.y += cos(self.d / 180 * pi) * speed
         if self.x > W - self.r or self.x < 0 + self.r:

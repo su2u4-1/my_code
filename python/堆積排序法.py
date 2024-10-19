@@ -1,7 +1,7 @@
 from random import randint as ri
 
 
-def adjust(arr, i, n):
+def adjust(arr: list[int], i: int, n: int):
     child = 2 * i
     item = arr[i - 1]
     while child <= n:
@@ -14,12 +14,12 @@ def adjust(arr, i, n):
     arr[int(child // 2) - 1] = item
 
 
-def heapify(arr, n):
+def heapify(arr: list[int], n: int):
     for i in range(int(n // 2), 0, -1):
         adjust(arr, i, len(arr))
 
 
-def heapSort(arr, n):
+def heapSort(arr: list[int], n: int):
     heapify(arr, len(arr))
     for i in range(n, 1, -1):
         arr[i - 1], arr[0] = arr[0], arr[i - 1]
@@ -27,9 +27,7 @@ def heapSort(arr, n):
     return arr
 
 
-arr = []
-for i in range(10000):
-    arr.append(ri(0, 99))
+arr = [ri(0, 99) for _ in range(10000)]
 print(arr)
 heapSort(arr, len(arr))
 print(arr)

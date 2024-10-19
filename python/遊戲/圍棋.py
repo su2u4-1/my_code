@@ -1,56 +1,67 @@
-import pygame
+from dataclasses import dataclass
+from typing import Literal
 from math import floor as fl
 
+import pygame
 
-def put_chess(x, y, p):
+
+@dataclass
+class data:
+    number: int
+    xy_list: list[tuple[int, int]]
+    side: Literal[1, 2]
+
+
+def put_chess(x: int, y: int, p: Literal[1, 2]) -> Literal[1, 2]:
     board[x][y] = p
-    n = []
+    n: list[data] = []
     for j in range(4):
-        if 0 <= x + A[j] < 19 and 0 <= y + B[j] < 19:
+        if 0 <= x + DX[j] < 19 and 0 <= y + DY[j] < 19:
             for i in range(len(same_color_chess)):
-                if (x + A[j], y + B[j]) in same_color_chess[i][1] and same_color_chess[i][2] == p:
-                    same_color_chess[i][1].append((x, y))
+                if (x + DX[j], y + DY[j]) in same_color_chess[i].xy_list and same_color_chess[i].side == p:
+                    same_color_chess[i].xy_list.append((x, y))
                     n.append(same_color_chess[i])
     if len(n) == 0:
-        same_color_chess.append([1, [(x, y)], p])
+        same_color_chess.append(data(1, [(x, y)], p))
     elif len(n) != 1:
-        c = []
+        c: list[tuple[int, int]] = []
         for i in n:
-            c += i[1]
+            c += i.xy_list
             while i in same_color_chess:
                 same_color_chess.remove(i)
         for i in c:
             while c.count(i) > 1:
                 c.remove(i)
-        same_color_chess.append([1, c, p])
+        same_color_chess.append(data(1, c, p))
     check(x, y)
+    return 2 if p == 1 else 1
 
 
-def check(x, y):
+def check(x: int, y: int):
     for i in range(len(same_color_chess)):
         for j in range(len(same_color_chess)):
-            if i != j and same_color_chess[i][2] == same_color_chess[j][2]:
-                for k in same_color_chess[i][1]:
-                    for l in same_color_chess[j][1]:
+            if i != j and same_color_chess[i].side == same_color_chess[j].side:
+                for k in same_color_chess[i].xy_list:
+                    for l in same_color_chess[j].xy_list:
                         if k == l:
-                            same_color_chess[i][1] += same_color_chess[j][1]
+                            same_color_chess[i].xy_list += same_color_chess[j].xy_list
                             same_color_chess.remove(same_color_chess[j])
     for i in range(len(same_color_chess)):
-        same_color_chess[i][0] = 0
-        for j in same_color_chess[i][1]:
+        same_color_chess[i].number = 0
+        for j in same_color_chess[i].xy_list:
             for k in range(4):
-                if 0 <= j[0] + A[k] < 19 and 0 <= j[1] + B[k] < 19:
-                    if board[j[0] + A[k]][j[1] + B[k]] == 0:
-                        same_color_chess[i][0] += 1
+                if 0 <= j[0] + DX[k] < 19 and 0 <= j[1] + DY[k] < 19:
+                    if board[j[0] + DX[k]][j[1] + DY[k]] == 0:
+                        same_color_chess[i].number += 1
     for i in same_color_chess:
         if (x, y) != (-1, -1):
-            if (x, y) not in i[1] and i[0] <= 0:
-                for j in i[1]:
+            if (x, y) not in i.xy_list and i.number <= 0:
+                for j in i.xy_list:
                     board[j[0]][j[1]] = 0
                 same_color_chess.remove(i)
         if (x, y) == (-1, -1):
-            if i[0] <= 0:
-                for j in i[1]:
+            if i.number <= 0:
+                for j in i.xy_list:
                     board[j[0]][j[1]] = 0
                 same_color_chess.remove(i)
     if (x, y) != (-1, -1):
@@ -60,16 +71,10 @@ def check(x, y):
 def main():
     pygame.init()
     pygame.display.set_caption("圍棋")
-    screen = pygame.display.set_mode(((l - 1) * 44 + 54, (l - 1) * 44 + 54), pygame.RESIZABLE)
+    screen = pygame.display.set_mode(((L - 1) * 44 + 54, (L - 1) * 44 + 54), pygame.RESIZABLE)
     clock = pygame.time.Clock()
-    font = pygame.font.Font("C:\\Windows\\Fonts\\kaiu.ttf", 48)
 
-    for _ in range(l):
-        a = []
-        for _ in range(l):
-            a.append(0)
-        board.append(a)
-    f = 1
+    f: Literal[1, 2] = 1
 
     while True:
         mx, my = pygame.mouse.get_pos()
@@ -83,32 +88,27 @@ def main():
                 if pygame.mouse.get_pressed()[0]:
                     try:
                         if board[mx][my] == 0:
-                            if f == 1:
-                                put_chess(mx, my, 1)
-                                f = 2
-                            elif f == 2:
-                                put_chess(mx, my, 2)
-                                f = 1
+                            f = put_chess(mx, my, f)
                     except:
                         pass
 
         screen.fill((238, 154, 73))
-        for i in range(l):
-            if i == 0 or i == l - 1:
-                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, (l - 1) * 44 + 27], 4)
-                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [(l - 1) * 44 + 27, i * 44 + 27], 4)
+        for i in range(L):
+            if i == 0 or i == L - 1:
+                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, (L - 1) * 44 + 27], 4)
+                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [(L - 1) * 44 + 27, i * 44 + 27], 4)
             else:
-                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, (l - 1) * 44 + 27], 2)
-                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [(l - 1) * 44 + 27, i * 44 + 27], 2)
-        for i in range(l):
-            for j in range(l):
+                pygame.draw.line(screen, (0, 0, 0), [i * 44 + 27, 27], [i * 44 + 27, (L - 1) * 44 + 27], 2)
+                pygame.draw.line(screen, (0, 0, 0), [27, i * 44 + 27], [(L - 1) * 44 + 27, i * 44 + 27], 2)
+        for i in range(L):
+            for j in range(L):
                 if board[i][j] == 1:
                     pygame.draw.circle(screen, (0, 0, 0), (i * 44 + 28, j * 44 + 28), 13)
                 elif board[i][j] == 2:
                     pygame.draw.circle(screen, (255, 255, 255), (i * 44 + 28, j * 44 + 28), 13)
         if f == 1:
             pygame.draw.circle(screen, (0, 0, 0), (mx * 44 + 28, my * 44 + 28), 15, width=3)
-        elif f == 2:
+        else:
             pygame.draw.circle(screen, (255, 255, 255), (mx * 44 + 28, my * 44 + 28), 15, width=3)
 
         pygame.display.update()
@@ -116,9 +116,9 @@ def main():
 
 
 if __name__ == "__main__":
-    A = [0, 1, 0, -1]
-    B = [1, 0, -1, 0]
-    board = []
-    same_color_chess = []
-    l = 19
+    DX = [0, 1, 0, -1]
+    DY = [1, 0, -1, 0]
+    L = 19
+    board = [[0 for _ in range(L)] for _ in range(L)]
+    same_color_chess: list[data] = []
     main()

@@ -3,7 +3,7 @@ from random import randint as ri
 
 
 class Button:
-    def __init__(self, x, y, w, h, do, text=""):
+    def __init__(self, x: int, y: int, w: int, h: int, do: str, text: str = ""):
         self.ox = x
         self.oy = y
         self.ow = w
@@ -21,7 +21,7 @@ class Button:
         self.text_size = 20
         self.text_color = (20, 20, 20)
 
-    def check1(self, mx, my):
+    def check1(self, mx: int, my: int):
         if self.x - self.w / 2 <= mx <= self.x + self.w / 2 and self.y - self.h / 2 <= my <= self.y + self.h / 2:
             self.color = self.color2
         else:
@@ -31,7 +31,7 @@ class Button:
             self.h = self.oh
             self.color = self.color1
 
-    def check2(self, mx, my, mouse):
+    def check2(self, mx: int, my: int, mouse: int):
         if self.x - self.w / 2 <= mx <= self.x + self.w / 2 and self.y - self.h / 2 <= my <= self.y + self.h / 2 and mouse:
             self.x = self.ox + self.ow * 0.05
             self.y = self.oy + self.oh * 0.05
@@ -59,7 +59,7 @@ class Button:
 
 
 # u上d下l左r右f前b後
-rc = {}
+rc: dict[str, tuple[int, int, int]] = {}
 for i in range(9):
     rc[f"u{i}"] = (255, 255, 255)  # w白
     rc[f"d{i}"] = (255, 255, 0)  # y黃
@@ -217,7 +217,7 @@ def r3d():
     r2("b")
 
 
-def ro(n, f=True):
+def ro(n: int, f: bool = True) -> None:
     match n:
         case 1:
             if f:
@@ -291,17 +291,15 @@ def ro(n, f=True):
             if f:
                 step.append(15)
             r3u()
+        case _:
+            print("error: unknow key", n)
 
 
 l = 100
 xs = 200
 ys = 50
-x = []
-y = []
-for i in [0, 0.5, 1, 1.5, 2, 2.5, 3, -0.25, 3.25]:
-    x.append(xs + l * i * 3**0.5)
-for i in [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6]:
-    y.append(ys + l * i)
+x = [int(xs + l * i * 3**0.5) for i in (0, 0.5, 1, 1.5, 2, 2.5, 3, -0.25, 3.25)]
+y = [int(ys + l * i) for i in (0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6)]
 p = [
     (x[3], y[0]),
     (x[2], y[1]),
@@ -352,8 +350,8 @@ clock = pygame.time.Clock()
 textlink = "C:\\Windows\\Fonts\\kaiu.ttf"
 font = pygame.font.Font(textlink, 20)
 fullscreen = 0
-step = []
-button_list = []
+step: list[int] = []
+button_list: list[Button] = []
 
 
 button_list.append(Button(x[7], y[4], 30, 20, "ro(4)"))
@@ -396,11 +394,8 @@ while True:
             if event.key == pygame.K_F11:
                 fullscreen += 1
                 if fullscreen % 2 == 1:
-                    W = W_change
-                    H = H_change
-                    screen = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
+                    screen = pygame.display.set_mode((W_change, H_change), pygame.FULLSCREEN)
                 else:
-                    W, H = 1000, 700
                     screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             for i in button_list:
