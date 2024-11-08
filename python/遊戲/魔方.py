@@ -1,9 +1,10 @@
+from typing import Callable
 import pygame
 from random import randint as ri
 
 
 class Button:
-    def __init__(self, x: int, y: int, w: int, h: int, do: str, text: str = ""):
+    def __init__(self, x: int, y: int, w: int, h: int, do: Callable[..., None], text: str = ""):
         self.ox = x
         self.oy = y
         self.ow = w
@@ -37,7 +38,7 @@ class Button:
             self.y = self.oy + self.oh * 0.05
             self.w = self.ow * 0.9
             self.h = self.oh * 0.9
-            self.do_something()
+            self.do()
         else:
             self.x = self.ox
             self.y = self.oy
@@ -48,14 +49,6 @@ class Button:
         pygame.draw.rect(screen, self.color, (self.x - self.w / 2, self.y - self.h / 2, self.w, self.h), 0)
         text = pygame.font.Font(textlink, self.text_size).render(self.text, True, self.text_color)
         screen.blit(text, text.get_rect(center=(self.x, self.y)))
-
-    def do_something(self):
-        try:
-            exec(self.do)
-        except Exception as e:
-            print(e)
-            print(self.do)
-            exit()
 
 
 # u上d下l左r右f前b後
@@ -353,35 +346,43 @@ fullscreen = 0
 step: list[int] = []
 button_list: list[Button] = []
 
+def f1() -> None:
+    for _ in range(10):
+        ro(ri(1,18))
 
-button_list.append(Button(x[7], y[4], 30, 20, "ro(4)"))
-button_list.append(Button(x[7], y[6], 30, 20, "ro(5)"))
-button_list.append(Button(x[7], y[8], 30, 20, "ro(6)"))
-button_list.append(Button(x[8], y[4], 30, 20, "ro(1)"))
-button_list.append(Button(x[8], y[6], 30, 20, "ro(2)"))
-button_list.append(Button(x[8], y[8], 30, 20, "ro(3)"))
-button_list.append(Button(x[6], y[2], 30, 20, "ro(10)"))
-button_list.append(Button(x[5], y[1], 30, 20, "ro(11)"))
-button_list.append(Button(x[4], y[0], 30, 20, "ro(12)"))
-button_list.append(Button(x[2], y[12], 30, 20, "ro(7)"))
-button_list.append(Button(x[1], y[11], 30, 20, "ro(8)"))
-button_list.append(Button(x[0], y[10], 30, 20, "ro(9)"))
-button_list.append(Button(x[0], y[2], 30, 20, "ro(16)"))
-button_list.append(Button(x[1], y[1], 30, 20, "ro(17)"))
-button_list.append(Button(x[2], y[0], 30, 20, "ro(18)"))
-button_list.append(Button(x[4], y[12], 30, 20, "ro(13)"))
-button_list.append(Button(x[5], y[11], 30, 20, "ro(14)"))
-button_list.append(Button(x[6], y[10], 30, 20, "ro(15)"))
+def ros(*code: int) -> None:
+    for i in code:
+        ro(i)
 
-button_list.append(Button(150, 75, 100, 40, "if len(step)>0:\n\tro(step.pop(), False)", "回上一步"))
-button_list.append(Button(75, 150, 60, 40, "for _ in range(10):\n\tro(ri(1,18))", "轉亂"))
 
-button_list.append(Button(x[7] - 35, y[6], 30, 20, "ro(4)\nro(5)\nro(6)"))
-button_list.append(Button(x[8] + 35, y[6], 30, 20, "ro(1)\nro(2)\nro(3)"))
-button_list.append(Button(x[5] + 35, y[1] - 25, 30, 20, "ro(10)\nro(11)\nro(12)"))
-button_list.append(Button(x[1] - 35, y[11] + 25, 30, 20, "ro(7)\nro(8)\nro(9)"))
-button_list.append(Button(x[1] - 35, y[1] - 25, 30, 20, "ro(16)\nro(17)\nro(18)"))
-button_list.append(Button(x[5] + 35, y[11] + 25, 30, 20, "ro(13)\nro(14)\nro(15)"))
+button_list.append(Button(x[7], y[4], 30, 20, lambda: ro(4)))
+button_list.append(Button(x[7], y[6], 30, 20, lambda: ro(5)))
+button_list.append(Button(x[7], y[8], 30, 20, lambda: ro(6)))
+button_list.append(Button(x[8], y[4], 30, 20, lambda: ro(1)))
+button_list.append(Button(x[8], y[6], 30, 20, lambda: ro(2)))
+button_list.append(Button(x[8], y[8], 30, 20, lambda: ro(3)))
+button_list.append(Button(x[6], y[2], 30, 20, lambda: ro(10)))
+button_list.append(Button(x[5], y[1], 30, 20, lambda: ro(11)))
+button_list.append(Button(x[4], y[0], 30, 20, lambda: ro(12)))
+button_list.append(Button(x[2], y[12], 30, 20, lambda: ro(7)))
+button_list.append(Button(x[1], y[11], 30, 20, lambda: ro(8)))
+button_list.append(Button(x[0], y[10], 30, 20, lambda: ro(9)))
+button_list.append(Button(x[0], y[2], 30, 20, lambda: ro(16)))
+button_list.append(Button(x[1], y[1], 30, 20, lambda: ro(17)))
+button_list.append(Button(x[2], y[0], 30, 20, lambda: ro(18)))
+button_list.append(Button(x[4], y[12], 30, 20, lambda: ro(13)))
+button_list.append(Button(x[5], y[11], 30, 20, lambda: ro(14)))
+button_list.append(Button(x[6], y[10], 30, 20, lambda: ro(15)))
+
+button_list.append(Button(150, 75, 100, 40, lambda: ro(step.pop(), False) if len(step)>0 else None, "回上一步"))
+button_list.append(Button(75, 150, 60, 40, f1, "轉亂"))
+
+button_list.append(Button(x[7] - 35, y[6], 30, 20, (lambda: ros(4, 5, 6))))
+button_list.append(Button(x[8] + 35, y[6], 30, 20, (lambda: ros(1, 2, 3))))
+button_list.append(Button(x[5] + 35, y[1] - 25, 30, 20, (lambda: ros(10, 11, 12))))
+button_list.append(Button(x[1] - 35, y[11] + 25, 30, 20, (lambda: ros(7, 8, 9))))
+button_list.append(Button(x[1] - 35, y[1] - 25, 30, 20, (lambda: ros(16, 17, 18))))
+button_list.append(Button(x[5] + 35, y[11] + 25, 30, 20, (lambda: ros(13, 14, 15))))
 
 while True:
     mx, my = pygame.mouse.get_pos()

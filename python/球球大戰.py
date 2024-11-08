@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from random import randint as ri
 
 
-def drawplot(t, p):
+def drawplot(t: list[float], p: list[list[int]]):
     mi, mx = [], []
     for i in range(CL):
         plt.plot(t, p[i], color=(COLOR[i][0], COLOR[i][1], COLOR[i][2]), label=i)
@@ -50,8 +50,8 @@ R = 5
 SAMP = [10, 1000]
 COLOR = [(0, 0, 1), (0, 1, 0), (1, 0, 0), (1, 1, 0)]
 CL = len(COLOR)
-W = pygame.display.Info().current_w
-H = pygame.display.Info().current_h
+# W = pygame.display.Info().current_w
+# H = pygame.display.Info().current_h
 W, H = 500, 500
 
 screen = pygame.display.set_mode((W, H))
@@ -59,11 +59,12 @@ clock = pygame.time.Clock()
 font = pygame.font.Font("C:\\Windows\\Fonts\\kaiu.ttf", 20)
 
 f = True
-c = []
-pointList = []
+c: list[int] = []
+pointList: list[Point] = []
 csum = 0
 t = 0
-time, poi = [], []
+time: list[float] = []
+poi: list[list[int]] = []
 
 for i in range(CL):
     poi.append([])

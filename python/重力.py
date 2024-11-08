@@ -2,18 +2,18 @@ from random import randint as ri
 import pygame, sys
 
 
-class create:
-    def __init__(self, x, y):
+class Create:
+    def __init__(self, x: float, y: float):
         self.x = x
         self.y = y
         self.color = (ri(0, 255), ri(0, 255), ri(0, 255))
-        self.move = []
+        self.move: list[tuple[float, float]] = []
 
 
 n = int(input("數量:"))
-point = []
+point: list[Create] = []
 for _ in range(n):
-    point.append(create(ri(0, 1366), ri(0, 768)))
+    point.append(Create(ri(0, 1366), ri(0, 768)))
 t = 1
 
 pygame.init()
@@ -38,7 +38,7 @@ while True:
                     del i
                 point = []
                 for _ in range(n):
-                    point.append(create(ri(0, 1366), ri(0, 768)))
+                    point.append(Create(ri(0, 1366), ri(0, 768)))
             elif event.key == pygame.K_1:
                 t = 1
             elif event.key == pygame.K_2:
@@ -90,9 +90,9 @@ while True:
                 else:
                     if cy < dy:
                         cy = dy
-                i.move.append([cx, cy])
+                i.move.append((cx, cy))
             else:
-                i.move.append([-(10000 / dx), -(10000 / dy)])
+                i.move.append((-(10000 / dx), -(10000 / dy)))
     for i in point:
         for j in i.move:
             i.x += j[0] * f
