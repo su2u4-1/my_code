@@ -9,7 +9,7 @@ def gcd(a: int, b: int) -> int:
 
 
 def lcm(a: int, b: int) -> int:
-    return a * b / gcd(a, b)
+    return a * b // gcd(a, b)
 
 
 class Fraction(numbers.Number):
@@ -163,7 +163,7 @@ class Fraction(numbers.Number):
     def __rdivmod__(self, other: "N") -> tuple[int, "Fraction"]:
         return self.__rfloordiv__(other), self.__rmod__(other)
 
-    def __rpow__(self, other: "N", mod: "N" = None) -> "Fraction":
+    def __rpow__(self, other: "N", mod: Optional["N"] = None) -> "Fraction":
         if not isinstance(other, Fraction):
             try:
                 other = Fraction(other)
@@ -196,7 +196,7 @@ class Fraction(numbers.Number):
     def __imod__(self, other: "N") -> "Fraction":
         return self.__mod__(other)
 
-    def __ipow__(self, other: "N", modulo) -> "Fraction":
+    def __ipow__(self, other: "N", modulo: Optional[None] = None) -> "Fraction":
         return self.__pow__(other, modulo)
 
     def __neg__(self) -> "Fraction":
@@ -262,16 +262,16 @@ class Fraction(numbers.Number):
     def __le__(self, other: "N") -> bool:
         return self.__eq__(other) or self.__lt__(other)
 
-    def __eq__(self, value: "N") -> bool:
-        if type(value) != Fraction:
+    def __eq__(self, value: object) -> bool:
+        if not isinstance(value, Fraction):
             try:
                 value = Fraction(value)
             except:
                 return NotImplemented
         return self.numerator == value.numerator and self.denominator == value.denominator
 
-    def __ne__(self, value: "N") -> bool:
-        if type(value) != Fraction:
+    def __ne__(self, value: object) -> bool:
+        if not isinstance(value, Fraction):
             try:
                 value = Fraction(value)
             except:

@@ -18,7 +18,7 @@ def web1():
 
 @app.route("/show.<name>", methods=["GET"])
 @app.route("/show/<name>", methods=["GET"])
-def show(name):
+def show(name: object):
     return f"<html><body><h1>{name}</h1><h3><a href='http://127.0.0.1:5000'>home</a></h3></body></html>"
 
 
@@ -36,24 +36,24 @@ def TaoTeChing():
 
 @app.route("/質數.<n>", methods=["GET"])
 @app.route("/質數/<n>", methods=["GET"])
-def PrimeNumber(n):
-    n = int(n)
+def PrimeNumber(p: str):
+    n = int(p)
     if n < 0:
-        a = "Error"
+        a = 0
     elif n == 2:
-        a = True
+        a = 1
     elif n == 1 or n == 0:
-        a = False
+        a = 1
     else:
         for i in range(3, n, 2):
             if n % i == 0:
-                a = False
+                a = 2
                 break
         else:
-            a = True
-    if a == "error":
+            a = 1
+    if a == 0:
         a = "輸入錯誤"
-    elif a:
+    elif a == 1:
         a = f"{n}是質數"
     else:
         a = f"{n}不是質數"

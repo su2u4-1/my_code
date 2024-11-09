@@ -346,9 +346,11 @@ fullscreen = 0
 step: list[int] = []
 button_list: list[Button] = []
 
+
 def f1() -> None:
     for _ in range(10):
-        ro(ri(1,18))
+        ro(ri(1, 18))
+
 
 def ros(*code: int) -> None:
     for i in code:
@@ -374,7 +376,7 @@ button_list.append(Button(x[4], y[12], 30, 20, lambda: ro(13)))
 button_list.append(Button(x[5], y[11], 30, 20, lambda: ro(14)))
 button_list.append(Button(x[6], y[10], 30, 20, lambda: ro(15)))
 
-button_list.append(Button(150, 75, 100, 40, lambda: ro(step.pop(), False) if len(step)>0 else None, "回上一步"))
+button_list.append(Button(150, 75, 100, 40, lambda: ro(step.pop(), False) if len(step) > 0 else None, "回上一步"))
 button_list.append(Button(75, 150, 60, 40, f1, "轉亂"))
 
 button_list.append(Button(x[7] - 35, y[6], 30, 20, (lambda: ros(4, 5, 6))))
