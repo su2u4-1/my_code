@@ -37,7 +37,7 @@ def id(c1, c2):
 
 def output():
     nt = time.localtime(time.time())
-    path = f"C:\\Users\\User\\Desktop\\程式\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}"
+    path = f"C:\\Users\\User\\Desktop\\my_code\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}"
     file = open(path + "(lca).txt", "w+")
     for i in lifel:
         file.write(i.__dict__)

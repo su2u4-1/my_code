@@ -143,7 +143,7 @@ while True:
     if tmr == 10000:
         pygame.quit()
         nt = time.localtime(time.time())
-        output(f"C:\\Users\\User\\Desktop\\程式\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}")
+        output(f"C:\\Users\\User\\Desktop\\my_code\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}")
         sys.exit()
     mx, my = pygame.mouse.get_pos()
     mx = math.floor(mx / 5)
@@ -161,7 +161,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             nt = time.localtime(time.time())
-            output(f"C:\\Users\\User\\Desktop\\程式\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}")
+            output(f"C:\\Users\\User\\Desktop\\my_code\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}")
             sys.exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:

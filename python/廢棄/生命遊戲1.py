@@ -162,7 +162,7 @@ t = time.time()
 while True:
     if tmr == 1000:
         nt = time.localtime(time.time())
-        output(f"C:\\Users\\User\\Desktop\\程式\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}")
+        output(f"C:\\Users\\User\\Desktop\\my_code\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}")
         sys.exit()
     for i in life_list:
         i.next()
