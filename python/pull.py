@@ -5,8 +5,8 @@ from sys import argv
 
 rootdir = "D:\\"
 if len(argv) >= 1:
-    if isdir(argv[0]):
-        rootdir = argv[0]
+    if isdir(argv[1]):
+        rootdir = argv[1]
 
 for i in listdir(rootdir):
     i = join(rootdir, i)
@@ -31,3 +31,5 @@ for i in listdir(rootdir):
                 print("    Not a Git repository, skipping")
         except PermissionError:
             print("    Access denied, skipping")
+        except Exception as e:
+            print(f"    Error: {e}, skipping")
