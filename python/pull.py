@@ -1,5 +1,5 @@
 from os import listdir, system, chdir, getcwd
-from os.path import isdir, join
+from os.path import isdir, join, abspath
 from subprocess import getoutput
 from sys import argv
 
@@ -51,7 +51,7 @@ def norecursion(dir: str) -> None:
 
 rootdir = getcwd()
 if len(argv) >= 2 and isdir(argv[1]) and "def" not in argv[1]:
-    rootdir = argv[1]
+    rootdir = abspath(argv[1])
 
 if len(argv) >= 3 and "-r" in argv[2]:
     recursion(rootdir)
