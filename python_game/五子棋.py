@@ -28,6 +28,7 @@ class Game_gomoku:
         self.ai_side: Literal["black", "white", "no"] = "no"
         self.temp_text = ""
         self.temp_text_time = 0
+        self.ai_mode = 0
 
     def show(self) -> None:
         self.screen.fill((238, 154, 73))
@@ -75,6 +76,8 @@ class Game_gomoku:
             self.screen.blit(text, (185, self.h + 5))
         else:
             self.screen.blit(text, (125, self.h + 5))
+        if self.result[0]:
+            pygame.draw.line(self.screen, (255, 0, 0), self.result[1][0], self.result[1][1], 3)
 
     def check(self) -> tuple[bool, tuple[tuple[int, int], tuple[int, int]]]:
         n = 0
@@ -111,8 +114,6 @@ class Game_gomoku:
             else:
                 self.turn = "black"
                 self.chessBoard[self.mx][self.my] = 2
-            if self.turn == self.ai_side:
-                self.ai()
         else:
             raise RuntimeError("position is not empty or game is over")
 
@@ -125,30 +126,80 @@ class Game_gomoku:
                     if ("no", "black", "white")[self.chessBoard[x][y]] == self.ai_side:
                         s = 1
                     for i in range(8):
-                        l = 0
-                        d = (-1, -1)
                         x1 = x
                         y1 = y
-                        for j in range(3):
-                            if x1 + D8[i][0] < 0 or x1 + D8[i][0] > self.size - 1 or y1 + D8[i][1] < 0 or y1 + D8[i][1] > self.size - 1:
-                                break
-                            elif self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] != self.chessBoard[x][y]:
-                                if self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] == 0:
-                                    l = j + 1
-                                    d = (x1 + D8[i][0], y1 + D8[i][1])
-                                break
-                            x1 += D8[i][0]
-                            y1 += D8[i][1]
-                        else:
-                            l = 4
-                        if l > 0:
-                            if s == 0:
-                                possible_pos[l + 3].append(d)
+                        if self.ai_mode == 0:
+                            flag = False
+                            d = (-1, -1)
+                            for j in range(3):
+                                if not (0 <= x1 + D8[i][0] < self.size - 1 and 0 <= y1 + D8[i][1] < self.size - 1):
+                                    break
+                                if self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] != self.chessBoard[x][y]:
+                                    if self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] == 0:
+                                        if not flag:
+                                            d = (x1 + D8[i][0], y1 + D8[i][1])
+                                        if s == 0:
+                                            if j == 2:
+                                                possible_pos[j + 3].append(d)
+                                            else:
+                                                possible_pos[j + 2].append(d)
+                                        else:
+                                            if j == 2:
+                                                possible_pos[4].append(d)
+                                            else:
+                                                possible_pos[j].append(d)
+                                        if flag:
+                                            break
+                                        flag = True
+                                        d = (x1 + D8[i][0], y1 + D8[i][1])
+                                    else:
+                                        break
+                                x1 += D8[i][0]
+                                y1 += D8[i][1]
                             else:
-                                possible_pos[l - 1].append(d)
-        for i in range(8):
-            if len(possible_pos[7 - i]) > 0:
-                x, y = choice(possible_pos[7 - i])
+                                if self.chessBoard[x1][y1] == 0:
+                                    possible_pos[6].append((x1, y1))
+                        elif self.ai_mode == 1:
+                            for j in range(3):
+                                if not (0 <= x1 + D8[i][0] < self.size - 1 and 0 <= y1 + D8[i][1] < self.size - 1):
+                                    break
+                                if self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] != self.chessBoard[x][y]:
+                                    if self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] == 0:
+                                        if s == 0:
+                                            if j == 2:
+                                                possible_pos[j + 3].append((x1 + D8[i][0], y1 + D8[i][1]))
+                                            else:
+                                                possible_pos[j + 2].append((x1 + D8[i][0], y1 + D8[i][1]))
+                                        else:
+                                            if j == 2:
+                                                possible_pos[4].append((x1 + D8[i][0], y1 + D8[i][1]))
+                                            else:
+                                                possible_pos[j].append((x1 + D8[i][0], y1 + D8[i][1]))
+                                    break
+                                x1 += D8[i][0]
+                                y1 += D8[i][1]
+                            else:
+                                if self.chessBoard[x1][y1] == 0:
+                                    possible_pos[6].append((x1, y1))
+                        elif self.ai_mode == 2:
+                            for j in range(3):
+                                if not (0 <= x1 + D8[i][0] < self.size - 1 and 0 <= y1 + D8[i][1] < self.size - 1):
+                                    break
+                                if self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] != self.chessBoard[x][y]:
+                                    if self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] == 0:
+                                        if s == 0:
+                                            possible_pos[j + 2].append((x1 + D8[i][0], y1 + D8[i][1]))
+                                        else:
+                                            possible_pos[j].append((x1 + D8[i][0], y1 + D8[i][1]))
+                                    break
+                                x1 += D8[i][0]
+                                y1 += D8[i][1]
+                            else:
+                                if self.chessBoard[x1][y1] == 0:
+                                    possible_pos[6].append((x1, y1))
+        for i in range(7):
+            if len(possible_pos[6 - i]) > 0:
+                x, y = choice(possible_pos[6 - i])
                 if self.chessBoard[x][y] == 0:
                     self.mx, self.my = x, y
                     self.put_chess()
@@ -165,9 +216,9 @@ class Game_gomoku:
             self.mx, self.my = map(lambda x: x // 44, pygame.mouse.get_pos())
             if self.status == "gamerun":
                 self.result = self.check()
+            if self.status == "gamerun" and self.turn == self.ai_side:
+                self.ai()
             self.show()
-            if self.result[0]:
-                pygame.draw.line(self.screen, (255, 0, 0), self.result[1][0], self.result[1][1], 3)
             pygame.display.update()
             self.clock.tick(60)
 
@@ -209,6 +260,6 @@ class Game_gomoku:
 
 
 if __name__ == "__main__":
-    size = get_int("size(greater than 19 may cause problems): ", "must be great than 5", lambda x: x > 5)
+    size = get_int("size(recommended size: 15): ", "must be great than 5", lambda x: x >= 5)
     game = Game_gomoku(size)
     game.main()
