@@ -67,12 +67,14 @@ while True:
     # text1顯示滑鼠座標(白底黑字)
     text1 = font.render(f"({mousex},{mousey})", True, (0, 0, 0))
     # 顯示物件(物件,[x座標,y座標])
-    screen.blit(img, [30, 30])
-    screen.blit(text0, [30, 60])
-    screen.blit(text1, [30, 90])
+    screen.blit(img, (30, 30))
+    screen.blit(text0, (30, 60))
+    screen.blit(text1, (30, 90))
+    screen.blit(font.render("測試test", True, (0, 0, 0)), (30, 120))
+    screen.blit(font.render(f"FPS: {clock.get_fps()}", True, (0, 0, 0)), (30, 150))
     # 更新畫面
     pygame.display.update()
-    # 設定每秒幀數上限,不給或給0代表無限制(有時候會很吃電腦效能)
-    clock.tick(10)
+    # 設定每秒幀數上限,不給或給0代表無限制
+    clock.tick()
 
 # 其餘請參考https://www.pygame.org/docs/
