@@ -1,9 +1,53 @@
-from typing import Literal
+from typing import Callable, Literal
 from random import choice, randint
 
 import pygame
 
-from gamelib import get_int, D8
+from gamelib import get_int, D8, D8_Opposite_side
+
+
+def t0(t: list[int], ai_side: int, player_side: int) -> int:
+    """p p p p *\n
+    direction x 8"""
+    for i in range(8):
+        for j in t[i * 4 : i * 4 + 3]:
+            if j != player_side:
+                return 0
+    return 10
+
+
+def t1(t: list[int], ai_side: int, player_side: int) -> int:
+    """a a a a *\n
+    direction x 8"""
+    for i in range(8):
+        for j in t[i * 4 : i * 4 + 4]:
+            if j != ai_side:
+                return 0
+    return 11
+
+
+def t2(t: list[int], ai_side: int, player_side: int) -> int:
+    """p p p * p\n
+    direction x 8"""
+    for i in range(8):
+        j = t[i * 4 : i * 4 + 4]
+        if j[:3] == [player_side] * 3:
+            i = D8_Opposite_side[i]
+            if t[i * 4 : i * 4 + 4][0] == player_side:
+                return 10
+    return 0
+
+
+def t3(t: list[int], ai_side: int, player_side: int) -> int:
+    """a a a * a\n
+    direction x 8"""
+    for i in range(8):
+        j = t[i * 4 : i * 4 + 4]
+        if j[:3] == [ai_side] * 3:
+            i = D8_Opposite_side[i]
+            if t[i * 4 : i * 4 + 4][0] == ai_side:
+                return 11
+    return 0
 
 
 class Game_gomoku:
@@ -29,6 +73,7 @@ class Game_gomoku:
         self.temp_text = ""
         self.temp_text_time = 0
         self.ai_mode = 0
+        self.ai_template: tuple[Callable[[list[int], int, int], int], ...] = (t0, t1)
 
     def show(self) -> None:
         self.screen.fill((238, 154, 73))
@@ -86,22 +131,20 @@ class Game_gomoku:
                 if self.chessBoard[x][y] == 0:
                     n += 1
                 else:
+                    nx, ny = x, y
                     for i in range(4):
-                        x1 = x
-                        y1 = y
-                        for _ in range(4):
-                            if x1 + D8[i][0] < 0 or x1 + D8[i][0] > self.size - 1 or y1 + D8[i][1] < 0 or y1 + D8[i][1] > self.size - 1:
+                        for j in range(4):
+                            nx, ny = x + D8[i][0] * j, y + D8[i][1] * j
+                            if not (0 <= nx + D8[i][0] < self.size - 1 and 0 <= ny + D8[i][1] < self.size - 1):
                                 break
-                            elif self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] != self.chessBoard[x][y]:
+                            elif self.chessBoard[nx + D8[i][0]][ny + D8[i][1]] != self.chessBoard[x][y]:
                                 break
-                            x1 += D8[i][0]
-                            y1 += D8[i][1]
                         else:
                             if self.chessBoard[x][y] == 1:
                                 self.status = "Black wins"
                             else:
                                 self.status = "White wins"
-                            return True, ((x * 44 + 28, y * 44 + 28), (x1 * 44 + 28, y1 * 44 + 28))
+                            return True, ((x * 44 + 28, y * 44 + 28), (nx * 44 + 28, ny * 44 + 28))
         if n == 0:
             self.status = "draw"
         return False, ((-1, -1), (-1, -1))
@@ -118,98 +161,39 @@ class Game_gomoku:
             raise RuntimeError("position is not empty or game is over")
 
     def ai(self) -> None:
-        possible_pos: list[set[tuple[int, int]]] = [set() for _ in range(7)]
+        template = self.ai_template
+        priority_positions: list[tuple[int, list[tuple[int, int]]]] = []
         for x in range(self.size):
             for y in range(self.size):
-                if self.chessBoard[x][y] != 0:
-                    s = 0
-                    if ("no", "black", "white")[self.chessBoard[x][y]] == self.ai_side:
-                        s = 1
-                    for i in range(8):
-                        x1 = x
-                        y1 = y
-                        if self.ai_mode == 0:
-                            flag = False
-                            d = (-1, -1)
-                            for j in range(3):
-                                if not (0 <= x1 + D8[i][0] < self.size - 1 and 0 <= y1 + D8[i][1] < self.size - 1):
-                                    break
-                                if self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] != self.chessBoard[x][y]:
-                                    if self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] == 0:
-                                        if not flag:
-                                            d = (x1 + D8[i][0], y1 + D8[i][1])
-                                        if s == 0:
-                                            if j == 2:
-                                                possible_pos[j + 3].add(d)
-                                            else:
-                                                possible_pos[j + 2].add(d)
-                                        else:
-                                            if j == 2:
-                                                possible_pos[4].add(d)
-                                            else:
-                                                possible_pos[j].add(d)
-                                        if flag:
-                                            break
-                                        flag = True
-                                        d = (x1 + D8[i][0], y1 + D8[i][1])
-                                    else:
-                                        break
-                                x1 += D8[i][0]
-                                y1 += D8[i][1]
-                            else:
-                                if self.chessBoard[x1][y1] == 0:
-                                    possible_pos[6].add((x1, y1))
-                        elif self.ai_mode == 1:
-                            for j in range(3):
-                                if not (0 <= x1 + D8[i][0] < self.size - 1 and 0 <= y1 + D8[i][1] < self.size - 1):
-                                    break
-                                if self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] != self.chessBoard[x][y]:
-                                    if self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] == 0:
-                                        if s == 0:
-                                            if j == 2:
-                                                possible_pos[j + 3].add((x1 + D8[i][0], y1 + D8[i][1]))
-                                            else:
-                                                possible_pos[j + 2].add((x1 + D8[i][0], y1 + D8[i][1]))
-                                        else:
-                                            if j == 2:
-                                                possible_pos[4].add((x1 + D8[i][0], y1 + D8[i][1]))
-                                            else:
-                                                possible_pos[j].add((x1 + D8[i][0], y1 + D8[i][1]))
-                                    break
-                                x1 += D8[i][0]
-                                y1 += D8[i][1]
-                            else:
-                                if self.chessBoard[x1][y1] == 0:
-                                    possible_pos[6].add((x1, y1))
-                        elif self.ai_mode == 2:
-                            for j in range(3):
-                                if not (0 <= x1 + D8[i][0] < self.size - 1 and 0 <= y1 + D8[i][1] < self.size - 1):
-                                    break
-                                if self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] != self.chessBoard[x][y]:
-                                    if self.chessBoard[x1 + D8[i][0]][y1 + D8[i][1]] == 0:
-                                        if s == 0:
-                                            possible_pos[j + 2].add((x1 + D8[i][0], y1 + D8[i][1]))
-                                        else:
-                                            possible_pos[j].add((x1 + D8[i][0], y1 + D8[i][1]))
-                                    break
-                                x1 += D8[i][0]
-                                y1 += D8[i][1]
-                            else:
-                                if self.chessBoard[x1][y1] == 0:
-                                    possible_pos[6].add((x1, y1))
-        # print(*possible_pos, sep="\n")
-        for i in range(7):
-            if len(possible_pos[6 - i]) > 0:
-                x, y = choice(tuple(possible_pos[6 - i]))
-                if self.chessBoard[x][y] == 0:
-                    self.mx, self.my = x, y
+                t: list[int] = []
+                for i in range(8):
+                    for j in range(1, 5):
+                        nx, ny = x + D8[i][0] * j, y + D8[i][1] * j
+                        if 0 <= nx < self.size and 0 <= ny < self.size:
+                            t.append(self.chessBoard[nx][ny])
+                        else:
+                            t.append(-1)
+                if self.ai_side == "black":
+                    p = max(c(t, 1, 2) for c in template)
+                else:
+                    p = max(c(t, 2, 1) for c in template)
+                for i in priority_positions:
+                    if i[0] == p:
+                        i[1].append((x, y))
+                        break
+                else:
+                    priority_positions.append((p, [(x, y)]))
+
+        priority_positions.sort(key=lambda x: x[0], reverse=True)
+        for _, v in priority_positions:
+            if len(v) > 0:
+                self.mx, self.my = choice(v)
+                if self.chessBoard[self.mx][self.my] == 0:
                     self.put_chess()
-                    # print(x, y, i)
                     return
         while True:
-            x, y = randint(0, self.size - 1), randint(0, self.size - 1)
-            if self.chessBoard[x][y] == 0:
-                self.mx, self.my = x, y
+            self.mx, self.my = randint(0, self.size - 1), randint(0, self.size - 1)
+            if self.chessBoard[self.mx][self.my] == 0:
                 self.put_chess()
                 return
 
