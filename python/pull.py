@@ -23,6 +23,7 @@ def check(dir: str) -> bool:
                 print("    Uncommitted changes:")
                 for f in status.split("\n"):
                     print("       ", f)
+                system("git fetch --all")
                 state = False
         else:
             print("    Not a Git repository, skipping")

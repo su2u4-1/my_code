@@ -1,53 +1,9 @@
-from typing import Callable, Literal
+from typing import Literal
 from random import choice, randint
 
 import pygame
 
-from gamelib import get_int, D8, D8_Opposite_side
-
-
-def t0(t: list[int], ai_side: int, player_side: int) -> int:
-    """p p p p *\n
-    direction x 8"""
-    for i in range(8):
-        for j in t[i * 4 : i * 4 + 3]:
-            if j != player_side:
-                return 0
-    return 10
-
-
-def t1(t: list[int], ai_side: int, player_side: int) -> int:
-    """a a a a *\n
-    direction x 8"""
-    for i in range(8):
-        for j in t[i * 4 : i * 4 + 4]:
-            if j != ai_side:
-                return 0
-    return 11
-
-
-def t2(t: list[int], ai_side: int, player_side: int) -> int:
-    """p p p * p\n
-    direction x 8"""
-    for i in range(8):
-        j = t[i * 4 : i * 4 + 4]
-        if j[:3] == [player_side] * 3:
-            i = D8_Opposite_side[i]
-            if t[i * 4 : i * 4 + 4][0] == player_side:
-                return 10
-    return 0
-
-
-def t3(t: list[int], ai_side: int, player_side: int) -> int:
-    """a a a * a\n
-    direction x 8"""
-    for i in range(8):
-        j = t[i * 4 : i * 4 + 4]
-        if j[:3] == [ai_side] * 3:
-            i = D8_Opposite_side[i]
-            if t[i * 4 : i * 4 + 4][0] == ai_side:
-                return 11
-    return 0
+from gamelib import get_int, D8, gomoku_ai_template
 
 
 class Game_gomoku:
@@ -73,7 +29,6 @@ class Game_gomoku:
         self.temp_text = ""
         self.temp_text_time = 0
         self.ai_mode = 0
-        self.ai_template: tuple[Callable[[list[int], int, int], int], ...] = (t0, t1)
 
     def show(self) -> None:
         self.screen.fill((238, 154, 73))
@@ -161,7 +116,7 @@ class Game_gomoku:
             raise RuntimeError("position is not empty or game is over")
 
     def ai(self) -> None:
-        template = self.ai_template
+        template = gomoku_ai_template
         priority_positions: list[tuple[int, list[tuple[int, int]]]] = []
         for x in range(self.size):
             for y in range(self.size):
