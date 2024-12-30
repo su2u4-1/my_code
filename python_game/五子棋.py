@@ -3,7 +3,8 @@ from random import choice, randint
 
 import pygame
 
-from gamelib import get_int, D8, gomoku_ai_template
+from gamelib import get_int, D8
+from gomoku_template import gomoku_ai_template
 
 
 class Game_gomoku:
@@ -99,6 +100,7 @@ class Game_gomoku:
                                 self.status = "Black wins"
                             else:
                                 self.status = "White wins"
+                            nx, ny = x + D8[i][0] * 4, y + D8[i][1] * 4
                             return True, ((x * 44 + 28, y * 44 + 28), (nx * 44 + 28, ny * 44 + 28))
         if n == 0:
             self.status = "draw"
@@ -120,24 +122,25 @@ class Game_gomoku:
         priority_positions: list[tuple[int, list[tuple[int, int]]]] = []
         for x in range(self.size):
             for y in range(self.size):
-                t: list[int] = []
-                for i in range(8):
-                    for j in range(1, 5):
-                        nx, ny = x + D8[i][0] * j, y + D8[i][1] * j
-                        if 0 <= nx < self.size and 0 <= ny < self.size:
-                            t.append(self.chessBoard[nx][ny])
-                        else:
-                            t.append(-1)
-                if self.ai_side == "black":
-                    p = max(c(t, 1, 2) for c in template)
-                else:
-                    p = max(c(t, 2, 1) for c in template)
-                for i in priority_positions:
-                    if i[0] == p:
-                        i[1].append((x, y))
-                        break
-                else:
-                    priority_positions.append((p, [(x, y)]))
+                if self.chessBoard[x][y] == 0:
+                    t: list[int] = []
+                    for i in range(8):
+                        for j in range(1, 5):
+                            nx, ny = x + D8[i][0] * j, y + D8[i][1] * j
+                            if 0 <= nx < self.size and 0 <= ny < self.size:
+                                t.append(self.chessBoard[nx][ny])
+                            else:
+                                t.append(-1)
+                    if self.ai_side == "black":
+                        p = max(c(t, 1, 2) for c in template)
+                    else:
+                        p = max(c(t, 2, 1) for c in template)
+                    for i in priority_positions:
+                        if i[0] == p:
+                            i[1].append((x, y))
+                            break
+                    else:
+                        priority_positions.append((p, [(x, y)]))
 
         priority_positions.sort(key=lambda x: x[0], reverse=True)
         for _, v in priority_positions:
