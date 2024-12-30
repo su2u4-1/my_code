@@ -23,8 +23,10 @@ D8_Opposite_side = {0: 7, 1: 6, 2: 5, 3: 4, 4: 3, 5: 2, 6: 1, 7: 0}
 
 
 def t0(t: list[int], ai_side: int, player_side: int) -> int:
-    """p p p p *\n
-    direction x 8"""
+    """
+    p p p p *\n
+    direction x 8
+    """
     for i in range(8):
         for j in t[i * 4 : i * 4 + 3]:
             if j != player_side:
@@ -33,8 +35,10 @@ def t0(t: list[int], ai_side: int, player_side: int) -> int:
 
 
 def t1(t: list[int], ai_side: int, player_side: int) -> int:
-    """a a a a *\n
-    direction x 8"""
+    """
+    a a a a *\n
+    direction x 8
+    """
     for i in range(8):
         for j in t[i * 4 : i * 4 + 4]:
             if j != ai_side:
@@ -43,8 +47,10 @@ def t1(t: list[int], ai_side: int, player_side: int) -> int:
 
 
 def t2(t: list[int], ai_side: int, player_side: int) -> int:
-    """p p p * p\n
-    direction x 8"""
+    """
+    p p p * p\n
+    direction x 8
+    """
     for i in range(8):
         j = t[i * 4 : i * 4 + 4]
         if j[:3] == [player_side] * 3:
@@ -55,8 +61,10 @@ def t2(t: list[int], ai_side: int, player_side: int) -> int:
 
 
 def t3(t: list[int], ai_side: int, player_side: int) -> int:
-    """a a a * a\n
-    direction x 8"""
+    """
+    a a a * a\n
+    direction x 8
+    """
     for i in range(8):
         j = t[i * 4 : i * 4 + 4]
         if j[:3] == [ai_side] * 3:
@@ -64,6 +72,71 @@ def t3(t: list[int], ai_side: int, player_side: int) -> int:
             if t[i * 4 : i * 4 + 4][0] == ai_side:
                 return 11
     return 0
+
+
+def t4(t: list[int], ai_side: int, player_side: int) -> int:
+    """
+    p p * p p\n
+    direction x 4
+    """
+    for i in range(4):
+        j = t[i * 4 : i * 4 + 4]
+        if j[:2] == [player_side] * 2:
+            i = D8_Opposite_side[i]
+            if t[i * 4 : i * 4 + 4][:2] == [player_side] * 2:
+                return 10
+    return 0
+
+
+def t5(t: list[int], ai_side: int, player_side: int) -> int:
+    """
+    a a * a a\n
+    direction x 8
+    """
+    for i in range(4):
+        j = t[i * 4 : i * 4 + 4]
+        if j[:2] == [ai_side] * 2:
+            i = D8_Opposite_side[i]
+            if t[i * 4 : i * 4 + 4][:2] == [ai_side] * 2:
+                return 11
+    return 0
+
+
+def t6(t: list[int], ai_side: int, player_side: int) -> int:
+    """
+    p *\n
+    direction x 8
+    """
+    for i in range(8):
+        if t[i * 4 : i * 4 + 4][0] == player_side:
+            return 2
+    return 0
+
+
+def t7(t: list[int], ai_side: int, player_side: int) -> int:
+    """
+    a *\n
+    direction x 8
+    """
+    for i in range(8):
+        if t[i * 4 : i * 4 + 4][0] == ai_side:
+            return 1
+    return 0
+
+
+def t8(t: list[int], ai_side: int, player_side: int) -> int:
+    """
+    0   0   0
+      0 0 0
+    0 0 * 0 0
+      0 0 0
+    0   0   0
+    """
+    for i in range(8):
+        for j in t[i * 4 : i * 4 + 4][:2]:
+            if j != 0:
+                return 0
+    return -1
 
 
 gomoku_ai_template: tuple[Callable[[list[int], int, int], int], ...] = (t0, t1, t2, t3)
