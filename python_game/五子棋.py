@@ -25,7 +25,7 @@ class Game_gomoku:
         self.chessBoard = [[0 for _ in range(size)] for _ in range(size)]
         self.run = True
         self.result = (False, ((-1, -1), (-1, -1)))
-        self.ai: bool = False
+        self.ai: list[bool] = [False, False]
         self.p1: Optional[Callable[[list[list[int]], int, int], tuple[int, int]]] = None
         self.p2: Optional[Callable[[list[list[int]], int, int], tuple[int, int]]] = None
         self.temp_text = ""
@@ -55,7 +55,7 @@ class Game_gomoku:
         self.screen.blit(self.font.render("reset", True, (0, 0, 0)), (5, self.h + 5))
         pygame.draw.rect(self.screen, (0, 0, 0), (60, self.h, 60, 30), 5)
         self.screen.blit(self.font.render("exit", True, (0, 0, 0)), (70, self.h + 5))
-        if not self.ai:
+        if not self.ai[self.turn - 1]:
             pygame.draw.rect(self.screen, (0, 0, 0), (120, self.h, 60, 30), 5)
             self.screen.blit(self.font.render("AI", True, (0, 0, 0)), (140, self.h + 5))
         mx, my = pygame.mouse.get_pos()
@@ -63,7 +63,7 @@ class Game_gomoku:
             pygame.draw.rect(self.screen, (255, 255, 255), (0, self.h, 60, 30), 5)
         elif 60 <= mx < 120 and self.h <= my < self.h + 30:
             pygame.draw.rect(self.screen, (255, 255, 255), (60, self.h, 60, 30), 5)
-        elif 120 <= mx < 180 and self.h <= my < self.h + 30 and not self.ai:
+        elif 120 <= mx < 180 and self.h <= my < self.h + 30 and not self.ai[self.turn - 1]:
             pygame.draw.rect(self.screen, (255, 255, 255), (120, self.h, 60, 30), 5)
         if self.temp_text != "":
             self.temp_text_time -= 1
@@ -73,7 +73,7 @@ class Game_gomoku:
             text = self.font.render(f"({self.mx},{self.my}) {("black", "white")[self.turn - 1]} {self.temp_text}", True, (0, 0, 0))
         else:
             text = self.font.render(f"({self.mx},{self.my}) {self.status} {self.temp_text}", True, (0, 0, 0))
-        if not self.ai:
+        if not self.ai[self.turn - 1]:
             self.screen.blit(text, (185, self.h + 5))
         else:
             self.screen.blit(text, (125, self.h + 5))
@@ -160,11 +160,13 @@ class Game_gomoku:
                             pygame.quit()
                             self.run = False
                             return
-                        elif 120 <= mx < 180 and self.h <= my < self.h + 30 and not self.ai:
+                        elif 120 <= mx < 180 and self.h <= my < self.h + 30 and not self.ai[self.turn - 1]:
                             if self.turn == 1:
                                 self.p1 = gomoku_ai
+                                self.ai[0] = True
                             else:
                                 self.p2 = gomoku_ai
+                                self.ai[1] = True
                             if self.turn == 1 and self.p1 is not None:
                                 x, y = self.p1(self.chessBoard, 1, 2)
                                 self.put_chess(x, y)
