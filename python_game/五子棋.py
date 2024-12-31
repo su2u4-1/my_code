@@ -100,6 +100,7 @@ class Game_gomoku:
                                 self.status = "Black wins"
                             else:
                                 self.status = "White wins"
+                            self.ai = [True, True]
                             nx, ny = x + D8[i][0] * 4, y + D8[i][1] * 4
                             return True, ((x * 44 + 28, y * 44 + 28), (nx * 44 + 28, ny * 44 + 28))
         if n == 0:
