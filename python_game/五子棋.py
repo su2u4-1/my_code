@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Callable
 
 import pygame
 
@@ -26,8 +26,8 @@ class Game_gomoku:
         self.run = True
         self.result = (False, ((-1, -1), (-1, -1)))
         self.ai_side: int = 0
-        self.p1 = gomoku_ai
-        self.p2 = None
+        self.p1: Callable[[list[list[int]], int, int], tuple[int, int]] = gomoku_ai
+        self.p2: Callable[[list[list[int]], int, int], tuple[int, int]] = None
         self.temp_text = ""
         self.temp_text_time = 0
 
