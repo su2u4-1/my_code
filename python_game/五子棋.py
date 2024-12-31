@@ -1,10 +1,9 @@
 from typing import Literal
-from random import choice, randint
 
 import pygame
 
 from gamelib import get_int, D8
-from gomoku_template import gomoku_ai_template
+from gomoku_template import gomoku_ai
 
 
 class Game_gomoku:
@@ -22,14 +21,15 @@ class Game_gomoku:
         self.clock = pygame.time.Clock()
         self.status: Literal["Black wins", "White wins", "draw", "gamerun"] = "gamerun"
         self.mx, self.my = 0, 0
-        self.turn: Literal["black", "white"] = "black"
+        self.turn: int = 1
         self.chessBoard = [[0 for _ in range(size)] for _ in range(size)]
         self.run = True
         self.result = (False, ((-1, -1), (-1, -1)))
-        self.ai_side: Literal["black", "white", "no"] = "no"
+        self.ai_side: int = 0
+        self.p1 = gomoku_ai
+        self.p2 = None
         self.temp_text = ""
         self.temp_text_time = 0
-        self.ai_mode = 0
 
     def show(self) -> None:
         self.screen.fill((238, 154, 73))
@@ -47,7 +47,7 @@ class Game_gomoku:
                 elif self.chessBoard[i][j] == 2:
                     pygame.draw.circle(self.screen, (255, 255, 255), (i * 44 + 28, j * 44 + 28), 13)
         if 0 <= self.mx < self.size and 0 <= self.my < self.size:
-            if self.turn == "black":
+            if self.turn == 1:
                 pygame.draw.circle(self.screen, (0, 0, 0), (self.mx * 44 + 28, self.my * 44 + 28), 15, width=3)
             else:
                 pygame.draw.circle(self.screen, (255, 255, 255), (self.mx * 44 + 28, self.my * 44 + 28), 15, width=3)
@@ -55,7 +55,7 @@ class Game_gomoku:
         self.screen.blit(self.font.render("reset", True, (0, 0, 0)), (5, self.h + 5))
         pygame.draw.rect(self.screen, (0, 0, 0), (60, self.h, 60, 30), 5)
         self.screen.blit(self.font.render("exit", True, (0, 0, 0)), (70, self.h + 5))
-        if self.ai_side == "no":
+        if self.ai_side == 0:
             pygame.draw.rect(self.screen, (0, 0, 0), (120, self.h, 60, 30), 5)
             self.screen.blit(self.font.render("AI", True, (0, 0, 0)), (140, self.h + 5))
         mx, my = pygame.mouse.get_pos()
@@ -63,7 +63,7 @@ class Game_gomoku:
             pygame.draw.rect(self.screen, (255, 255, 255), (0, self.h, 60, 30), 5)
         elif 60 <= mx < 120 and self.h <= my < self.h + 30:
             pygame.draw.rect(self.screen, (255, 255, 255), (60, self.h, 60, 30), 5)
-        elif 120 <= mx < 180 and self.h <= my < self.h + 30 and self.ai_side == "no":
+        elif 120 <= mx < 180 and self.h <= my < self.h + 30 and self.ai_side == 0:
             pygame.draw.rect(self.screen, (255, 255, 255), (120, self.h, 60, 30), 5)
         if self.temp_text != "":
             self.temp_text_time -= 1
@@ -73,7 +73,7 @@ class Game_gomoku:
             text = self.font.render(f"({self.mx},{self.my}) {self.turn} {self.temp_text}", True, (0, 0, 0))
         else:
             text = self.font.render(f"({self.mx},{self.my}) {self.status} {self.temp_text}", True, (0, 0, 0))
-        if self.ai_side == "no":
+        if self.ai_side == 0:
             self.screen.blit(text, (185, self.h + 5))
         else:
             self.screen.blit(text, (125, self.h + 5))
@@ -106,54 +106,16 @@ class Game_gomoku:
             self.status = "draw"
         return False, ((-1, -1), (-1, -1))
 
-    def put_chess(self) -> None:
-        if self.chessBoard[self.mx][self.my] == 0 and self.status == "gamerun":
-            if self.turn == "black":
-                self.turn = "white"
-                self.chessBoard[self.mx][self.my] = 1
+    def put_chess(self, x: int, y: int) -> None:
+        if self.chessBoard[x][y] == 0 and self.status == "gamerun":
+            if self.turn == 1:
+                self.turn = 2
+                self.chessBoard[x][y] = 1
             else:
-                self.turn = "black"
-                self.chessBoard[self.mx][self.my] = 2
+                self.turn = 1
+                self.chessBoard[x][y] = 2
         else:
             raise RuntimeError("position is not empty or game is over")
-
-    def ai(self) -> None:
-        template = gomoku_ai_template
-        priority_positions: list[tuple[int, list[tuple[int, int]]]] = []
-        for x in range(self.size):
-            for y in range(self.size):
-                if self.chessBoard[x][y] == 0:
-                    t: list[int] = []
-                    for i in range(8):
-                        for j in range(1, 5):
-                            nx, ny = x + D8[i][0] * j, y + D8[i][1] * j
-                            if 0 <= nx < self.size and 0 <= ny < self.size:
-                                t.append(self.chessBoard[nx][ny])
-                            else:
-                                t.append(-1)
-                    if self.ai_side == "black":
-                        p = max(c(t, 1, 2) for c in template)
-                    else:
-                        p = max(c(t, 2, 1) for c in template)
-                    for i in priority_positions:
-                        if i[0] == p:
-                            i[1].append((x, y))
-                            break
-                    else:
-                        priority_positions.append((p, [(x, y)]))
-
-        priority_positions.sort(key=lambda x: x[0], reverse=True)
-        for _, v in priority_positions:
-            if len(v) > 0:
-                self.mx, self.my = choice(v)
-                if self.chessBoard[self.mx][self.my] == 0:
-                    self.put_chess()
-                    return
-        while True:
-            self.mx, self.my = randint(0, self.size - 1), randint(0, self.size - 1)
-            if self.chessBoard[self.mx][self.my] == 0:
-                self.put_chess()
-                return
 
     def main(self) -> None:
         while self.run:
@@ -161,7 +123,8 @@ class Game_gomoku:
             if self.status == "gamerun":
                 self.result = self.check()
             if self.status == "gamerun" and self.turn == self.ai_side:
-                self.ai()
+                x, y = self.p1(self.chessBoard, self.ai_side, (self.ai_side + 1) % 2)
+                self.put_chess(x, y)
             self.show()
             pygame.display.update()
             self.clock.tick(60)
@@ -179,7 +142,7 @@ class Game_gomoku:
                 elif event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
                     if 0 <= self.mx < self.size and 0 <= self.my < self.size:
                         try:
-                            self.put_chess()
+                            self.put_chess(self.mx, self.my)
                         except RuntimeError:
                             self.temp_text = "position is not empty or game is over"
                             self.temp_text_time = 60
@@ -193,9 +156,10 @@ class Game_gomoku:
                             pygame.quit()
                             self.run = False
                             return
-                        elif 120 <= mx < 180 and self.h <= my < self.h + 30 and self.ai_side == "no":
+                        elif 120 <= mx < 180 and self.h <= my < self.h + 30 and self.ai_side == 0:
                             self.ai_side = self.turn
-                            self.ai()
+                            x, y = self.p1(self.chessBoard, self.ai_side, (self.ai_side + 1) % 2)
+                            self.put_chess(x, y)
         self.again()
 
     def again(self) -> None:

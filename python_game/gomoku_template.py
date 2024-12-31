@@ -1,5 +1,7 @@
+from random import choice, randint
 from typing import Callable
-from gamelib import D8_Opposite_side
+
+from gamelib import D8, D8_Opposite_side
 
 """
 a = ai
@@ -132,4 +134,36 @@ def t4(t: list[int], ai_side: int, player_side: int) -> int:
     return -1
 
 
-gomoku_ai_template: tuple[Callable[[list[int], int, int], int], ...] = (t0, t1, t2, t3, t4)
+def gomoku_ai(chessBoard: list[list[int]], ai_side: int, player_side: int) -> tuple[int, int]:
+    template: tuple[Callable[[list[int], int, int], int], ...] = (t0, t1, t2, t3, t4)
+    priority_positions: list[tuple[int, list[tuple[int, int]]]] = []
+    size = len(chessBoard)
+    for x in range(size):
+        for y in range(size):
+            if chessBoard[x][y] == 0:
+                t: list[int] = []
+                for i in range(8):
+                    for j in range(1, 5):
+                        nx, ny = x + D8[i][0] * j, y + D8[i][1] * j
+                        if 0 <= nx < size and 0 <= ny < size:
+                            t.append(chessBoard[nx][ny])
+                        else:
+                            t.append(-1)
+                p = max(c(t, ai_side, player_side) for c in template)
+                for i in priority_positions:
+                    if i[0] == p:
+                        i[1].append((x, y))
+                        break
+                else:
+                    priority_positions.append((p, [(x, y)]))
+
+    priority_positions.sort(key=lambda x: x[0], reverse=True)
+    for _, v in priority_positions:
+        if len(v) > 0:
+            mx, my = choice(v)
+            if chessBoard[mx][my] == 0:
+                return mx, my
+    while True:
+        mx, my = randint(0, size - 1), randint(0, size - 1)
+        if chessBoard[mx][my] == 0:
+            return mx, my
