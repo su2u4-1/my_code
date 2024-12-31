@@ -23,11 +23,17 @@ t1:
     p p p *
     p = 9
 
+    a p p p *
+    p = 8
+
     a a a * a
     p = 11
 
     a a a *
-    p = 8
+    p = 7
+
+    p a a a *
+    p = 5
 t2:
     p p * p p
     p = 10
@@ -35,17 +41,29 @@ t2:
     p p * p
     p = 9
 
+    a p p * p
+    p = 8
+
+    p p * p a
+    p = 8
+
     p p *
-    p = 7
+    p = 6
 
     a a * a a
     p = 11
 
     a a * a
-    p = 8
+    p = 7
+
+    a a * a p
+    p = 6
+
+    p a a * a
+    p = 6
 
     a a *
-    p = 6
+    p = 5
 t3:
     p *
     p = 2
@@ -81,17 +99,21 @@ def t1(t: list[int], ai_side: int, player_side: int) -> int:
     for i in range(8):
         j = t[i * 4 : i * 4 + 4]
         if j[:3] == [player_side] * 3:
+            if j[3] == ai_side:
+                return 9
             i = D8_Opposite_side[i]
             if t[i * 4 : i * 4 + 4][0] == player_side:
                 return 10
             else:
-                return 9
+                return 8
         elif j[:3] == [ai_side] * 3:
+            if j[3] == player_side:
+                return 5
             i = D8_Opposite_side[i]
             if t[i * 4 : i * 4 + 4][0] == ai_side:
                 return 11
             else:
-                return 8
+                return 7
     return 0
 
 
@@ -99,21 +121,31 @@ def t2(t: list[int], ai_side: int, player_side: int) -> int:
     for i in range(4):
         j = t[i * 4 : i * 4 + 4]
         if j[:2] == [player_side] * 2:
+            if j[2] == ai_side:
+                return 8
             i = D8_Opposite_side[i]
             if t[i * 4 : i * 4 + 4][:2] == [player_side] * 2:
                 return 10
             elif t[i * 4 : i * 4 + 4][0] == player_side:
-                return 9
+                if t[i * 4 : i * 4 + 4][1] == 0:
+                    return 9
+                else:
+                    return 8
             else:
-                return 7
+                return 6
         elif j[:2] == [ai_side] * 2:
+            if j[2] == player_side:
+                return 6
             i = D8_Opposite_side[i]
             if t[i * 4 : i * 4 + 4][:2] == [ai_side] * 2:
                 return 11
             elif t[i * 4 : i * 4 + 4][0] == ai_side:
-                return 8
+                if t[i * 4 : i * 4 + 4][1] == 0:
+                    return 7
+                else:
+                    return 6
             else:
-                return 6
+                return 5
     return 0
 
 
