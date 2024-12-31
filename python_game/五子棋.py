@@ -122,7 +122,7 @@ class Game_gomoku:
             self.mx, self.my = map(lambda x: x // 44, pygame.mouse.get_pos())
             if self.status == "gamerun":
                 self.result = self.check()
-            if self.status == "gamerun" and self.turn == self.ai_side:
+            if self.status == "gamerun" and self.turn == self.ai_side and self.p1 is not None:
                 x, y = self.p1(self.chessBoard, self.ai_side, (self.ai_side + 1) % 2)
                 self.put_chess(x, y)
             self.show()
@@ -158,8 +158,9 @@ class Game_gomoku:
                             return
                         elif 120 <= mx < 180 and self.h <= my < self.h + 30 and self.ai_side == 0:
                             self.ai_side = self.turn
-                            x, y = self.p1(self.chessBoard, self.ai_side, (self.ai_side + 1) % 2)
-                            self.put_chess(x, y)
+                            if self.p1 is not None:
+                                x, y = self.p1(self.chessBoard, self.ai_side, (self.ai_side + 1) % 2)
+                                self.put_chess(x, y)
         self.again()
 
     def again(self) -> None:
