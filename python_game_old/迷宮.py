@@ -111,12 +111,12 @@ class Game_maze:
                 h = get_int("h: ", "must be great than 0", lambda x: x > 0)
             else:
                 w, h = self.w, self.h
-            self.init(w, h, (0, 0), (w - 1, h - 1), self.symbol)
+            self.init(w, h, (0, 0), (h - 1, w - 1), self.symbol)
             self.main()
 
 
 if __name__ == "__main__":
     w = get_int("w: ", "must be great than 0", lambda x: x > 0)
     h = get_int("h: ", "must be great than 0", lambda x: x > 0)
-    maze = Game_maze(w, h, (0, 0), (w - 1, h - 1), ("  ", "▓▓", "SP", "EP", "PL"))
+    maze = Game_maze(w, h, (0, 0), (h - 1, w - 1), ("  ", "▓▓", "SP", "EP", "PL"))
     maze.main()
