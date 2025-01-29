@@ -15,7 +15,6 @@ def main():
 
     while True:
         tmr += 1
-        mousex, mousey = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()

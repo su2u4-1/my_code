@@ -1,25 +1,19 @@
 from math import floor
 from random import randint as ri
 from random import choice as rc
-from random import random, seed
 import pygame
 
 
-def ra(s=None):
-    seed(s)
-    return random()
-
-
-def glp(x0, y0, x1, y1):
+def glp(x0: int, y0: int, x1: int, y1: int):
     dx = abs(x1 - x0)
     dy = abs(y1 - y0)
     sx = -1 if x0 > x1 else 1
     sy = -1 if y0 > y1 else 1
     x, y = x0, y0
-    pixels = []
+    pixels: list[tuple[int, int]] = []
     err = dx - dy
     while True:
-        pixels.append([x, y])
+        pixels.append((x, y))
         if x == x1 and y == y1:
             break
         e2 = 2 * err
@@ -32,7 +26,7 @@ def glp(x0, y0, x1, y1):
     return pixels
 
 
-def show(d):
+def show(d: int):
     pygame.init()
     pygame.display.set_caption("遊戲4.0")
     screen = pygame.display.set_mode((700, 700))
@@ -75,29 +69,29 @@ def show(d):
 # 地圖
 w, h = 100, 100
 e = 1000
-map = []
+map: list[list[tuple[int, bool]]] = []
 for i in range(w):
-    a = []
+    a: list[tuple[int, bool]] = []
     for j in range(h):
         # 高度,水流
-        a.append([0, False])
+        a.append((0, False))
     map.append(a)
 # 山脈
-line = []
+line: list[list[tuple[int, int]]] = []
 for _ in range(ri(1, 10)):
     x1, y1, x2, y2 = ri(0, 99), ri(0, 99), ri(0, 99), ri(0, 99)
     line.append(glp(x1, y1, x2, y2))
 # 水源
-water = []
+water: list[tuple[int, int]] = []
 for i in line:
     for j in i:
-        map[j[0]][j[1]][0] = ri(0.9 * e, e)
+        map[j[0]][j[1]] = (ri(int(0.9 * e), e), map[j[0]][j[1]][1])
         x = j[0] + ri(-3, 3)
         y = j[1] + ri(-3, 3)
         if x >= 0 and x < w and y >= 0 and y < h and ri(1, 10) == 1:
             if map[x][y][0] == 0:
                 water.append((x, y))
-                map[x][y][1] = True
+                map[x][y] = (map[x][y][0], True)
 # 山
 b1 = [1, 0, -1, 0]
 b2 = [0, 1, 0, -1]
@@ -109,15 +103,15 @@ while True:
                 if i + b1[n] >= 0 and j + b2[n] >= 0 and i + b1[n] < w and j + b2[n] < h:
                     if map[i][j][0] >= map[i + b1[n]][j + b2[n]][0] + 10:
                         k = ri(1, ri(1, ri(1, 10)))
-                        map[i][j][0] -= k
-                        map[i + b1[n]][j + b2[n]][0] += k
+                        map[i][j] = (map[i][j][0] - k, map[i][j][1])
+                        map[i + b1[n]][j + b2[n]] = (map[i + b1[n]][j + b2[n]][0] + k, map[i + b1[n]][j + b2[n]][1])
                         n1 += 1
     if n1 == 0:
         break
 # 河
 b1 = [1, 0, -1, 0]
 b2 = [0, 1, 0, -1]
-river = []
+river: list[list[tuple[int, int]]] = []
 for b in water:
     x, y = b[0], b[1]
     river.append([(x, y)])
@@ -128,7 +122,7 @@ for b in water:
             n = rc(c)
             if x + b1[n] >= 0 and y + b2[n] >= 0 and x + b1[n] < w and y + b2[n] < h:
                 if map[x][y][0] + ri(0, 5) > map[x + b1[n]][y + b2[n]][0]:
-                    map[x + b1[n]][y + b2[n]][1] = True
+                    map[x + b1[n]][y + b2[n]] = (map[x + b1[n]][y + b2[n]][0], True)
                     x, y = x + b1[n], y + b2[n]
                     river[len(river) - 1].append((x, y))
                     break

@@ -163,11 +163,11 @@ main_page = True
 gameing = False
 gameover = False
 background_image = pygame.image.load(path + "\\space.png")
-all_sprites: pygame.sprite.Group[pygame.sprite.Sprite] = pygame.sprite.Group()
-reds: pygame.sprite.Group[pygame.sprite.Sprite] = pygame.sprite.Group()
-bullets: pygame.sprite.Group[pygame.sprite.Sprite] = pygame.sprite.Group()
-eyesll: pygame.sprite.Group[pygame.sprite.Sprite] = pygame.sprite.Group()
-balls: pygame.sprite.Group[pygame.sprite.Sprite] = pygame.sprite.Group()
+all_sprites = pygame.sprite.Group()
+reds = pygame.sprite.Group()
+bullets = pygame.sprite.Group()
+eyesll = pygame.sprite.Group()
+balls = pygame.sprite.Group()
 player = Player()
 all_sprites.add(player)
 for i in range(15):
@@ -193,6 +193,7 @@ while True:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
+                print(type(all_sprites), all_sprites)
                 exit()
     background_image = pygame.transform.scale(background_image, (W, H))
     screen.blit(background_image, (0, 0))

@@ -4,7 +4,7 @@ from time import time
 
 
 class BuildRoles:
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.name = name
         self.atk = 0
         self.Def = 0
@@ -15,8 +15,8 @@ class BuildRoles:
         self.x = 0
         self.y = 0
         self.lv = 1
-        self.bag = {}
-        self.bag_list = []
+        self.bag: dict[str, int] = {}
+        self.bag_list: list[str] = []
 
     def display(self):
         print(f"\n------{self.name}的基本資料------")
@@ -28,25 +28,25 @@ class BuildRoles:
         print(f"速度:{self.agi}")
         print(f"幸運:{self.luck}")
 
-    def locat(self, place):
+    def locat(self, place: str):
         global locat_time
         self.location.append(place)
         locat_time = time()
 
-    def previous(self, n=1):
+    def previous(self, n: int = 1):
         for _ in range(n):
             self.location.pop()
 
-    def save_file(self, p=path.dirname(path.realpath(__file__))):
+    def save_file(self, p: str = path.dirname(path.realpath(__file__))):
         f = open(p + f"\\{self.name}.txt", "w+", encoding="utf-8")
-        d = {
-            "name": {self.name},
-            "location": {self.location},
-            "atk": {self.atk},
-            "Def": {self.Def},
-            "hp": {self.hp},
-            "agi": {self.agi},
-            "luck": {self.luck},
+        d: dict[str, str | list[str] | int] = {
+            "name": self.name,
+            "location": self.location,
+            "atk": self.atk,
+            "Def": self.Def,
+            "hp": self.hp,
+            "agi": self.agi,
+            "luck": self.luck,
         }
         print(d)
         print(str(d))
@@ -74,7 +74,7 @@ class BuildRoles:
                 print(f"{i+1:<2}:{self.bag_list[i]:10}x{self.bag[self.bag_list[i]]}")
 
 
-def choose_option(text, n=1):
+def choose_option(text: str | list[str] | tuple[str, ...], n: int = 1) -> int:
     if type(text) == str:
         option = input(text)
     elif type(text) == list or type(text) == tuple:
@@ -101,7 +101,7 @@ def choose_option(text, n=1):
     return option
 
 
-def fighting(p, e):
+def fighting(p: BuildRoles, e: BuildRoles):
     php = p.hp
     ehp = e.hp
     t = 0
@@ -138,7 +138,7 @@ def fighting(p, e):
         return "win"
 
 
-def loot_table(lv, lv_gap):
+def loot_table(lv: int, lv_gap: int):
     item = {
         0: ["無"],
         1: ["金屬性粉末(小)", "木屬性粉末(小)", "水屬性粉末(小)", "火屬性粉末(小)", "土屬性粉末(小)"],
@@ -151,7 +151,7 @@ def loot_table(lv, lv_gap):
         8: ["金屬性結晶(中)", "木屬性結晶(中)", "水屬性結晶(中)", "火屬性結晶(中)", "土屬性結晶(中)"],
         9: ["金屬性結晶(大)", "木屬性結晶(大)", "水屬性結晶(大)", "火屬性結晶(大)", "土屬性結晶(大)"],
     }
-    loot_list = []
+    loot_list: list[str] = []
     if lv_gap <= 0:
         lv_gap = 1
     for _ in range(ri(1, lv_gap)):
@@ -175,10 +175,11 @@ print("你可分配的點數有25點，分配方式是分別把要加給5種能�
 print("例如:5 5 5 5 5")
 print("此例即是平均分配")
 while True:
-    ability = input("\n請輸入要分配的能力值:").split()
+    t = input("\n請輸入要分配的能力值:").split()
+    ability: list[int] = [0, 0, 0, 0, 0]
     try:
         for i in range(5):
-            ability[i] = int(ability[i])
+            ability[i] = int(t[i])
     except:
         print("\n你的輸入有誤，請重新分配")
         continue
@@ -223,6 +224,8 @@ while True:
                 if a0 == "y" or a0 == "Y" or a0 == "yes" or a0 == "Yes":
                     print("\n關閉遊戲")
                     exit()
+            case _:
+                pass
 
     while player.location[-1] == "起始鎮口":
         option = choose_option(["逛逛村子", "出去打怪", "打開系統"], 3)
@@ -282,7 +285,7 @@ while True:
                         monster.agi = ri(80, 120)
                         monster.luck = ri(40, 60)
                         monster.lv = lv
-                        monster.location = f"起始鎮外({player.x},{player.y})"
+                        monster.location.append(f"起始鎮外({player.x},{player.y})")
                         monster.x = player.x
                         monster.y = player.y
                         for i in range(lv):
@@ -299,16 +302,18 @@ while True:
                 player.locat("起始鎮內")
             case 6:
                 player.locat("系統介面")
+            case _:
+                pass
 
     while player.location[-1] == "戰鬥場":
         print("\n面對怪物，你決定")
         option = choose_option(["戰鬥", "觀察敵人", "逃跑", "系統"])
         match option:
             case 1:
-                result = fighting(player, monster)
+                result = fighting(player, monster)  # type: ignore
                 match result:
                     case "win":
-                        loot_list = loot_table(monster.lv, monster.lv - player.lv)
+                        loot_list = loot_table(monster.lv, monster.lv - player.lv)  # type: ignore
                         if loot_list == ["無"]:
                             print("\n你什麼都沒拿到")
                         else:
@@ -324,10 +329,14 @@ while True:
                         pass
                     case "tie":
                         pass
+                    case _:
+                        pass
                 player.previous()
             case 2:
-                monster.display()
+                monster.display()  # type: ignore
             case 3:
                 player.previous()
             case 4:
                 player.locat("系統介面")
+            case _:
+                pass

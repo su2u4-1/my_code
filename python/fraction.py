@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Any
 import numbers
 
 
@@ -13,7 +13,7 @@ def lcm(a: int, b: int) -> int:
 
 
 class Fraction(numbers.Number):
-    def __init__(self, numerator: "N", denominator: "N" = 1) -> None:
+    def __init__(self, numerator: Any, denominator: Any = 1) -> None:
         if isinstance(numerator, float):
             while not numerator.is_integer():
                 denominator *= 10
@@ -38,7 +38,7 @@ class Fraction(numbers.Number):
         self.denominator: int = denominator
         self.approx()
 
-    def __add__(self, other: "N") -> "Fraction":
+    def __add__(self, other: Any) -> "Fraction":
         if not isinstance(other, Fraction):
             try:
                 other = Fraction(other)
@@ -48,7 +48,7 @@ class Fraction(numbers.Number):
         numerator = self.numerator * (denominator / self.denominator) + other.numerator * (denominator / other.denominator)
         return Fraction(numerator, denominator)
 
-    def __sub__(self, other: "N") -> "Fraction":
+    def __sub__(self, other: Any) -> "Fraction":
         if not isinstance(other, Fraction):
             try:
                 other = Fraction(other)
@@ -58,7 +58,7 @@ class Fraction(numbers.Number):
         numerator = self.numerator * (denominator / self.denominator) - other.numerator * (denominator / other.denominator)
         return Fraction(numerator, denominator)
 
-    def __mul__(self, other: "N") -> "Fraction":
+    def __mul__(self, other: Any) -> "Fraction":
         if not isinstance(other, Fraction):
             try:
                 other = Fraction(other)
@@ -66,7 +66,7 @@ class Fraction(numbers.Number):
                 return NotImplemented
         return Fraction(self.numerator * other.numerator, self.denominator * other.denominator)
 
-    def __truediv__(self, other: "N") -> "Fraction":
+    def __truediv__(self, other: Any) -> "Fraction":
         if not isinstance(other, Fraction):
             try:
                 other = Fraction(other)
@@ -74,7 +74,7 @@ class Fraction(numbers.Number):
                 return NotImplemented
         return Fraction(self.numerator * other.denominator, self.denominator * other.numerator)
 
-    def __floordiv__(self, other: "N") -> int:
+    def __floordiv__(self, other: Any) -> int:
         if not isinstance(other, Fraction):
             try:
                 other = Fraction(other)
@@ -82,13 +82,13 @@ class Fraction(numbers.Number):
                 return NotImplemented
         return (self.numerator * other.denominator) // (self.denominator * other.numerator)
 
-    def __mod__(self, other: "N") -> "Fraction":
+    def __mod__(self, other: Any) -> "Fraction":
         return self - other * (self // other)
 
-    def __divmod__(self, other: "N") -> tuple[int, "Fraction"]:
+    def __divmod__(self, other: Any) -> tuple[int, "Fraction"]:
         return self.__floordiv__(other), self.__mod__(other)
 
-    def __pow__(self, other: "N", mod: Optional["N"] = None) -> "Fraction":
+    def __pow__(self, other: Any, mod: Optional["N"] = None) -> "Fraction":
         if self.numerator < 0:
             raise ValueError()
         if self.numerator == 0:
@@ -118,10 +118,10 @@ class Fraction(numbers.Number):
             return t
         return t.__mod__(mod)
 
-    def __radd__(self, other: "N") -> "Fraction":
+    def __radd__(self, other: Any) -> "Fraction":
         return self.__add__(other)
 
-    def __rsub__(self, other: "N") -> "Fraction":
+    def __rsub__(self, other: Any) -> "Fraction":
         if not isinstance(other, Fraction):
             try:
                 other = Fraction(other)
@@ -131,10 +131,10 @@ class Fraction(numbers.Number):
         numerator = other.numerator * (denominator / other.denominator) - self.numerator * (denominator / self.denominator)
         return Fraction(numerator, denominator)
 
-    def __rmul__(self, other: "N") -> "Fraction":
+    def __rmul__(self, other: Any) -> "Fraction":
         return self.__mul__(other)
 
-    def __rtruediv__(self, other: "N") -> "Fraction":
+    def __rtruediv__(self, other: Any) -> "Fraction":
         if not isinstance(other, Fraction):
             try:
                 other = Fraction(other)
@@ -142,9 +142,9 @@ class Fraction(numbers.Number):
                 return NotImplemented
         return Fraction(self.denominator * other.numerator, self.numerator * other.denominator)
 
-    def __rfloordiv__(self, other: "N") -> int:
+    def __rfloordiv__(self, other: Any) -> int:
         if isinstance(other, int) or isinstance(other, float):
-            return self.denominator * other // self.numerator
+            return int(self.denominator * other // self.numerator)
         if not isinstance(other, Fraction):
             try:
                 other = Fraction(other)
@@ -152,7 +152,7 @@ class Fraction(numbers.Number):
                 return NotImplemented
         return self.denominator * other.numerator // self.numerator * other.denominator
 
-    def __rmod__(self, other: "N") -> "Fraction":
+    def __rmod__(self, other: Any) -> "Fraction":
         if not isinstance(other, Fraction):
             try:
                 other = Fraction(other)
@@ -160,10 +160,10 @@ class Fraction(numbers.Number):
                 return NotImplemented
         return other.__mod__(self)
 
-    def __rdivmod__(self, other: "N") -> tuple[int, "Fraction"]:
+    def __rdivmod__(self, other: Any) -> tuple[int, "Fraction"]:
         return self.__rfloordiv__(other), self.__rmod__(other)
 
-    def __rpow__(self, other: "N", mod: Optional["N"] = None) -> "Fraction":
+    def __rpow__(self, other: Any, mod: Optional["N"] = None) -> "Fraction":
         if not isinstance(other, Fraction):
             try:
                 other = Fraction(other)
@@ -178,25 +178,25 @@ class Fraction(numbers.Number):
             return other
         return other.__mod__(mod)
 
-    def __iadd__(self, other: "N") -> "Fraction":
+    def __iadd__(self, other: Any) -> "Fraction":
         return self.__add__(other)
 
-    def __isub__(self, other: "N") -> "Fraction":
+    def __isub__(self, other: Any) -> "Fraction":
         return self.__sub__(other)
 
-    def __imul__(self, other: "N") -> "Fraction":
+    def __imul__(self, other: Any) -> "Fraction":
         return self.__mul__(other)
 
-    def __itruediv__(self, other: "N") -> "Fraction":
+    def __itruediv__(self, other: Any) -> "Fraction":
         return self.__truediv__(other)
 
-    def __ifloordiv__(self, other: "N") -> int:
+    def __ifloordiv__(self, other: Any) -> int:
         return self.__floordiv__(other)
 
-    def __imod__(self, other: "N") -> "Fraction":
+    def __imod__(self, other: Any) -> "Fraction":
         return self.__mod__(other)
 
-    def __ipow__(self, other: "N", modulo: Optional[None] = None) -> "Fraction":
+    def __ipow__(self, other: Any, modulo: Optional[None] = None) -> "Fraction":
         return self.__pow__(other, modulo)
 
     def __neg__(self) -> "Fraction":
@@ -250,7 +250,7 @@ class Fraction(numbers.Number):
         else:
             return self.__int__()
 
-    def __lt__(self, other: "N") -> bool:
+    def __lt__(self, other: Any) -> bool:
         if not isinstance(other, Fraction):
             try:
                 other = Fraction(other)
@@ -259,7 +259,7 @@ class Fraction(numbers.Number):
         denominator = lcm(self.denominator, other.denominator)
         return self.numerator * (denominator / self.denominator) < other.numerator * (denominator / other.denominator)
 
-    def __le__(self, other: "N") -> bool:
+    def __le__(self, other: Any) -> bool:
         return self.__eq__(other) or self.__lt__(other)
 
     def __eq__(self, value: object) -> bool:
@@ -278,7 +278,7 @@ class Fraction(numbers.Number):
                 return NotImplemented
         return self.numerator != value.numerator or self.denominator != value.denominator
 
-    def __gt__(self, other: "N") -> bool:
+    def __gt__(self, other: Any) -> bool:
         if not isinstance(other, Fraction):
             try:
                 other = Fraction(other)
@@ -287,7 +287,7 @@ class Fraction(numbers.Number):
         denominator = lcm(self.denominator, other.denominator)
         return self.numerator * (denominator / self.denominator) > other.numerator * (denominator / other.denominator)
 
-    def __ge__(self, other: "N") -> bool:
+    def __ge__(self, other: Any) -> bool:
         return self.__eq__(other) or self.__gt__(other)
 
     def __str__(self) -> str:
@@ -319,4 +319,4 @@ class Fraction(numbers.Number):
         self.denominator = int(self.denominator / i)
 
 
-N = float | Fraction
+N = int | float | Fraction

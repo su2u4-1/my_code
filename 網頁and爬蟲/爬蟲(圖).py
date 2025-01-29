@@ -1,5 +1,5 @@
-import requests
-from bs4 import BeautifulSoup
+import requests  # type: ignore
+from bs4 import BeautifulSoup  # type: ignore
 
 # html = requests.get("https://game8.jp/shoujokaisen/491720")
 # soup = BeautifulSoup(html.text, "html.parser")

@@ -37,13 +37,14 @@ def layout():
 def left():
     print("左")
     global a
+    x, y = -1, -1
     try:
         for _ in range(3):
             for x in range(4):
                 for y in range(1, 4):
                     if a[x][y - 1] == 0:
                         a[x][y - 1] = a[x][y]
-                        a[x][y] == 0
+                        a[x][y] = 0
                     elif a[x][y] == a[x][y - 1]:
                         a[x][y - 1] += 1
                         a[x][y] = 0
@@ -57,13 +58,14 @@ def left():
 def right():
     print("右")
     global a
+    x, y = -1, -1
     try:
         for _ in range(3):
             for x in range(4):
                 for y in range(3):
                     if a[x][y + 1] == 0:
                         a[x][y + 1] = a[x][y]
-                        a[x][y] == 0
+                        a[x][y] = 0
                     elif a[x][y] == a[x][y + 1]:
                         a[x][y + 1] += 1
                         a[x][y] = 0
@@ -77,13 +79,14 @@ def right():
 def up():
     print("上")
     global a
+    x, y = -1, -1
     try:
         for _ in range(3):
             for x in range(1, 4):
                 for y in range(4):
                     if a[x - 1][y] == 0:
                         a[x - 1][y] = a[x][y]
-                        a[x][y] == 0
+                        a[x][y] = 0
                     elif a[x][y] == a[x - 1][y]:
                         a[x - 1][y] += 1
                         a[x][y] = 0
@@ -97,13 +100,14 @@ def up():
 def down():
     print("下")
     global a
+    x, y = -1, -1
     try:
         for _ in range(3):
             for x in range(3):
                 for y in range(4):
                     if a[x + 1][y] == 0:
                         a[x + 1][y] = a[x][y]
-                        a[x][y] == 0
+                        a[x][y] = 0
                     elif a[x][y] == a[x + 1][y]:
                         a[x + 1][y] += 1
                         a[x][y] = 0

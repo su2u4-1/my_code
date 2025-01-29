@@ -75,7 +75,7 @@ def right():
                     break
 
 
-def judgment(n):
+def judgment(n: list[list[int]]):
     g = 0
     h = 0
     for i in range(0, 4):
@@ -102,7 +102,7 @@ summon()
 while True:
     summon()
     c = "|"
-    d = []
+    d: list[str] = []
     for i in range(0, 4):
         for j in range(0, 4):
             f = a[i][j]

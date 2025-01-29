@@ -3,11 +3,11 @@ from math import floor as fl
 from random import randint as ri
 
 
-def put_chess(x, y, p):
+def put_chess(x: int, y: int, p: int):
     print(x, y, p)
     file.write(str((x, y, p)) + "\n")
     board[x][y] = p
-    n = []
+    n: list[tuple[int, list[tuple[int, int]], int]] = []
     for j in range(4):
         if 0 <= x + A[j] < 19 and 0 <= y + B[j] < 19:
             for i in range(len(same_color_chess)):
@@ -15,9 +15,9 @@ def put_chess(x, y, p):
                     same_color_chess[i][1].append((x, y))
                     n.append(same_color_chess[i])
     if len(n) == 0:
-        same_color_chess.append([1, [(x, y)], p])
+        same_color_chess.append((1, [(x, y)], p))
     elif len(n) != 1:
-        c = []
+        c: list[tuple[int, int]] = []
         for i in n:
             c += i[1]
             while i in same_color_chess:
@@ -25,26 +25,30 @@ def put_chess(x, y, p):
         for i in c:
             while c.count(i) > 1:
                 c.remove(i)
-        same_color_chess.append([1, c, p])
+        same_color_chess.append((1, c, p))
     check(x, y)
 
 
-def check(x, y):
+def check(x: int, y: int):
     for i in range(len(same_color_chess)):
         for j in range(len(same_color_chess)):
             if i != j and same_color_chess[i][2] == same_color_chess[j][2]:
                 for k in same_color_chess[i][1]:
                     for l in same_color_chess[j][1]:
                         if k == l:
-                            same_color_chess[i][1] += same_color_chess[j][1]
+                            same_color_chess[i] = (
+                                same_color_chess[i][0],
+                                same_color_chess[i][1] + same_color_chess[j][1],
+                                same_color_chess[i][2],
+                            )
                             same_color_chess.remove(same_color_chess[j])
     for i in range(len(same_color_chess)):
-        same_color_chess[i][0] = 0
+        same_color_chess[i] = (0, same_color_chess[i][1], same_color_chess[i][2])
         for j in same_color_chess[i][1]:
             for k in range(4):
                 if 0 <= j[0] + A[k] < 19 and 0 <= j[1] + B[k] < 19:
                     if board[j[0] + A[k]][j[1] + B[k]] == 0:
-                        same_color_chess[i][0] += 1
+                        same_color_chess[i] = (same_color_chess[i][0] + 1, same_color_chess[i][1], same_color_chess[i][2])
     for i in same_color_chess:
         if (x, y) != (-1, -1):
             if (x, y) not in i[1] and i[0] <= 0:
@@ -65,13 +69,9 @@ def main():
     pygame.display.set_caption("圍棋")
     screen = pygame.display.set_mode(((l - 1) * 44 + 54, (l - 1) * 44 + 54), pygame.RESIZABLE)
     clock = pygame.time.Clock()
-    font = pygame.font.Font("C:\\Windows\\Fonts\\kaiu.ttf", 48)
 
     for _ in range(l):
-        a = []
-        for _ in range(l):
-            a.append(0)
-        board.append(a)
+        board.append([0 for _ in range(l)])
     f = 1
 
     while True:
@@ -115,7 +115,7 @@ def main():
                     [(l - 1) * 44 + 27, i * 44 + 27],
                     2,
                 )
-        empty = []
+        empty: list[tuple[int, int]] = []
         for i in range(l):
             for j in range(l):
                 if board[i][j] == 1:
@@ -144,8 +144,8 @@ def main():
 if __name__ == "__main__":
     A = [0, 1, 0, -1]
     B = [1, 0, -1, 0]
-    board = []
-    same_color_chess = []
+    board: list[list[int]] = []
+    same_color_chess: list[tuple[int, list[tuple[int, int]], int]] = []
     l = 19
     file = open("圍棋.txt", "w+")
     main()

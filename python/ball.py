@@ -4,15 +4,16 @@ from random import randint as ri
 
 
 def drawplot(t: list[float], p: list[list[int]]):
-    mi, mx = [], []
+    mi: list[int] = []
+    mx: list[int] = []
     for i in range(CL):
-        plt.plot(t, p[i], color=(COLOR[i][0], COLOR[i][1], COLOR[i][2]), label=i)
+        plt.plot(t, p[i], color=(COLOR[i][0], COLOR[i][1], COLOR[i][2]), label=i)  # type: ignore
         mx.append(max(p[i]))
         mi.append(min(p[i]))
-    plt.xlim(0, len(t))
-    plt.ylim(min(mi), max(mx))
-    plt.legend()
-    plt.show()
+    plt.xlim(0, len(t))  # type: ignore
+    plt.ylim(min(mi), max(mx))  # type: ignore
+    plt.legend()  # type: ignore
+    plt.show()  # type: ignore
 
 
 class Point:
