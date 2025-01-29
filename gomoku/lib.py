@@ -1,7 +1,23 @@
 from random import choice, randint
-from typing import Callable
+from typing import Callable, NoReturn
 
-from gamelib import D8, D8_Opposite_side
+#      ⇘       ⇒       ⇗       ⇓       ⇑        ⇙       ⇐        ⇖
+D8 = ((1, 1), (1, 0), (1, -1), (0, 1), (0, -1), (-1, 1), (-1, 0), (-1, -1))
+D8_Opposite_side = {0: 7, 1: 6, 2: 5, 3: 4, 4: 3, 5: 2, 6: 1, 7: 0}
+
+
+def get_int(text: str, error_text: str, condition: Callable[[int], bool]) -> int | NoReturn:
+    while True:
+        s = input(text)
+        try:
+            s = int(s)
+            if condition(s):
+                return s
+            else:
+                print("input error:", error_text)
+        except:
+            print("input error: must be an integer")
+
 
 """
 a = ai
