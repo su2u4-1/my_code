@@ -72,12 +72,12 @@ tmr = 0
 flag = 0
 pygame.init()
 xl = math.floor(pygame.display.Info().current_w / 50)
-yl = math.floor(pygame.display.Info().current_h / 50)
+yl = math.floor(pygame.display.Info().current_h / 50) - 1
 pygame.display.set_caption("踩地雷")
 screen = pygame.display.set_mode((xl * 50, yl * 50), pygame.RESIZABLE)
 clock = pygame.time.Clock()
 font = pygame.font.Font("C:\\Windows\\Fonts\\kaiu.ttf", 48)
-g = round((xl * yl) / 5)
+g = round((xl * yl) / 7)
 map = generatemap(xl, yl, g)
 showmap = [[-1 for _ in range(yl)] for _ in range(xl)]
 img: list[pygame.Surface] = []
