@@ -51,15 +51,137 @@ class Button:
         screen.blit(text, text.get_rect(center=(self.x, self.y)))
 
 
+class RubiksCube:
+    def __init__(self, rc: dict[str, tuple[int, int, int]], l: int = 100, xs: int = 200, ys: int = 50) -> None:
+        self.x = [int(xs + l * i * 3**0.5) for i in (0, 0.5, 1, 1.5, 2, 2.5, 3, -0.25, 3.25)]
+        self.y = [int(ys + l * i) for i in (0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6)]
+        self.p = (
+            (self.x[3], self.y[0]),
+            (self.x[2], self.y[1]),
+            (self.x[4], self.y[1]),
+            (self.x[1], self.y[2]),
+            (self.x[3], self.y[2]),
+            (self.x[5], self.y[2]),
+            (self.x[0], self.y[3]),
+            (self.x[2], self.y[3]),
+            (self.x[4], self.y[3]),
+            (self.x[6], self.y[3]),
+            (self.x[1], self.y[4]),
+            (self.x[3], self.y[4]),
+            (self.x[5], self.y[4]),
+            (self.x[2], self.y[5]),
+            (self.x[4], self.y[5]),
+            (self.x[3], self.y[6]),
+            (self.x[0], self.y[5]),
+            (self.x[1], self.y[6]),
+            (self.x[2], self.y[7]),
+            (self.x[3], self.y[8]),
+            (self.x[4], self.y[7]),
+            (self.x[5], self.y[6]),
+            (self.x[6], self.y[5]),
+            (self.x[0], self.y[7]),
+            (self.x[1], self.y[8]),
+            (self.x[2], self.y[9]),
+            (self.x[3], self.y[10]),
+            (self.x[4], self.y[9]),
+            (self.x[5], self.y[8]),
+            (self.x[6], self.y[7]),
+            (self.x[0], self.y[9]),
+            (self.x[1], self.y[10]),
+            (self.x[2], self.y[11]),
+            (self.x[3], self.y[12]),
+            (self.x[4], self.y[11]),
+            (self.x[5], self.y[10]),
+            (self.x[6], self.y[9]),
+        )
+        self.rc = rc
+
+    def desplay(self, screen: pygame.Surface) -> None:
+        pygame.draw.polygon(screen, self.rc["u0"], [self.p[0], self.p[1], self.p[4], self.p[2]])
+        pygame.draw.polygon(screen, self.rc["u1"], [self.p[2], self.p[4], self.p[8], self.p[5]])
+        pygame.draw.polygon(screen, self.rc["u2"], [self.p[5], self.p[8], self.p[12], self.p[9]])
+        pygame.draw.polygon(screen, self.rc["u3"], [self.p[1], self.p[3], self.p[7], self.p[4]])
+        pygame.draw.polygon(screen, self.rc["u4"], [self.p[4], self.p[7], self.p[11], self.p[8]])
+        pygame.draw.polygon(screen, self.rc["u5"], [self.p[8], self.p[11], self.p[14], self.p[12]])
+        pygame.draw.polygon(screen, self.rc["u6"], [self.p[3], self.p[6], self.p[10], self.p[7]])
+        pygame.draw.polygon(screen, self.rc["u7"], [self.p[7], self.p[10], self.p[13], self.p[11]])
+        pygame.draw.polygon(screen, self.rc["u8"], [self.p[11], self.p[13], self.p[15], self.p[14]])
+        pygame.draw.polygon(screen, self.rc["f0"], [self.p[6], self.p[16], self.p[17], self.p[10]])
+        pygame.draw.polygon(screen, self.rc["f1"], [self.p[10], self.p[17], self.p[18], self.p[13]])
+        pygame.draw.polygon(screen, self.rc["f2"], [self.p[13], self.p[18], self.p[19], self.p[15]])
+        pygame.draw.polygon(screen, self.rc["f3"], [self.p[16], self.p[23], self.p[24], self.p[17]])
+        pygame.draw.polygon(screen, self.rc["f4"], [self.p[17], self.p[24], self.p[25], self.p[18]])
+        pygame.draw.polygon(screen, self.rc["f5"], [self.p[18], self.p[25], self.p[26], self.p[19]])
+        pygame.draw.polygon(screen, self.rc["f6"], [self.p[23], self.p[30], self.p[31], self.p[24]])
+        pygame.draw.polygon(screen, self.rc["f7"], [self.p[24], self.p[31], self.p[32], self.p[25]])
+        pygame.draw.polygon(screen, self.rc["f8"], [self.p[25], self.p[32], self.p[33], self.p[26]])
+        pygame.draw.polygon(screen, self.rc["r0"], [self.p[15], self.p[19], self.p[20], self.p[14]])
+        pygame.draw.polygon(screen, self.rc["r1"], [self.p[14], self.p[20], self.p[21], self.p[12]])
+        pygame.draw.polygon(screen, self.rc["r2"], [self.p[12], self.p[21], self.p[22], self.p[9]])
+        pygame.draw.polygon(screen, self.rc["r3"], [self.p[19], self.p[26], self.p[27], self.p[20]])
+        pygame.draw.polygon(screen, self.rc["r4"], [self.p[20], self.p[27], self.p[28], self.p[21]])
+        pygame.draw.polygon(screen, self.rc["r5"], [self.p[21], self.p[28], self.p[29], self.p[22]])
+        pygame.draw.polygon(screen, self.rc["r6"], [self.p[26], self.p[33], self.p[34], self.p[27]])
+        pygame.draw.polygon(screen, self.rc["r7"], [self.p[27], self.p[34], self.p[35], self.p[28]])
+        pygame.draw.polygon(screen, self.rc["r8"], [self.p[28], self.p[35], self.p[36], self.p[29]])
+        pygame.draw.line(screen, (0, 0, 0), self.p[0], self.p[6], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[0], self.p[9], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[1], self.p[12], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[3], self.p[14], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[2], self.p[10], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[5], self.p[13], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[6], self.p[15], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[9], self.p[15], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[6], self.p[30], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[15], self.p[33], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[9], self.p[36], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[30], self.p[33], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[33], self.p[36], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[10], self.p[31], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[13], self.p[32], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[14], self.p[34], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[12], self.p[35], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[16], self.p[19], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[23], self.p[26], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[19], self.p[22], 3)
+        pygame.draw.line(screen, (0, 0, 0), self.p[26], self.p[29], 3)
+
+    def register_button(self, button_list: list[Button]) -> None:
+        button_list.append(Button(self.x[7], self.y[4], 30, 20, lambda: ro(4)))
+        button_list.append(Button(self.x[7], self.y[6], 30, 20, lambda: ro(5)))
+        button_list.append(Button(self.x[7], self.y[8], 30, 20, lambda: ro(6)))
+        button_list.append(Button(self.x[8], self.y[4], 30, 20, lambda: ro(1)))
+        button_list.append(Button(self.x[8], self.y[6], 30, 20, lambda: ro(2)))
+        button_list.append(Button(self.x[8], self.y[8], 30, 20, lambda: ro(3)))
+        button_list.append(Button(self.x[6], self.y[2], 30, 20, lambda: ro(10)))
+        button_list.append(Button(self.x[5], self.y[1], 30, 20, lambda: ro(11)))
+        button_list.append(Button(self.x[4], self.y[0], 30, 20, lambda: ro(12)))
+        button_list.append(Button(self.x[2], self.y[12], 30, 20, lambda: ro(7)))
+        button_list.append(Button(self.x[1], self.y[11], 30, 20, lambda: ro(8)))
+        button_list.append(Button(self.x[0], self.y[10], 30, 20, lambda: ro(9)))
+        button_list.append(Button(self.x[0], self.y[2], 30, 20, lambda: ro(16)))
+        button_list.append(Button(self.x[1], self.y[1], 30, 20, lambda: ro(17)))
+        button_list.append(Button(self.x[2], self.y[0], 30, 20, lambda: ro(18)))
+        button_list.append(Button(self.x[4], self.y[12], 30, 20, lambda: ro(13)))
+        button_list.append(Button(self.x[5], self.y[11], 30, 20, lambda: ro(14)))
+        button_list.append(Button(self.x[6], self.y[10], 30, 20, lambda: ro(15)))
+        button_list.append(Button(self.x[7] - 35, self.y[6], 30, 20, (lambda: ros(4, 5, 6))))
+        button_list.append(Button(self.x[8] + 35, self.y[6], 30, 20, (lambda: ros(1, 2, 3))))
+        button_list.append(Button(self.x[5] + 35, self.y[1] - 25, 30, 20, (lambda: ros(10, 11, 12))))
+        button_list.append(Button(self.x[1] - 35, self.y[11] + 25, 30, 20, (lambda: ros(7, 8, 9))))
+        button_list.append(Button(self.x[1] - 35, self.y[1] - 25, 30, 20, (lambda: ros(16, 17, 18))))
+        button_list.append(Button(self.x[5] + 35, self.y[11] + 25, 30, 20, (lambda: ros(13, 14, 15))))
+
+
 # u上d下l左r右f前b後
 rc: dict[str, tuple[int, int, int]] = {}
 for i in range(9):
     rc[f"u{i}"] = (255, 255, 255)  # w白
-    rc[f"d{i}"] = (255, 255, 0)  # y黃
+    rc[f"d{i}"] = (255, 248, 121)  # y黃
     rc[f"l{i}"] = (255, 128, 0)  # o橘
-    rc[f"r{i}"] = (255, 0, 0)  # r紅
-    rc[f"f{i}"] = (0, 255, 0)  # g綠
-    rc[f"b{i}"] = (0, 0, 255)  # b藍
+    rc[f"r{i}"] = (191, 65, 65)  # r紅
+    rc[f"f{i}"] = (134, 194, 108)  # g綠
+    rc[f"b{i}"] = (89, 72, 191)  # b藍
 
 
 def r1(s: str):  # 順
@@ -288,65 +410,6 @@ def ro(n: int, f: bool = True) -> None:
             print("error: unknow key", n)
 
 
-l = 100
-xs = 200
-ys = 50
-x = [int(xs + l * i * 3**0.5) for i in (0, 0.5, 1, 1.5, 2, 2.5, 3, -0.25, 3.25)]
-y = [int(ys + l * i) for i in (0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6)]
-p = [
-    (x[3], y[0]),
-    (x[2], y[1]),
-    (x[4], y[1]),
-    (x[1], y[2]),
-    (x[3], y[2]),
-    (x[5], y[2]),
-    (x[0], y[3]),
-    (x[2], y[3]),
-    (x[4], y[3]),
-    (x[6], y[3]),
-    (x[1], y[4]),
-    (x[3], y[4]),
-    (x[5], y[4]),
-    (x[2], y[5]),
-    (x[4], y[5]),
-    (x[3], y[6]),
-    (x[0], y[5]),
-    (x[1], y[6]),
-    (x[2], y[7]),
-    (x[3], y[8]),
-    (x[4], y[7]),
-    (x[5], y[6]),
-    (x[6], y[5]),
-    (x[0], y[7]),
-    (x[1], y[8]),
-    (x[2], y[9]),
-    (x[3], y[10]),
-    (x[4], y[9]),
-    (x[5], y[8]),
-    (x[6], y[7]),
-    (x[0], y[9]),
-    (x[1], y[10]),
-    (x[2], y[11]),
-    (x[3], y[12]),
-    (x[4], y[11]),
-    (x[5], y[10]),
-    (x[6], y[9]),
-]
-
-pygame.init()
-W_change = pygame.display.Info().current_w
-H_change = pygame.display.Info().current_h
-W, H = 1000, 700
-screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
-pygame.display.set_caption("遊戲8.0")
-clock = pygame.time.Clock()
-textlink = "C:\\Windows\\Fonts\\kaiu.ttf"
-font = pygame.font.Font(textlink, 20)
-fullscreen = 0
-step: list[int] = []
-button_list: list[Button] = []
-
-
 def f1() -> None:
     for _ in range(10):
         ro(ri(1, 18))
@@ -357,34 +420,23 @@ def ros(*code: int) -> None:
         ro(i)
 
 
-button_list.append(Button(x[7], y[4], 30, 20, lambda: ro(4)))
-button_list.append(Button(x[7], y[6], 30, 20, lambda: ro(5)))
-button_list.append(Button(x[7], y[8], 30, 20, lambda: ro(6)))
-button_list.append(Button(x[8], y[4], 30, 20, lambda: ro(1)))
-button_list.append(Button(x[8], y[6], 30, 20, lambda: ro(2)))
-button_list.append(Button(x[8], y[8], 30, 20, lambda: ro(3)))
-button_list.append(Button(x[6], y[2], 30, 20, lambda: ro(10)))
-button_list.append(Button(x[5], y[1], 30, 20, lambda: ro(11)))
-button_list.append(Button(x[4], y[0], 30, 20, lambda: ro(12)))
-button_list.append(Button(x[2], y[12], 30, 20, lambda: ro(7)))
-button_list.append(Button(x[1], y[11], 30, 20, lambda: ro(8)))
-button_list.append(Button(x[0], y[10], 30, 20, lambda: ro(9)))
-button_list.append(Button(x[0], y[2], 30, 20, lambda: ro(16)))
-button_list.append(Button(x[1], y[1], 30, 20, lambda: ro(17)))
-button_list.append(Button(x[2], y[0], 30, 20, lambda: ro(18)))
-button_list.append(Button(x[4], y[12], 30, 20, lambda: ro(13)))
-button_list.append(Button(x[5], y[11], 30, 20, lambda: ro(14)))
-button_list.append(Button(x[6], y[10], 30, 20, lambda: ro(15)))
-
+pygame.init()
+W_change = pygame.display.Info().current_w
+H_change = pygame.display.Info().current_h
+W, H = 1500, 700
+screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
+pygame.display.set_caption("遊戲8.0")
+clock = pygame.time.Clock()
+textlink = "C:\\Windows\\Fonts\\kaiu.ttf"
+font = pygame.font.Font(textlink, 20)
+fullscreen = 0
+step: list[int] = []
+button_list: list[Button] = []
 button_list.append(Button(150, 75, 100, 40, lambda: ro(step.pop(), False) if len(step) > 0 else None, "回上一步"))
 button_list.append(Button(75, 150, 60, 40, f1, "轉亂"))
-
-button_list.append(Button(x[7] - 35, y[6], 30, 20, (lambda: ros(4, 5, 6))))
-button_list.append(Button(x[8] + 35, y[6], 30, 20, (lambda: ros(1, 2, 3))))
-button_list.append(Button(x[5] + 35, y[1] - 25, 30, 20, (lambda: ros(10, 11, 12))))
-button_list.append(Button(x[1] - 35, y[11] + 25, 30, 20, (lambda: ros(7, 8, 9))))
-button_list.append(Button(x[1] - 35, y[1] - 25, 30, 20, (lambda: ros(16, 17, 18))))
-button_list.append(Button(x[5] + 35, y[11] + 25, 30, 20, (lambda: ros(13, 14, 15))))
+rc1 = RubiksCube(rc, 75, 200, 50)
+rc2 = RubiksCube(rc, 75, 800, 50)
+rc1.register_button(button_list)
 
 while True:
     mx, my = pygame.mouse.get_pos()
@@ -409,54 +461,8 @@ while True:
         for i in button_list:
             i.check2(mx, my, False)
     screen.fill((0, 0, 0))
-    pygame.draw.polygon(screen, rc["u0"], [p[0], p[1], p[4], p[2]])
-    pygame.draw.polygon(screen, rc["u1"], [p[2], p[4], p[8], p[5]])
-    pygame.draw.polygon(screen, rc["u2"], [p[5], p[8], p[12], p[9]])
-    pygame.draw.polygon(screen, rc["u3"], [p[1], p[3], p[7], p[4]])
-    pygame.draw.polygon(screen, rc["u4"], [p[4], p[7], p[11], p[8]])
-    pygame.draw.polygon(screen, rc["u5"], [p[8], p[11], p[14], p[12]])
-    pygame.draw.polygon(screen, rc["u6"], [p[3], p[6], p[10], p[7]])
-    pygame.draw.polygon(screen, rc["u7"], [p[7], p[10], p[13], p[11]])
-    pygame.draw.polygon(screen, rc["u8"], [p[11], p[13], p[15], p[14]])
-    pygame.draw.polygon(screen, rc["f0"], [p[6], p[16], p[17], p[10]])
-    pygame.draw.polygon(screen, rc["f1"], [p[10], p[17], p[18], p[13]])
-    pygame.draw.polygon(screen, rc["f2"], [p[13], p[18], p[19], p[15]])
-    pygame.draw.polygon(screen, rc["f3"], [p[16], p[23], p[24], p[17]])
-    pygame.draw.polygon(screen, rc["f4"], [p[17], p[24], p[25], p[18]])
-    pygame.draw.polygon(screen, rc["f5"], [p[18], p[25], p[26], p[19]])
-    pygame.draw.polygon(screen, rc["f6"], [p[23], p[30], p[31], p[24]])
-    pygame.draw.polygon(screen, rc["f7"], [p[24], p[31], p[32], p[25]])
-    pygame.draw.polygon(screen, rc["f8"], [p[25], p[32], p[33], p[26]])
-    pygame.draw.polygon(screen, rc["r0"], [p[15], p[19], p[20], p[14]])
-    pygame.draw.polygon(screen, rc["r1"], [p[14], p[20], p[21], p[12]])
-    pygame.draw.polygon(screen, rc["r2"], [p[12], p[21], p[22], p[9]])
-    pygame.draw.polygon(screen, rc["r3"], [p[19], p[26], p[27], p[20]])
-    pygame.draw.polygon(screen, rc["r4"], [p[20], p[27], p[28], p[21]])
-    pygame.draw.polygon(screen, rc["r5"], [p[21], p[28], p[29], p[22]])
-    pygame.draw.polygon(screen, rc["r6"], [p[26], p[33], p[34], p[27]])
-    pygame.draw.polygon(screen, rc["r7"], [p[27], p[34], p[35], p[28]])
-    pygame.draw.polygon(screen, rc["r8"], [p[28], p[35], p[36], p[29]])
-    pygame.draw.line(screen, (0, 0, 0), p[0], p[6], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[0], p[9], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[1], p[12], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[3], p[14], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[2], p[10], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[5], p[13], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[6], p[15], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[9], p[15], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[6], p[30], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[15], p[33], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[9], p[36], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[30], p[33], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[33], p[36], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[10], p[31], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[13], p[32], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[14], p[34], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[12], p[35], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[16], p[19], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[23], p[26], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[19], p[22], 3)
-    pygame.draw.line(screen, (0, 0, 0), p[26], p[29], 3)
+    rc1.desplay(screen)
+    rc2.desplay(screen)
     text = font.render(f"({mx},{my}){step}", True, (255, 255, 255))
     screen.blit(text, [0, 0])
     for i in button_list:
