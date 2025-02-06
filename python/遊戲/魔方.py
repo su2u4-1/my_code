@@ -52,7 +52,7 @@ class Button:
 
 
 class RubiksCube:
-    def __init__(self, rc: dict[str, tuple[int, int, int]], l: int = 100, xs: int = 200, ys: int = 50) -> None:
+    def __init__(self, rc: dict[str, tuple[int, int, int]], display_order: str, l: int = 100, xs: int = 200, ys: int = 50) -> None:
         self.x = [int(xs + l * i * 3**0.5) for i in (0, 0.5, 1, 1.5, 2, 2.5, 3, -0.25, 3.25)]
         self.y = [int(ys + l * i) for i in (0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6)]
         self.p = (
@@ -94,36 +94,37 @@ class RubiksCube:
             (self.x[5], self.y[10]),
             (self.x[6], self.y[9]),
         )
+        self.display_order = display_order
         self.rc = rc
 
     def desplay(self, screen: pygame.Surface) -> None:
-        pygame.draw.polygon(screen, self.rc["u0"], [self.p[0], self.p[1], self.p[4], self.p[2]])
-        pygame.draw.polygon(screen, self.rc["u1"], [self.p[2], self.p[4], self.p[8], self.p[5]])
-        pygame.draw.polygon(screen, self.rc["u2"], [self.p[5], self.p[8], self.p[12], self.p[9]])
-        pygame.draw.polygon(screen, self.rc["u3"], [self.p[1], self.p[3], self.p[7], self.p[4]])
-        pygame.draw.polygon(screen, self.rc["u4"], [self.p[4], self.p[7], self.p[11], self.p[8]])
-        pygame.draw.polygon(screen, self.rc["u5"], [self.p[8], self.p[11], self.p[14], self.p[12]])
-        pygame.draw.polygon(screen, self.rc["u6"], [self.p[3], self.p[6], self.p[10], self.p[7]])
-        pygame.draw.polygon(screen, self.rc["u7"], [self.p[7], self.p[10], self.p[13], self.p[11]])
-        pygame.draw.polygon(screen, self.rc["u8"], [self.p[11], self.p[13], self.p[15], self.p[14]])
-        pygame.draw.polygon(screen, self.rc["f0"], [self.p[6], self.p[16], self.p[17], self.p[10]])
-        pygame.draw.polygon(screen, self.rc["f1"], [self.p[10], self.p[17], self.p[18], self.p[13]])
-        pygame.draw.polygon(screen, self.rc["f2"], [self.p[13], self.p[18], self.p[19], self.p[15]])
-        pygame.draw.polygon(screen, self.rc["f3"], [self.p[16], self.p[23], self.p[24], self.p[17]])
-        pygame.draw.polygon(screen, self.rc["f4"], [self.p[17], self.p[24], self.p[25], self.p[18]])
-        pygame.draw.polygon(screen, self.rc["f5"], [self.p[18], self.p[25], self.p[26], self.p[19]])
-        pygame.draw.polygon(screen, self.rc["f6"], [self.p[23], self.p[30], self.p[31], self.p[24]])
-        pygame.draw.polygon(screen, self.rc["f7"], [self.p[24], self.p[31], self.p[32], self.p[25]])
-        pygame.draw.polygon(screen, self.rc["f8"], [self.p[25], self.p[32], self.p[33], self.p[26]])
-        pygame.draw.polygon(screen, self.rc["r0"], [self.p[15], self.p[19], self.p[20], self.p[14]])
-        pygame.draw.polygon(screen, self.rc["r1"], [self.p[14], self.p[20], self.p[21], self.p[12]])
-        pygame.draw.polygon(screen, self.rc["r2"], [self.p[12], self.p[21], self.p[22], self.p[9]])
-        pygame.draw.polygon(screen, self.rc["r3"], [self.p[19], self.p[26], self.p[27], self.p[20]])
-        pygame.draw.polygon(screen, self.rc["r4"], [self.p[20], self.p[27], self.p[28], self.p[21]])
-        pygame.draw.polygon(screen, self.rc["r5"], [self.p[21], self.p[28], self.p[29], self.p[22]])
-        pygame.draw.polygon(screen, self.rc["r6"], [self.p[26], self.p[33], self.p[34], self.p[27]])
-        pygame.draw.polygon(screen, self.rc["r7"], [self.p[27], self.p[34], self.p[35], self.p[28]])
-        pygame.draw.polygon(screen, self.rc["r8"], [self.p[28], self.p[35], self.p[36], self.p[29]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[0] + "0"], [self.p[0], self.p[1], self.p[4], self.p[2]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[0] + "1"], [self.p[2], self.p[4], self.p[8], self.p[5]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[0] + "2"], [self.p[5], self.p[8], self.p[12], self.p[9]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[0] + "3"], [self.p[1], self.p[3], self.p[7], self.p[4]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[0] + "4"], [self.p[4], self.p[7], self.p[11], self.p[8]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[0] + "5"], [self.p[8], self.p[11], self.p[14], self.p[12]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[0] + "6"], [self.p[3], self.p[6], self.p[10], self.p[7]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[0] + "7"], [self.p[7], self.p[10], self.p[13], self.p[11]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[0] + "8"], [self.p[11], self.p[13], self.p[15], self.p[14]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[1] + "0"], [self.p[6], self.p[16], self.p[17], self.p[10]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[1] + "1"], [self.p[10], self.p[17], self.p[18], self.p[13]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[1] + "2"], [self.p[13], self.p[18], self.p[19], self.p[15]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[1] + "3"], [self.p[16], self.p[23], self.p[24], self.p[17]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[1] + "4"], [self.p[17], self.p[24], self.p[25], self.p[18]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[1] + "5"], [self.p[18], self.p[25], self.p[26], self.p[19]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[1] + "6"], [self.p[23], self.p[30], self.p[31], self.p[24]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[1] + "7"], [self.p[24], self.p[31], self.p[32], self.p[25]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[1] + "8"], [self.p[25], self.p[32], self.p[33], self.p[26]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[2] + "0"], [self.p[15], self.p[19], self.p[20], self.p[14]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[2] + "1"], [self.p[14], self.p[20], self.p[21], self.p[12]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[2] + "2"], [self.p[12], self.p[21], self.p[22], self.p[9]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[2] + "3"], [self.p[19], self.p[26], self.p[27], self.p[20]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[2] + "4"], [self.p[20], self.p[27], self.p[28], self.p[21]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[2] + "5"], [self.p[21], self.p[28], self.p[29], self.p[22]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[2] + "6"], [self.p[26], self.p[33], self.p[34], self.p[27]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[2] + "7"], [self.p[27], self.p[34], self.p[35], self.p[28]])
+        pygame.draw.polygon(screen, self.rc[self.display_order[2] + "8"], [self.p[28], self.p[35], self.p[36], self.p[29]])
         pygame.draw.line(screen, (0, 0, 0), self.p[0], self.p[6], 3)
         pygame.draw.line(screen, (0, 0, 0), self.p[0], self.p[9], 3)
         pygame.draw.line(screen, (0, 0, 0), self.p[1], self.p[12], 3)
@@ -434,8 +435,8 @@ step: list[int] = []
 button_list: list[Button] = []
 button_list.append(Button(150, 75, 100, 40, lambda: ro(step.pop(), False) if len(step) > 0 else None, "回上一步"))
 button_list.append(Button(75, 150, 60, 40, f1, "轉亂"))
-rc1 = RubiksCube(rc, 75, 200, 50)
-rc2 = RubiksCube(rc, 75, 800, 50)
+rc1 = RubiksCube(rc, "ufr", 75, 200, 50)
+rc2 = RubiksCube(rc, "dlb", 75, 800, 50)
 rc1.register_button(button_list)
 
 while True:
