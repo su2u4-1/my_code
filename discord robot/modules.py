@@ -316,10 +316,3 @@ def divination(text: str):
             s
             + f"占卜到了【{F[d][1]}之{F[e][1]}】\n解釋:\n{URL2}{F[d][0]}-{F[e][0]}.html\n{URL4}{F[d][0]}\n{URL4}{F[e][0]}\n原文:\n{URL1}{F[d][1]}\n{URL1}{F[e][1]}\n詳細解釋:\n{URL3}{F[d][0]}\n{URL3}{F[e][0]}"
         )
-
-
-while True:
-    a = input("請輸入你要占卜的事件(輸入exit離開):")
-    if a == "exit":
-        break
-    print(divination(a))
