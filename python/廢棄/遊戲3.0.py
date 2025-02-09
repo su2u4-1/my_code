@@ -15,7 +15,7 @@ def rotate():
             time.sleep(0.1)
             newimage = image.rotate(-5)
             img2 = ImageTk.PhotoImage(newimage)
-            canvas.create_image(155, 155, image=img2)
+            canvas.create_image(155, 155, image=img2)  # type: ignore
             image = newimage
         gametitle["text"] = "歡迎遊玩[遊戲名]"
         c = 0
@@ -43,8 +43,8 @@ img2 = ImageTk.PhotoImage(image)
 TaiChi = tkinter.Button(root, text="太極", command=exit, image=img2)
 gametitle.pack(side="top", pady="100")
 canvas.pack()
-canvas.create_image(155, 155, image=img)
-canvas.create_image(155, 155, image=img2)
+canvas.create_image(155, 155, image=img)  # type: ignore
+canvas.create_image(155, 155, image=img2)  # type: ignore
 TaiChi.pack(side="bottom", padx="250")
 gamesetup.pack(side="right", padx="250")
 gamestart.pack(side="left", padx="250")

@@ -19,22 +19,22 @@ color = [
     (255, 255, 0),
 ]
 # 0青,1黑,2藍,3桃,4灰,5綠,6淺綠,7棕,8深藍,9土黃,10紫,11紅,12灰白,13藍綠,14白,15黃
-rectcolor = []
+rectcolor: list[tuple[int, int, int]] = []
 for i in range(1600):
-    rectcolor.append(random.choices(color, weights=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]))
+    rectcolor.append(random.choice(color))
 
 
-def click(x, y):
+def click(x: int, y: int):
     print(math.floor(x / 48), math.floor(y / 48))
 
 
-def generatemaze(slx, sly):
+def generatemaze(slx: int, sly: int):
     global px, py
-    maze = []
+    maze: list[list[int]] = []
     endx = slx - 2
     endy = sly - 2
     for x in range(slx):
-        z = []
+        z: list[int] = []
         for y in range(sly):
             if y == 0 or y == sly - 1 or x == 0 or x == slx - 1:
                 z.append(1)
@@ -50,7 +50,7 @@ def generatemaze(slx, sly):
         for y in range(2, sly - 1, 2):
             if y == 2:
                 c = random.randint(0, 3)
-            elif y != 2:
+            else:
                 c = random.randint(0, 2)
             maze[x + zx[c]][y + zy[c]] = 1
     maze[px][py] = 2
@@ -59,11 +59,11 @@ def generatemaze(slx, sly):
 
 
 def main():
-    global px, py, screen, SCREEN_SIZE, map
-    SCREEN_SIZE = (1200, 900)
+    global px, py, screen, screen_size, map
+    screen_size = (1200, 900)
     pygame.init()
     pygame.display.set_caption("遊戲5.0")
-    screen = pygame.display.set_mode(SCREEN_SIZE, pygame.RESIZABLE)
+    screen = pygame.display.set_mode(screen_size, pygame.RESIZABLE)
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 12)
     px = 1
@@ -80,8 +80,8 @@ def main():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.VIDEORESIZE:
-                SCREEN_SIZE = event.size
-                screen = pygame.display.set_mode(SCREEN_SIZE, pygame.RESIZABLE, 32)
+                screen_size = event.size
+                screen = pygame.display.set_mode(screen_size, pygame.RESIZABLE, 32)
                 pygame.display.set_caption("Window resized to " + str(event.size))
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
@@ -108,10 +108,10 @@ def main():
 
 
 def refresh():
-    global screen, SCREEN_SIZE, px, py, map
+    global screen, screen_size, px, py, map
     screen.fill((0, 0, 0))
-    for i in range(math.floor(SCREEN_SIZE[0] / 48)):
-        for j in range(math.floor(SCREEN_SIZE[1] / 48)):
+    for i in range(math.floor(screen_size[0] / 48)):
+        for j in range(math.floor(screen_size[1] / 48)):
             if map[i][j] == 1:
                 pygame.display.update(pygame.draw.rect(screen, (0, 0, 0), (i * 48 + 3, j * 48 + 3, 42, 42)))
             if map[i][j] == 0:

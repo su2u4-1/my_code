@@ -4,7 +4,7 @@ from time import sleep
 
 
 class Button:
-    def __init__(self, x: int, y: int, text: str, chinese: bool = True, do=None):
+    def __init__(self, x: int, y: int, text: str, chinese: bool = True, do: str = ""):
         self.x = x
         self.y = y
         if chinese:
@@ -29,16 +29,16 @@ class Surface:
     def __init__(self, w: int, h: int, name: str = "surface"):
         self.w = w
         self.h = h
-        self.b = []
+        self.b: list[Button] = []
         self.c = 0
         self.f = False
         self.n = name
         self.refresh()
 
     def refresh(self):
-        self.s = []
+        self.s: list[list[str]] = []
         for y in range(self.h):
-            a = []
+            a: list[str] = []
             for x in range(self.w):
                 if x == 0 or x == self.w - 1 or y == 0 or y == self.h - 1:
                     a.append("=")
@@ -54,7 +54,7 @@ class Surface:
                 if b.x + b.w - 1 < self.w:
                     self.s[b.y][b.x + b.w - 1] += "\033[0m"
 
-    def update(self, readkey: bool = True):
+    def update(self, readkey: bool = True) -> str | None:
         self.refresh()
         system("cls")
         for y in range(self.h):
@@ -68,10 +68,11 @@ class Surface:
             print()
         if readkey:
             sleep(0.3)
-            return read_key(True)
+            return str(read_key(True))
 
 
 def move(key: str, s: Surface):
+    condition = ""
     if key == "w":
         condition = "i.y < o.y"
     elif key == "a":

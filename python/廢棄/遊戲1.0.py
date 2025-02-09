@@ -10,7 +10,7 @@ storage_list_0 = ["物品", "數量"]
 storage_list = [storage_list_0]
 
 
-def judge(option):
+def judge(option: str):
     if option == "Hi!":
         print("\nHi!")
         time.sleep(0.75)
@@ -26,7 +26,7 @@ def judge(option):
         time.sleep(0.75)
         print("Help me!!!!!\n")
         time.sleep(3)
-        a_list = []
+        a_list: list[str] = []
         e = 1
         while e < random.randint(10, 50):
             for i in range(random.randint(10, 100)):
@@ -95,7 +95,7 @@ def judge(option):
             break
 
 
-def battle(a1, a2, a3, b3, a4, b4, a5, b5, a6, b6):
+def battle(a1: int, a2: int, a3: int, b3: int, a4: int, b4: int, a5: int, b5: int, a6: int, b6: int) -> str:
     print("\n%s開始挑戰%s" % (B[0], A[0]))
     print("\n%s[境界:%d，修為:%d，真元:%d，鍛體:%d，身法:%d，血氣:%d]" % (A[0], a1, a2, a3, a4, a5, a6))
     if a5 > b5:
@@ -174,25 +174,16 @@ def battle(a1, a2, a3, b3, a4, b4, a5, b5, a6, b6):
     return w
 
 
+a = int(random.randint(1, 10))
+b = int(random.randint(1, 10))
+# 名稱0，境界1，修為2，攻擊3，防禦4，閃避5，血量上限6，修練速度7，悟性8，錢9,靈石10
+player: tuple[str, int, int, int, int, int, int, int, int, int, int] = ("預設名稱", 0, 0, 1, 1, 1, 1, a, b, 1000, 100)
+
+
 while repeat == 0:
     print("\n歡迎遊玩[]")
     print("\n在任意地方輸入[off]關閉遊戲\n在任意地方輸入[set]進入設定介面")
-    a = int(random.randint(1, 10))
-    b = int(random.randint(1, 10))
-    player = [
-        "預設名稱",
-        0,
-        0,
-        1,
-        1,
-        1,
-        1,
-        a,
-        b,
-        1000,
-        100,
-    ]  # 名稱0，境界1，修為2，攻擊3，防禦4，閃避5，血量上限6，修練速度7，悟性8，錢9,靈石10
-    player[0] = input("\n請輸入玩家名稱:")
+    player = (input("\n請輸入玩家名稱:"),) + player[1:]
     judge(player[0])
     if player[0] != "off" and player[0] != "set":
         repeat = 1
@@ -230,8 +221,8 @@ while repeat == 1:
             while b > 0:
                 time.sleep(1)
                 print("修為增加%d" % (player[7]))
-                player[2] = player[2] + player[7]
-                player[10] = player[10] - 1
+                player = (player[0], player[1], player[2] + player[7]) + player[3:]
+                player = player[:10] + (player[10] - 1,)
                 b = b - 1
             time.sleep(0.75)
             print("\n%s離開了%s" % (player[0], place))
@@ -354,7 +345,7 @@ while repeat == 1:
                 option_2 = 0
                 break
             if option_3 == "1":
-                quest_progress_list.append(int(quest))
+                quest_progress_list.append(quest)
                 time.sleep(0.75)
                 print("\n你接取了%d.%s任務" % (int(quest), globals()["quest_list_%s" % (quest)][1]))
                 time.sleep(0.75)
@@ -370,15 +361,8 @@ while repeat == 1:
             time.sleep(1.5)
             print("\n%s:師父不要阿!!!(怕)" % (player[0]))
             time.sleep(1.5)
-            A = [
-                "暴怒的師父",
-                99,
-                99999999,
-                999999,
-                999999,
-                999999,
-                999999,
-            ]  # 名稱，境界，修為，攻擊，防禦，閃避，血量
+            # 名稱，境界，修為，攻擊，防禦，閃避，血量
+            A = ["暴怒的師父", 99, 99999999, 999999, 999999, 999999, 999999]
             B = player[0:7]
             battle(A[1], A[2], A[3], B[3], A[4], B[4], A[5], B[5], A[6], B[6])
             time.sleep(1.5)

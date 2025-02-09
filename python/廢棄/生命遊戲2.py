@@ -1,17 +1,18 @@
+from typing import Optional
 import time, random
 
 
-def ri(a, b):
+def ri(a: int, b: int) -> int:
     random.seed()
     return random.randrange(a, b + 1)
 
 
-def ra(a=None):
+def ra(a: Optional[int] = None) -> float:
     random.seed(a)
     return random.random()
 
 
-def id(c1, c2):
+def id(c1: int, c2: int) -> str:
     b = ""
     for _ in range(c1):
         for _ in range(c2):
@@ -40,7 +41,7 @@ def output():
     path = f"C:\\Users\\User\\Desktop\\my_code\\data\\{nt.tm_year}-{nt.tm_mon}-{nt.tm_mday}-{nt.tm_hour}-{nt.tm_min}-{nt.tm_sec}"
     file = open(path + "(lca).txt", "w+")
     for i in lifel:
-        file.write(i.__dict__)
+        file.write(str(i.__dict__))
         file.write("\n")
     file.close
     file = open(path + "(etl).txt", "w+")
@@ -48,17 +49,17 @@ def output():
         file.write(f"{i[1]}->{i[0]}\n")
     file.close
     file = open(path + "(etd).txt", "w+")
-    file.write(ancl)
+    file.write(str(ancl))
     file.close
     file = open(path + "(dl).txt", "w+")
     for i in die:
-        file.write(i.__dict__)
+        file.write(str(i.__dict__))
         file.write("\n")
     file.close
 
 
 class summonlife:
-    def __init__(self, dna, anc, en, x, y):
+    def __init__(self, dna: str, anc: str, en: int, x: int, y: int):
         self.id = id(4, 4)
         idl.append(self.id)
         self.dna = dna
@@ -86,7 +87,7 @@ class summonlife:
                 a += int(self.dna.split("-")[i][j])
         if map[self.xy[0]][self.xy[1]] >= a / 81:
             self.en += a / 81
-            map[self.xy[0]][self.xy[1]] -= a / 81
+            map[self.xy[0]][self.xy[1]] -= a // 81
         else:
             self.en += map[self.xy[0]][self.xy[1]]
             map[self.xy[0]][self.xy[1]] = 0
@@ -95,7 +96,7 @@ class summonlife:
             self.rep()
         self.examine
 
-    def meet(self, k):
+    def meet(self, k: "summonlife"):
         self.examine
         if self.dna == k.dna:
             self.rep()
@@ -103,7 +104,7 @@ class summonlife:
             self.eat(k)
         self.examine
 
-    def eat(self, k):
+    def eat(self, k: "summonlife"):
         if ri(1, 100) < (self.att / (self.att + k.de)) * 100:
             self.en += k.en * ra()
             k.en -= k.en * ra() * self.gen * 10
@@ -124,7 +125,7 @@ class summonlife:
                 else:
                     d += ri(-1, 1)
                 d0[d1] = d0[d1][:d2] + str(d) + d0[d1][d2 + 1 :]
-            summonlife(dna, self.id, self.en / 5, self.xy[0], self.xy[1])
+            summonlife(dna, self.id, int(self.en / 5), self.xy[0], self.xy[1])
 
     def examine(self):
         if self.age > self.time or self.en <= 0:
@@ -144,13 +145,13 @@ class summonlife:
             self.move()
 
 
-idl = []
+idl: list[str] = []
 dnal = {}
-ancl = {}
-die = []
-map = []
+ancl: dict[str, str] = {}
+die: list[summonlife] = []
+map: list[list[int]] = []
 for i in range(100):
-    a = []
+    a: list[int] = []
     for j in range(100):
         a.append(ri(0, 100))
     map.append(a)
@@ -160,8 +161,8 @@ for i in range(60):
     if (i + 1) % 10 == 0 and i != 59:
         d += "-"
 year = 0
-lifel = []
-lifel.append(summonlife(d, None, ri(1, 10), ri(0, 99), ri(0, 99)))
+lifel: list[summonlife] = []
+lifel.append(summonlife(d, "", ri(1, 10), ri(0, 99), ri(0, 99)))
 
 while year <= 10000:
     print(year, len(lifel))
@@ -174,5 +175,5 @@ while year <= 10000:
                 i.meet(j)
     for i in range(100):
         for j in range(100):
-            map[i][j] += ra()
+            map[i][j] += int(ra())
 output()

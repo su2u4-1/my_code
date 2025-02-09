@@ -1,7 +1,7 @@
 import pygame, sys, math, time, random
 
 
-def output(path):
+def output(path: str):
     file1 = open(path + "(e).txt", "w+")
     for i in evolution1:
         file1.write(i)
@@ -19,15 +19,15 @@ def output(path):
     file3.close()
 
 
-def ri(a, b):
+def ri(a: int, b: int):
     random.seed()
     return random.randint(a, b)
 
 
-def generatemap(xl=270, yl=150):
-    map = []
+def generatemap(xl: int = 270, yl: int = 150):
+    map: list[list[int]] = []
     for _ in range(xl):
-        a = []
+        a: list[int] = []
         for _ in range(yl):
             a.append(ri(12, 15))
         map.append(a)
@@ -35,7 +35,7 @@ def generatemap(xl=270, yl=150):
 
 
 class summonlife:
-    def __init__(self, color, id, x, y, quantity=1):
+    def __init__(self, color: tuple[int, int, int], id: str, x: int, y: int, quantity: int = 1):
         self.color = color
         self.quantity = quantity
         self.id = id
@@ -56,7 +56,7 @@ class summonlife:
         b1 = [1, 0, -1, 0]
         b2 = [0, 1, 0, -1]
         if map[self.x][self.y] >= self.nu * 2:
-            map[self.x][self.y] -= self.nu * 2
+            map[self.x][self.y] -= int(self.nu * 2)
         if map[self.x][self.y] >= 10:
             self.quantity += self.nu
         elif map[self.x][self.y] < 5:
@@ -100,7 +100,7 @@ class summonlife:
                 if k >= 4:
                     break
 
-    def meet(self, enemy):
+    def meet(self, enemy: "summonlife"):
         if self.id != enemy.id:
             if self.nu > enemy.nu:
                 self.quantity += enemy.quantity / 2
@@ -122,11 +122,11 @@ screen = pygame.display.set_mode((1350, 750), pygame.RESIZABLE)
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 24)
 map = generatemap(xl, yl)
-id_list = []
-life_list = []
+id_list: list[str] = []
+life_list: list[summonlife] = []
 evolution = {"00": "None"}
-evolution1 = []
-ancestor = []
+evolution1: list[str] = []
+ancestor: list[summonlife] = []
 text = ""
 f = 0
 idl = 1
@@ -216,7 +216,7 @@ while True:
             for y in range(yl):
                 if map[x][y] <= 14.8:
                     random.seed()
-                    map[x][y] += random.random() / 5
+                    map[x][y] += int(random.random() / 5)
     txt = font.render(text, True, (255, 255, 255))
     screen.blit(txt, [0, 0])
     pygame.display.update()

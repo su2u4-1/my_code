@@ -3,29 +3,29 @@ from random import randint as ri
 
 
 class Node:
-    def __init__(self, x, y):
+    def __init__(self, x: int, y: int):
         self.x = x
         self.y = y
         self.xy = (x, y)
         self.color = (ri(64, 255), ri(64, 255), ri(64, 255))
 
-    def display(self, screen):
+    def display(self, screen: pygame.Surface):
         pygame.draw.circle(screen, self.color, self.xy, 5)
 
 
 class Side:
-    def __init__(self, s, e, n):
+    def __init__(self, s: Node, e: Node, n: tuple[int, int]):
         self.s = s
         self.e = e
         self.n = n
         self.color = (ri(64, 255), ri(64, 255), ri(64, 255))
         self.l = ((s.x - e.x) ** 2 + (s.y - e.y) ** 2) ** 0.5
 
-    def display(self, screen):
+    def display(self, screen: pygame.Surface):
         pygame.draw.line(screen, self.color, self.s.xy, self.e.xy)
 
 
-def selection_sort(list):
+def selection_sort(list: list[Side]):
     for i in range(len(list) - 1):
         x = i
         for j in range(i, len(list)):
@@ -43,10 +43,10 @@ screen = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 font = pygame.font.Font("C:\\Windows\\Fonts\\kaiu.ttf", 48)
 n = 10
-node_list = []
+node_list: list[Node] = []
 for _ in range(n):
     node_list.append(Node(ri(10, W - 10), ri(10, H - 10)))
-side_list = []
+side_list: list[Side] = []
 for i in range(n):
     for j in range(i + 1, n):
         side_list.append(Side(node_list[i], node_list[j], (i, j)))
@@ -56,7 +56,7 @@ for i in node_list:
     print(i.xy)
 
 new_node_list = [node_list[0]]
-new_side_list = []
+new_side_list: list[Side] = []
 while len(new_node_list) < n:
     for j in side_list:
         if j.s in new_node_list:

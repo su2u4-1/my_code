@@ -1,7 +1,8 @@
+from typing import Optional
 import sys, time, random
 
 
-def output(path):
+def output(path: str):
     file1 = open(path + "(e).txt", "w+")
     for i in evolution:
         file1.write(i)
@@ -14,20 +15,20 @@ def output(path):
     file2.close()
 
 
-def ri(a, b):
+def ri(a: int, b: int) -> int:
     random.seed()
     return random.randint(a, b)
 
 
-def ra(a=None):
+def ra(a: Optional[int] = None) -> float:
     random.seed(a)
     return random.random()
 
 
-def generatemap(xl=270, yl=150):
-    map = []
+def generatemap(xl: int = 270, yl: int = 150) -> list[list[float]]:
+    map: list[list[float]] = []
     for x in range(xl):
-        a = []
+        a: list[float] = []
         for y in range(yl):
             a.append(ra(x + y) * 15)
         map.append(a)
@@ -35,8 +36,8 @@ def generatemap(xl=270, yl=150):
 
 
 class summonlife:
-    def __init__(self, id, x, y, quantity=1):
-        self.quantity = quantity
+    def __init__(self, id: str, x: int, y: int, quantity: int = 1) -> None:
+        self.quantity: float = quantity
         self.id = id
         self.x = x
         self.y = y
@@ -56,7 +57,7 @@ class summonlife:
         id_list.append(self.id)
         # print(f"{self.id},{self.att},{self.de},{self.agi},({self.x},{self.y})")
 
-    def next(self):
+    def next(self) -> None:
         self.age += 1
         if self.age >= self.nu * 100:
             life_list.remove(self)
@@ -131,7 +132,7 @@ class summonlife:
                 if k >= 4:
                     break
 
-    def meet(self, i):
+    def meet(self, i: "summonlife") -> None:
         if self.att > i.de and self.agi > i.agi and self.id != i.id:
             self.quantity += i.quantity / 2
             try:
@@ -154,9 +155,9 @@ tmr = 0
 a, b = 0, 0
 xl, yl = 100, 100
 map = generatemap(xl, yl)
-id_list = []
-life_list = []
-evolution = []
+id_list: list[str] = []
+life_list: list[summonlife] = []
+evolution: list[str] = []
 life_list.append(summonlife("00", ri(25, 75), ri(25, 75), 10))
 t = time.time()
 while True:
