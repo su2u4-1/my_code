@@ -90,7 +90,7 @@ class Game_gomoku:
                     for i in range(4):
                         for j in range(4):
                             nx, ny = x + D8[i][0] * j, y + D8[i][1] * j
-                            if not (0 <= nx + D8[i][0] < self.size - 1 and 0 <= ny + D8[i][1] < self.size - 1):
+                            if not (0 <= nx + D8[i][0] < self.size and 0 <= ny + D8[i][1] < self.size):
                                 break
                             elif self.chessBoard[nx + D8[i][0]][ny + D8[i][1]] != self.chessBoard[x][y]:
                                 break
