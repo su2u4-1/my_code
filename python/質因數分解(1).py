@@ -1,6 +1,8 @@
 def f2(b: int):
     if b == 2:
         return True
+    if b % 2 == 0:
+        return False
     for i in range(3, b // 2 + 2, 2):
         if b % i == 0:
             return False
