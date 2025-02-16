@@ -33,4 +33,11 @@ while n > 1:
 if len(f) == 1:
     print("是質數")
 else:
-    print("*".join(str(k) if v == 1 else f"{k}^{v}" for k, v in f.items()))
+    # print("*".join(str(k) if v == 1 else f"{k}^{v}" for k, v in f.items()))
+    l: list[str] = []
+    for i in f:
+        if f[i] == 1:
+            l.append(str(i))
+        else:
+            l.append(f"{i}^{f[i]}")
+    print("*".join(l))
