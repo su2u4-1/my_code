@@ -26,35 +26,37 @@ def f1(c: int, b: int, f: TextIO):
             f.write(str(i + 5) + "\n")
 
 
-def f0(c: str) -> dict[int, int] | str:
-    try:
-        n = int(c)
-    except:
-        return "error: 須為正整數"
-    if n <= 0:
-        return "error: 須為正整數"
-    if n == 1:
-        return {1: 1}
-    if n > a[-1]:
-        print("正在計算新質數")
-        f = open(link + "質數.txt", "a+")
+try:
+    n = int(input("要計算的數:"))
+except:
+    print("error: 須為正整數")
+    exit()
+if n <= 0:
+    print("error: 須為正整數")
+if n == 1:
+    print(1)
+if n > a[-1]:
+    print("正在計算新質數")
+    with open(link + "質數.txt", "a+") as f:
         f1(a[-1] + 1, n + 1, f)
-        f.close()
-        print("新質數記錄完畢")
-    if n in a:
-        return {n: 1}
-    b: dict[int, int] = {}
-    while n > 1:
-        for i in a:
-            if i > n:
-                break
-            if n % i == 0:
-                if i in b:
-                    b[i] += 1
-                else:
-                    b[i] = 1
-                n /= i
-    return b
-
-
-print(f0(input("要計算的數:")))
+    print("新質數記錄完畢")
+if n in a:
+    print("是質數")
+b: dict[int, int] = {}
+while n > 1:
+    for i in a:
+        if i > n:
+            break
+        if n % i == 0:
+            if i in b:
+                b[i] += 1
+            else:
+                b[i] = 1
+            n /= i
+l: list[str] = []
+for i in b:
+    if b[i] == 1:
+        l.append(str(i))
+    else:
+        l.append(str(i) + "^" + str(b[i]))
+print("*".join(l))
