@@ -35,6 +35,7 @@ if n <= 0:
     print("error: 須為正整數")
 if n == 1:
     print(1)
+    exit()
 if n > a[-1]:
     print("正在計算新質數")
     with open(link + "質數.txt", "a+") as f:
