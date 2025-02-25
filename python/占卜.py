@@ -90,7 +90,7 @@ def divination(text: str):
             a -= ch((3, 7), (9, 8))[0]
         elif a == 39:
             a -= ch((3, 7), (10, 9))[0]
-        d += str(a % 8)
+        d += str((a % 8) // 4)
         e += str(0 if a > 30 else 1)
     if len(text) < 1:
         s = ""
