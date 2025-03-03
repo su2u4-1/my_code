@@ -1,7 +1,9 @@
-from random import randint as ri
 from math import floor
+from random import randint as ri
+from time import time, localtime
 from typing import Optional
-import pygame, sys, time
+
+import pygame
 
 
 def back_ground_color(w: int, h: int) -> list[list[tuple[int, int, int]]]:
@@ -320,7 +322,7 @@ def CreateSurface(surface: pygame.Surface, size: tuple[int, int], button_range: 
                     text_size = text_size_change
                     if i == 4:
                         pygame.quit()
-                        sys.exit()
+                        exit()
                     elif i == 5:
                         Sl.remove("LeaveTheGameConfirmation")
                         return
@@ -444,7 +446,7 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            sys.exit()
+            exit()
         elif event.type == pygame.KEYDOWN:
             if inputbox:
                 input_box.handle_keydown(event)
@@ -472,7 +474,7 @@ while True:
                 inputbox = False
                 sx, sy = 0, 0
 
-    t = time.localtime(time.time())
+    t = localtime(time())
     screen.fill((0, 0, 0))
     for x in range(floor(w_ / 10)):
         for y in range(floor(h_ / 10)):

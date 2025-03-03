@@ -98,62 +98,68 @@ class RubiksCube:
         )
         self.display_order = display_order
         self.rc = rc
+        self.rect: dict[str, tuple[tuple[int, int], tuple[int, int], tuple[int, int], tuple[int, int]]] = {}
+        self.rect["u0"] = (self.p[0], self.p[1], self.p[4], self.p[2])
+        self.rect["u1"] = (self.p[2], self.p[4], self.p[8], self.p[5])
+        self.rect["u2"] = (self.p[5], self.p[8], self.p[12], self.p[9])
+        self.rect["u3"] = (self.p[1], self.p[3], self.p[7], self.p[4])
+        self.rect["u4"] = (self.p[4], self.p[7], self.p[11], self.p[8])
+        self.rect["u5"] = (self.p[8], self.p[11], self.p[14], self.p[12])
+        self.rect["u6"] = (self.p[3], self.p[6], self.p[10], self.p[7])
+        self.rect["u7"] = (self.p[7], self.p[10], self.p[13], self.p[11])
+        self.rect["u8"] = (self.p[11], self.p[13], self.p[15], self.p[14])
+        self.rect["l0"] = (self.p[6], self.p[16], self.p[17], self.p[10])
+        self.rect["l1"] = (self.p[10], self.p[17], self.p[18], self.p[13])
+        self.rect["l2"] = (self.p[13], self.p[18], self.p[19], self.p[15])
+        self.rect["l3"] = (self.p[16], self.p[23], self.p[24], self.p[17])
+        self.rect["l4"] = (self.p[17], self.p[24], self.p[25], self.p[18])
+        self.rect["l5"] = (self.p[18], self.p[25], self.p[26], self.p[19])
+        self.rect["l6"] = (self.p[23], self.p[30], self.p[31], self.p[24])
+        self.rect["l7"] = (self.p[24], self.p[31], self.p[32], self.p[25])
+        self.rect["l8"] = (self.p[25], self.p[32], self.p[33], self.p[26])
+        self.rect["r0"] = (self.p[15], self.p[19], self.p[20], self.p[14])
+        self.rect["r1"] = (self.p[14], self.p[20], self.p[21], self.p[12])
+        self.rect["r2"] = (self.p[12], self.p[21], self.p[22], self.p[9])
+        self.rect["r3"] = (self.p[19], self.p[26], self.p[27], self.p[20])
+        self.rect["r4"] = (self.p[20], self.p[27], self.p[28], self.p[21])
+        self.rect["r5"] = (self.p[21], self.p[28], self.p[29], self.p[22])
+        self.rect["r6"] = (self.p[26], self.p[33], self.p[34], self.p[27])
+        self.rect["r7"] = (self.p[27], self.p[34], self.p[35], self.p[28])
+        self.rect["r8"] = (self.p[28], self.p[35], self.p[36], self.p[29])
+        self.rect_name_list = [
+            "u0",
+            "u1",
+            "u2",
+            "u3",
+            "u4",
+            "u5",
+            "u6",
+            "u7",
+            "u8",
+            "l0",
+            "l1",
+            "l2",
+            "l3",
+            "l4",
+            "l5",
+            "l6",
+            "l7",
+            "l8",
+            "r0",
+            "r1",
+            "r2",
+            "r3",
+            "r4",
+            "r5",
+            "r6",
+            "r7",
+            "r8",
+        ]
 
     def desplay(self, screen: pygame.Surface) -> None:
-        pygame.draw.polygon(screen, self.rc[self.display_order[0]], [self.p[0], self.p[1], self.p[4], self.p[2]])
-        screen.blit(font.render("0", True, (0, 0, 0)), (self.p[0], self.p[1]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[1]], [self.p[2], self.p[4], self.p[8], self.p[5]])
-        screen.blit(font.render("1", True, (0, 0, 0)), (self.p[2], self.p[4]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[2]], [self.p[5], self.p[8], self.p[12], self.p[9]])
-        screen.blit(font.render("2", True, (0, 0, 0)), (self.p[5], self.p[8]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[3]], [self.p[1], self.p[3], self.p[7], self.p[4]])
-        screen.blit(font.render("3", True, (0, 0, 0)), (self.p[1], self.p[3]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[4]], [self.p[4], self.p[7], self.p[11], self.p[8]])
-        screen.blit(font.render("4", True, (0, 0, 0)), (self.p[4], self.p[7]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[5]], [self.p[8], self.p[11], self.p[14], self.p[12]])
-        screen.blit(font.render("5", True, (0, 0, 0)), (self.p[8], self.p[11]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[6]], [self.p[3], self.p[6], self.p[10], self.p[7]])
-        screen.blit(font.render("6", True, (0, 0, 0)), (self.p[3], self.p[6]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[7]], [self.p[7], self.p[10], self.p[13], self.p[11]])
-        screen.blit(font.render("7", True, (0, 0, 0)), (self.p[7], self.p[10]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[8]], [self.p[11], self.p[13], self.p[15], self.p[14]])
-        screen.blit(font.render("8", True, (0, 0, 0)), (self.p[11], self.p[13]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[9]], [self.p[6], self.p[16], self.p[17], self.p[10]])
-        screen.blit(font.render("0", True, (0, 0, 0)), (self.p[6], self.p[16]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[10]], [self.p[10], self.p[17], self.p[18], self.p[13]])
-        screen.blit(font.render("1", True, (0, 0, 0)), (self.p[10], self.p[17]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[11]], [self.p[13], self.p[18], self.p[19], self.p[15]])
-        screen.blit(font.render("2", True, (0, 0, 0)), (self.p[13], self.p[18]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[12]], [self.p[16], self.p[23], self.p[24], self.p[17]])
-        screen.blit(font.render("3", True, (0, 0, 0)), (self.p[16], self.p[23]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[13]], [self.p[17], self.p[24], self.p[25], self.p[18]])
-        screen.blit(font.render("4", True, (0, 0, 0)), (self.p[17], self.p[24]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[14]], [self.p[18], self.p[25], self.p[26], self.p[19]])
-        screen.blit(font.render("5", True, (0, 0, 0)), (self.p[18], self.p[25]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[15]], [self.p[23], self.p[30], self.p[31], self.p[24]])
-        screen.blit(font.render("6", True, (0, 0, 0)), (self.p[23], self.p[30]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[16]], [self.p[24], self.p[31], self.p[32], self.p[25]])
-        screen.blit(font.render("7", True, (0, 0, 0)), (self.p[24], self.p[31]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[17]], [self.p[25], self.p[32], self.p[33], self.p[26]])
-        screen.blit(font.render("8", True, (0, 0, 0)), (self.p[25], self.p[32]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[18]], [self.p[15], self.p[19], self.p[20], self.p[14]])
-        screen.blit(font.render("0", True, (0, 0, 0)), (self.p[15], self.p[19]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[19]], [self.p[14], self.p[20], self.p[21], self.p[12]])
-        screen.blit(font.render("1", True, (0, 0, 0)), (self.p[14], self.p[20]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[20]], [self.p[12], self.p[21], self.p[22], self.p[9]])
-        screen.blit(font.render("2", True, (0, 0, 0)), (self.p[12], self.p[21]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[21]], [self.p[19], self.p[26], self.p[27], self.p[20]])
-        screen.blit(font.render("3", True, (0, 0, 0)), (self.p[19], self.p[26]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[22]], [self.p[20], self.p[27], self.p[28], self.p[21]])
-        screen.blit(font.render("4", True, (0, 0, 0)), (self.p[20], self.p[27]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[23]], [self.p[21], self.p[28], self.p[29], self.p[22]])
-        screen.blit(font.render("5", True, (0, 0, 0)), (self.p[21], self.p[28]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[24]], [self.p[26], self.p[33], self.p[34], self.p[27]])
-        screen.blit(font.render("6", True, (0, 0, 0)), (self.p[26], self.p[33]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[25]], [self.p[27], self.p[34], self.p[35], self.p[28]])
-        screen.blit(font.render("7", True, (0, 0, 0)), (self.p[27], self.p[34]))
-        pygame.draw.polygon(screen, self.rc[self.display_order[26]], [self.p[28], self.p[35], self.p[36], self.p[29]])
-        screen.blit(font.render("8", True, (0, 0, 0)), (self.p[28], self.p[35]))
+        for i in range(27):
+            pygame.draw.polygon(screen, self.rc[self.display_order[i]], self.rect[self.rect_name_list[i]])
+            screen.blit(font.render(self.rect_name_list[i], True, (0, 0, 0)), self.rect[self.rect_name_list[i]][:2])
         pygame.draw.line(screen, (0, 0, 0), self.p[0], self.p[6], 3)
         pygame.draw.line(screen, (0, 0, 0), self.p[0], self.p[9], 3)
         pygame.draw.line(screen, (0, 0, 0), self.p[1], self.p[12], 3)
@@ -450,6 +456,14 @@ def ros(*code: int) -> None:
         ro(i)
 
 
+def check_mouse_pos(rects: dict[str, pygame.Rect]) -> str:
+    for i in rects:
+        if rects[i].collidepoint(pygame.mouse.get_pos()):
+            return i
+    else:
+        return ""
+
+
 pygame.init()
 W_change = pygame.display.Info().current_w
 H_change = pygame.display.Info().current_h
@@ -461,6 +475,7 @@ textlink = "C:\\Windows\\Fonts\\kaiu.ttf"
 font = pygame.font.Font(textlink, 20)
 fullscreen = 0
 step: list[int] = []
+start_pos, end_pos = "", ""
 button_list: list[Button] = []
 button_list.append(Button(150, 75, 100, 40, lambda: ro(step.pop(), False) if len(step) > 0 else None, "回上一步"))
 button_list.append(Button(75, 150, 60, 40, f1, "轉亂"))
@@ -535,6 +550,10 @@ rc2 = RubiksCube(
     50,
 )
 rc1.register_button(button_list)
+rects: dict[str, pygame.Rect] = {}
+for i in rc1.rect:
+    rects[i] = pygame.draw.polygon(screen, (0, 0, 0), rc1.rect[i])
+
 
 while True:
     mx, my = pygame.mouse.get_pos()
@@ -553,6 +572,12 @@ while True:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             for i in button_list:
                 i.check2(mx, my, True)
+            start_pos = check_mouse_pos(rects)
+        elif event.type == pygame.MOUSEBUTTONUP:
+            end_pos = check_mouse_pos(rects)
+            if start_pos != "" and end_pos != "":
+                if start_pos[0] == end_pos[0]:
+                    print(start_pos, end_pos)
     for i in button_list:
         i.check1(mx, my)
     if not pygame.mouse.get_pressed()[0]:

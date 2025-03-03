@@ -1,5 +1,6 @@
-from random import randint as ri
 from os import path, system
+from random import randint as ri
+from sys import platform
 from time import time
 
 
@@ -88,7 +89,10 @@ def choose_option(text: str | list[str] | tuple[str, ...], n: int = 1) -> int:
         print("\n輸入錯誤，請重新選擇")
         option = choose_option(text, n)
     if option == "clear" or option == "c":
-        system("cls")
+        if platform == "win32" or platform == "cygwin":
+            system("cls")
+        elif platform == "linux":
+            system("clear")
         option = choose_option(text, n)
     try:
         option = int(option)

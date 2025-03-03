@@ -1,6 +1,8 @@
-from random import randint as ri
 from os import system
+from random import randint as ri
+from sys import platform
 from time import sleep
+
 import keyboard
 
 DX = [0, 1, 0, -1]
@@ -65,7 +67,10 @@ def generatemaze(lx: int = 25, ly: int = 25) -> MAZE:
 
 
 def showmaze(maze: MAZE, player: POS, size: int, f: bool = True) -> None:
-    system("cls")
+    if platform == "win32" or platform == "cygwin":
+        system("cls")
+    elif platform == "linux":
+        system("clear")
     print("按wasd移動，按e離開，按h作弊")
     if f:
         for i in range(0, size):

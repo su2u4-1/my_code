@@ -1,7 +1,6 @@
-from os import system
 from random import randint
 
-from Game import get_int
+from Game import clear_screen, get_int
 
 
 class Game_guess_number:
@@ -38,7 +37,7 @@ class Game_guess_number:
                 b = get_int("upper limit: ", "must be greater than or equal to the lower limit", lambda x: x >= a)
             else:
                 a, b = self.a, self.b
-            system("cls")
+            clear_screen()
             self.init(a, b)
             self.main()
 

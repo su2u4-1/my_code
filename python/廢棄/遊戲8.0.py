@@ -1,6 +1,7 @@
-import pygame
-from random import randint as ri
 from math import floor as fl
+from random import randint as ri
+
+import pygame
 
 pygame.init()
 W_change = pygame.display.Info().current_w

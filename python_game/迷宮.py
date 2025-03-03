@@ -1,10 +1,9 @@
-from os import system
 from random import randrange
 from time import sleep
 
 from keyboard import read_key
 
-from Game import get_int, D4
+from Game import get_int, clear_screen, D4
 
 
 CHANGE = {(0, 0): 4, (0, 1): 2, (0, 2): 1, (0, 3): 8, (1, 0): 1, (1, 1): 8, (1, 2): 4, (1, 3): 2}
@@ -73,7 +72,7 @@ class Game_maze:
 
     def show(self) -> None:
         self.update()
-        system("cls")
+        clear_screen()
         print("\n".join("".join(i) for i in self.m))
 
     def check(self) -> bool:

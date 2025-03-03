@@ -1,5 +1,8 @@
-import random, sys, time, uuid
 from math import floor
+import random
+import sys
+import time
+import uuid
 
 i = 0
 level = 1

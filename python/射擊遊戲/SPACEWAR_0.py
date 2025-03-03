@@ -193,7 +193,6 @@ while True:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
-                print(type(all_sprites), all_sprites)
                 exit()
     background_image = pygame.transform.scale(background_image, (W, H))
     screen.blit(background_image, (0, 0))

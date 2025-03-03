@@ -1,6 +1,8 @@
-from keyboard import read_key
 from os import system
+from sys import platform
 from time import sleep
+
+from keyboard import read_key
 
 
 class Button:
@@ -56,7 +58,10 @@ class Surface:
 
     def update(self, readkey: bool = True) -> str | None:
         self.refresh()
-        system("cls")
+        if platform == "win32" or platform == "cygwin":
+            system("cls")
+        elif platform == "linux":
+            system("clear")
         for y in range(self.h):
             for x in range(self.w):
                 if self.s[y][x] == " " and self.f:

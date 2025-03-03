@@ -1,6 +1,10 @@
-import pygame, os, math
-import matplotlib.pyplot as plt
+from math import dist
+from os import system
 from random import randint as ri
+from sys import platform
+
+import matplotlib.pyplot as plt
+import pygame
 
 
 def drawplot(t: list[float], p: list[list[int]]):
@@ -96,7 +100,7 @@ while True:
             for j in pointList:
                 if i == j or i.m == j.m:
                     continue
-                if math.dist((i.x, i.y), (j.x, j.y)) <= R:
+                if dist((i.x, i.y), (j.x, j.y)) <= R:
                     if i.m + 1 == j.m or i.m - CL + 1 == j.m:
                         c[i.m] -= 1
                         c[j.m] += 1
@@ -111,7 +115,10 @@ while True:
         time.append(t / SAMP[0])
         for i in range(CL):
             poi[i].append(c[i])
-        os.system("cls")
+        if platform == "win32" or platform == "cygwin":
+            system("cls")
+        elif platform == "linux":
+            system("clear")
         print(f"{(t*100)/(SAMP[0]*SAMP[1])}%")
     if t == SAMP[0] * SAMP[1]:
         pygame.quit()

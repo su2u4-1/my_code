@@ -1,10 +1,9 @@
-from os import system
 from random import randrange, choices
 from time import sleep
 
 from keyboard import read_key
 
-from Game import get_int, D4
+from Game import get_int, clear_screen, D4
 
 
 class Game_2048:
@@ -34,7 +33,7 @@ class Game_2048:
                 return
 
     def show(self) -> None:
-        system("cls")
+        clear_screen()
         str_m = [[str(j) for j in i] for i in self.m]
         long = max(max(len(j) for j in i) for i in str_m)
         for i in self.m:
