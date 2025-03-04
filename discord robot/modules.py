@@ -3,7 +3,14 @@ import random
 
 
 class EquipGenerate:
-    def __init__(self, lv: int = 0, quality: int = 0, category: int = 0, kind: int = 0, type: int = 0):
+    def __init__(
+        self,
+        lv: int = 0,
+        quality: int = 0,
+        category: int = 0,
+        kind: int = 0,
+        type: int = 0,
+    ):
         self.lv = lv
         if quality == 0:
             self.quality = "垃圾"
@@ -25,7 +32,7 @@ class EquipGenerate:
         id1 = random.randint(0, len(name) - 1)
         id2 = random.randint(0, len(name) - 1)
         random.seed(f"{id1}{id2}{quality}{category}{type}{kind}")
-        self.id = random.random
+        self.id = random.random()
         basis = [0, 0, 0, 0]
         if category == 1:
             self.category = "武器"
@@ -44,7 +51,7 @@ class EquipGenerate:
         self.de = 0
         self.agi = 0
         self.Hp = 0
-        for i in range(lv):
+        for _ in range(lv):
             self.att += random.randint(round(basis[0] / 2), basis[0])
             self.de += random.randint(round(basis[1] / 2), basis[1])
             self.agi += random.randint(round(basis[2] / 2), basis[2])
@@ -52,38 +59,38 @@ class EquipGenerate:
 
 
 class bag:
-    def __init__(self, id):
+    def __init__(self, id: int):
         self.id = id
-        self.item = {}
-        self.equip = {}
+        self.item: dict[str, int] = {}
+        self.equip: dict[str, float] = {}
 
-    def add_item(self, item, quantity):
+    def add_item(self, item: str, quantity: int):
         if item in self.item:
             self.item[item] += quantity
         else:
             self.item[item] = quantity
 
-    def add_equip(self, name, id):
+    def add_equip(self, name: str, id: float):
         self.equip[name] = id
 
 
 class CreateAccount:
-    def __init__(self, id):
-        self.id = id
-        self.m = 1000
-        self.x = random.randint(-25, 25)
-        self.y = random.randint(-25, 25)
-        self.at = 30
-        self.de = 15
-        self.ag = 15
-        self.hp = 300
-        self.po = 0
-        self.lv = 0
-        self.ar = [0, 0, 0, 0, 0]
-        self.exp = 0
+    def __init__(self, id: int):
+        self.id: int = id
+        self.m: int = 1000
+        self.x: int = random.randint(-25, 25)
+        self.y: int = random.randint(-25, 25)
+        self.at: float = 30
+        self.de: float = 15
+        self.ag: float = 15
+        self.hp: float = 300
+        self.po: int = 0
+        self.lv: int = 0
+        self.ar: list[int] = [0, 0, 0, 0, 0]
+        self.exp: int = 0
 
 
-def SummonMods(lv, type, rank):
+def SummonMods(lv: int, type: str, rank: int) -> tuple[int, int, int, int, str, int, list[int], int, int]:
     att = 0
     de = 0
     agi = 0
@@ -100,6 +107,8 @@ def SummonMods(lv, type, rank):
         basis = [10, 5, 8, 100]
     elif type == "巨人":
         basis = [10, 7, 3, 110]
+    else:
+        basis = [-1, -1, -1, -1]
     for _ in range(lv):
         att += random.randint(round(basis[0] / 2), basis[0])
         de += random.randint(round(basis[1] / 2), basis[1])
@@ -125,11 +134,26 @@ def SummonMods(lv, type, rank):
     else:
         type = "普通" + type
     exp = round(att + de + agi + Hp)
-    return [round(att), round(de), round(agi), round(Hp), f"lv.{lv}{attribute}屬性{type}", lv, attribute_value, k, exp]
+    return (
+        round(att),
+        round(de),
+        round(agi),
+        round(Hp),
+        f"lv.{lv}{attribute}屬性{type}",
+        lv,
+        attribute_value,
+        k,
+        exp,
+    )
 
 
-def fighting(monster, player, monster_name, attribute):
-    message = []
+def fighting(
+    monster: tuple[int, int, int, float, str, int, list[int], int, int],
+    player: list[float],
+    monster_name: str,
+    attribute: list[int],
+) -> list[str]:
+    message: list[str] = []
     message.append(f"你開始跟{monster_name}戰鬥")
     if monster[2] > player[2]:
         if (
@@ -162,7 +186,17 @@ def fighting(monster, player, monster_name, attribute):
             l = 1
         harm = player[0] * (monster[1] / (player[0] + monster[1])) * l
         message.append(f"你率先發動攻擊，造成{round(harm,1)}點傷害")
-        monster[3] -= round(harm, 1)
+        monster = (
+            monster[0],
+            monster[1],
+            monster[2],
+            monster[3] - round(harm, 1),
+            monster[4],
+            monster[5],
+            monster[6],
+            monster[7],
+            monster[8],
+        )
     player_time = player[2]
     monster_time = monster[2]
     a = 0
@@ -183,7 +217,17 @@ def fighting(monster, player, monster_name, attribute):
                 l = 1
             harm = player[0] * (monster[1] / (player[0] + monster[1])) * l
             message.append(f"你攻擊了{monster_name}，造成{round(harm,1)}點傷害")
-            monster[3] -= round(harm, 1)
+            monster = (
+                monster[0],
+                monster[1],
+                monster[2],
+                monster[3] - round(harm, 1),
+                monster[4],
+                monster[5],
+                monster[6],
+                monster[7],
+                monster[8],
+            )
             player_time += player[2]
         elif monster_time > player_time:
             if (

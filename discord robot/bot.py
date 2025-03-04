@@ -1,4 +1,5 @@
-import math, os, random, discord, modules, time
+import math, os, random, discord, modules, time, sys
+from typing import Any
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -8,9 +9,9 @@ intents = discord.Intents.default()
 intents.typing = False
 intents.presences = False
 intents.message_content = True
-player = {}
-equip = []
-bag = {}
+player: dict[int, modules.CreateAccount] = {}
+equip: list[modules.EquipGenerate] = []
+bag: dict[int, modules.bag] = {}
 
 client = discord.Client(intents=intents)
 
@@ -21,7 +22,7 @@ async def on_ready():
 
 
 @client.event
-async def on_message(message):
+async def on_message(message: discord.Message):
     if message.author == client.user:
         return
     nt = time.localtime(time.time())
@@ -45,19 +46,19 @@ client = commands.Bot(command_prefix="/", intents=intents)
 
 
 @client.command()
-async def Hi(ctx):
+async def Hi(ctx: commands.Context[commands.Bot]) -> None:
     uid = ctx.author.id
     await ctx.send(f"<@{uid}> Hi!")
 
 
 @client.command()
-async def Hello(ctx):
+async def Hello(ctx: commands.Context[commands.Bot]):
     uid = ctx.author.id
     await ctx.send(f"<@{uid}> Hello!")
 
 
 @client.command()
-async def 抽籤(ctx):
+async def 抽籤(ctx: commands.Context[commands.Bot]):
     uid = ctx.author.id
     a = ["大吉", "小吉", "吉", "凶", "小凶", "大凶"]
     c = 0
@@ -67,39 +68,40 @@ async def 抽籤(ctx):
 
 
 @client.command()
-async def 占卜(ctx, *m2):
+async def 占卜(ctx: commands.Context[commands.Bot], *m2: Any):
     uid = ctx.author.id
     if len(m2) == 1:
-        t = modules.divination()
+        t = modules.divination("")
     else:
         t = modules.divination(m2[1])
     await ctx.send(f"<@{uid}>{t}")
 
 
 @client.command()
-async def 賭(ctx, *m2):
+async def 賭(ctx: commands.Context[commands.Bot], *m2: Any):
     uid = ctx.author.id
     if len(m2) == 1:
         pass  # /help 賭
     elif len(m2) == 2:
         try:
-            m2[1] = int(m2[1])
-        except:
+            v = int(m2[1])
+        except ValueError:
             await ctx.send(f"<@{uid}>輸入錯誤")
-        if player[uid].m >= m2[1] and player[uid].m >= 0:
-            player[uid].m -= m2[1]
-            if random.randint(1, 10) <= 4:
-                await ctx.send(f"<@{uid}>花掉{m2[1]}塊錢，結果血本無歸")
-            else:
-                b = round(random.uniform(0, 2) * m2[1])
-                player[uid].m += b
-                await ctx.send(f"<@{uid}>花掉{m2[1]}塊錢，最後贏得{b}塊錢")
         else:
-            await ctx.send(f"<@{uid}>錢不夠了")
+            if player[uid].m >= v and player[uid].m >= 0:
+                player[uid].m -= v
+                if random.randint(1, 10) <= 4:
+                    await ctx.send(f"<@{uid}>花掉{v}塊錢，結果血本無歸")
+                else:
+                    b = round(random.uniform(0, 2) * v)
+                    player[uid].m += b
+                    await ctx.send(f"<@{uid}>花掉{v}塊錢，最後贏得{b}塊錢")
+            else:
+                await ctx.send(f"<@{uid}>錢不夠了")
 
 
 @client.command()
-async def 升級(ctx, *m2):
+async def 升級(ctx: commands.Context[commands.Bot], *m2: Any):
     uid = ctx.author.id
     if len(m2) == 1:
         await ctx.send(
@@ -112,32 +114,37 @@ async def 升級(ctx, *m2):
             add = int(m2[2])
         except:
             await ctx.send(f"<@{uid}>輸入錯誤")
-        if player[uid].po >= add:
-            if m2[1] == "1" or m2[1] == "攻擊" or m2[1] == "att":
-                a = random.randint(1, 2)
-                await ctx.send(
-                    f"<@{uid}>\n攻擊:{player[uid].at} -> {player[uid].at+add*a}\n升級點:{player[uid].po} -> {player[uid].po-add}"
-                )
-                player[uid].at += add * a
-            elif m2[1] == "2" or m2[1] == "防禦" or m2[1] == "def":
-                await ctx.send(f"<@{uid}>\n防禦:{player[uid].de} -> {player[uid].de+add}\n升級點:{player[uid].po} -> {player[uid].po-add}")
-                player[uid].de += add
-            elif m2[1] == "3" or m2[1] == "速度" or m2[1] == "agi":
-                await ctx.send(f"<@{uid}>\n速度:{player[uid].ag} -> {player[uid].ag+add}\n升級點:{player[uid].po} -> {player[uid].po-add}")
-                player[uid].ag += add
-            elif m2[1] == "4" or m2[1] == "血量" or m2[1] == "Hp" or m2[1] == "hp":
-                a = random.randint(5, 20)
-                await ctx.send(
-                    f"<@{uid}>\n血量:{player[uid].hp} -> {player[uid].hp+add*a}\n升級點:{player[uid].po} -> {player[uid].po-add}"
-                )
-                player[uid].hp += add * a
-            player[uid].po -= add
         else:
-            await ctx.send(f"<@{uid}>輸入錯誤")
+            if player[uid].po >= add:
+                if m2[1] == "1" or m2[1] == "攻擊" or m2[1] == "att":
+                    a = random.randint(1, 2)
+                    await ctx.send(
+                        f"<@{uid}>\n攻擊:{player[uid].at} -> {player[uid].at+add*a}\n升級點:{player[uid].po} -> {player[uid].po-add}"
+                    )
+                    player[uid].at += add * a
+                elif m2[1] == "2" or m2[1] == "防禦" or m2[1] == "def":
+                    await ctx.send(
+                        f"<@{uid}>\n防禦:{player[uid].de} -> {player[uid].de+add}\n升級點:{player[uid].po} -> {player[uid].po-add}"
+                    )
+                    player[uid].de += add
+                elif m2[1] == "3" or m2[1] == "速度" or m2[1] == "agi":
+                    await ctx.send(
+                        f"<@{uid}>\n速度:{player[uid].ag} -> {player[uid].ag+add}\n升級點:{player[uid].po} -> {player[uid].po-add}"
+                    )
+                    player[uid].ag += add
+                elif m2[1] == "4" or m2[1] == "血量" or m2[1] == "Hp" or m2[1] == "hp":
+                    a = random.randint(5, 20)
+                    await ctx.send(
+                        f"<@{uid}>\n血量:{player[uid].hp} -> {player[uid].hp+add*a}\n升級點:{player[uid].po} -> {player[uid].po-add}"
+                    )
+                    player[uid].hp += add * a
+                player[uid].po -= add
+            else:
+                await ctx.send(f"<@{uid}>輸入錯誤")
 
 
 @client.command()
-async def 冒險(ctx, *m2):
+async def 冒險(ctx: commands.Context[commands.Bot], *m2: Any):
     uid = ctx.author.id
     if len(m2) == 1:
         await ctx.send(f"<@{uid}>目前在({player[uid].x},{player[uid].y})")
@@ -174,14 +181,14 @@ async def 冒險(ctx, *m2):
                 elif r == 1:
                     s = random.choices(["初", "中", "高"], [1, 8, 1])[0]
                     u = random.choices(["碎片", "結晶", "精華"], [9, 1, 0])[0]
-                elif r == 2:
+                else:
                     s = random.choices(["初", "中", "高"], [0, 1, 9])[0]
                     u = random.choices(["碎片", "結晶", "精華"], [80, 15, 5])[0]
                 pl = [player[uid].at, player[uid].de, player[uid].ag, player[uid].hp]
                 message_a = modules.fighting(monster, pl, monster[4], player[uid].ar)
                 if message_a[-1] == f"你打贏了{monster[4]}":
-                    drop_equip = []
-                    drop_item = []
+                    drop_equip: list[modules.EquipGenerate] = []
+                    drop_item: list[str] = []
                     eq = modules.EquipGenerate(
                         monster[5],
                         random.choices([1, 2, 3, 4, 5, 6, 7], [900000, 90000, 9000, 900, 90, 9, 1])[0],
@@ -204,7 +211,7 @@ async def 冒險(ctx, *m2):
                             u = 1
                         elif u == "結晶":
                             u = 2
-                        elif u == "精華":
+                        else:
                             u = 4
                         quantity = random.randint(0, math.ceil(monster[5] / u))
                         await ctx.send(f"<@{uid}>你得到了{quantity}個{i}")
@@ -222,7 +229,7 @@ async def 冒險(ctx, *m2):
 
 
 @client.command()
-async def 背包(ctx, *m2):
+async def 背包(ctx: commands.Context[commands.Bot], *m2: Any):
     uid = ctx.author.id
     f = "物品:"
     for i in bag[uid].item:
@@ -234,30 +241,34 @@ async def 背包(ctx, *m2):
 
 
 @client.command()
-async def 刪除(ctx, *m2):
+async def 刪除(ctx: commands.Context[commands.Bot], *m2: Any):
     uid = ctx.author.id
     if len(m2) >= 2:
         try:
             d = int(m2[1])
-            await ctx.purge(limit=d)
+            await ctx.purge(limit=d)  # type: ignore
         except ValueError:
             await ctx.send(f"<@{uid}>輸入錯誤數值")
         except AttributeError:
             await ctx.send(f"<@{uid}>無法刪除訊息，可能是因為權限不足")
     elif len(m2) == 1:
         try:
-            await ctx.purge()
+            await ctx.purge()  # type: ignore
         except AttributeError:
             await ctx.send(f"<@{uid}>無法刪除訊息，可能是因為權限不足")
 
 
 @client.command()
-async def exit(ctx):
+async def exit(ctx: commands.Context[commands.Bot]):
     uid = ctx.author.id
     if uid == 718652947671810078:
         print(">>bot is offline<<")
         await ctx.send("bot is offline")
-        exit()
+        sys.exit()
 
 
-client.run(os.getenv("TOKEN"))
+token = os.getenv("TOKEN")
+if token is None:
+    print("Error: Missing Discord bot token")
+else:
+    client.run(token)
