@@ -6,8 +6,8 @@ import pygame
 pygame.init()
 W_change = pygame.display.Info().current_w
 H_change = pygame.display.Info().current_h
-W, H = 1000, 700
-screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
+w, h = 1000, 700
+screen = pygame.display.set_mode((w, h), pygame.RESIZABLE)
 pygame.display.set_caption("遊戲8.0")
 clock = pygame.time.Clock()
 textlink = "C:\\Windows\\Fonts\\kaiu.ttf"
@@ -20,7 +20,7 @@ do_something = None
 
 
 class InputBox:
-    def __init__(self, x, y, w, h, text=""):
+    def __init__(self, x: int, y: int, w: int, h: int, text: str = ""):
         self.rect = pygame.Rect(x, y, w, h)
         self.range = (x, y, x + w, y + h)
         self.color = (0, 0, 100)
@@ -28,7 +28,7 @@ class InputBox:
         self.txt_surface = pygame.font.Font(textlink, 20).render(text, True, self.color)
         self.active = False
 
-    def handle_mouse(self, x, y, sx, sy):
+    def handle_mouse(self, x: int, y: int, sx: int, sy: int):
         if self.range[0] <= x - sx <= self.range[2] and self.range[1] <= y - sy <= self.range[3]:
             self.active = not self.active
         else:
@@ -38,7 +38,7 @@ class InputBox:
         else:
             self.color = (0, 0, 100)
 
-    def handle_keydown(self, event):
+    def handle_keydown(self, event: pygame.event.Event):
         global input_text, input_flag
         if self.active:
             if event.key == pygame.K_RETURN:
@@ -55,7 +55,7 @@ class InputBox:
         width = max(200, self.txt_surface.get_width() + 10)
         self.rect.w = width
 
-    def draw(self, screen):
+    def draw(self, screen: pygame.Surface):
         screen.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + 5))
         pygame.draw.rect(screen, self.color, self.rect, 2)
 
@@ -63,14 +63,14 @@ class InputBox:
 class Button:
     def __init__(
         self,
-        x,
-        y,
-        w,
-        h,
-        text,
-        holddown,
-        surface,
-        do="print(f'button {self.text} is pressed')",
+        x: int,
+        y: int,
+        w: int,
+        h: int,
+        text: str,
+        holddown: bool,
+        surface: "Surface",
+        do: str = "print(f'button {self.text} is pressed')",
     ):
         self.original_x = x
         self.original_y = y
@@ -95,7 +95,7 @@ class Button:
         self.text_size_ = self.text_size_original
         self.surface = surface
 
-    def check(self, mx, my, start_x, start_y):
+    def check(self, mx: int, my: int, start_x: int, start_y: int):
         global do_something
         if (
             start_x + self.x_ <= mx <= start_x + self.x_ + self.w_
@@ -152,7 +152,7 @@ class Button:
         if self.surface.name == "CreateCharacter":
             input_box.draw(self.surface.surface)
 
-    def do(self, do_something):
+    def do(self, do_something: str):
         try:
             exec(do_something)
         except Exception as e:
@@ -162,7 +162,7 @@ class Button:
 
 
 class Label:
-    def __init__(self, x, y, w, h, text, v, surface):
+    def __init__(self, x: int, y: int, w: int, h: int, text: str, v: str, surface: "Surface"):
         self.x = x
         self.y = y
         self.w = w
@@ -185,7 +185,7 @@ class Label:
 
 
 class Surface:
-    def __init__(self, name, w, h, object=[]):
+    def __init__(self, name: str, w: int, h: int, object: list[Button | Label] = []):
         self.name = name
         self.w = w
         self.h = h
@@ -196,7 +196,7 @@ class Surface:
         global sx, sy
         self.surface.fill((104, 104, 130, 200))
         pygame.draw.rect(self.surface, (0, 0, 0), (0, 0, self.w, self.h), 5)
-        sx, sy = W / 2 - self.w / 2, H / 2 - self.h / 2
+        sx, sy = w // 2 - self.w // 2, h // 2 - self.h // 2
         for i in self.object:
             if type(i) == Button:
                 i.check(mx, my, sx, sy)
@@ -216,10 +216,10 @@ class Player:
         self.remaining_points = 30
 
 
-def back_ground_color(w, h):
-    back_ground = []
+def back_ground_color(w: int, h: int):
+    back_ground: list[list[tuple[int, int, int]]] = []
     for _ in range(fl(w / 10)):
-        a = []
+        a: list[tuple[int, int, int]] = []
         for _ in range(fl(h / 10)):
             a.append((b[0], b[1], b[2]))
             b[ri(0, 2)] += ri(-1, 1)
@@ -230,8 +230,9 @@ def back_ground_color(w, h):
     return back_ground
 
 
-def add_surface(surface_name):
+def add_surface(surface_name: str):
     f = True
+    surface = Surface(surface_name, 0, 0)
     match surface_name:
         case "Start":
             surface = Surface(surface_name, 400, 240)
@@ -530,17 +531,18 @@ def add_surface(surface_name):
         surface_list.append(surface_name)
 
 
-def remove_surface(surface_name):
+def remove_surface(surface_name: str):
     surface_list.remove(surface_name)
     del surface_dict[surface_name]
 
 
 input_box = InputBox(50, 210, 300, 40, "請輸入名字")
-back_ground = back_ground_color(W, H)
-surface_dict = {}
-surface_list = []
+back_ground = back_ground_color(w, h)
+surface_dict: dict[str, Surface] = {}
+surface_list: list[str] = []
 add_surface("Start")
 player = Player()
+sx, sy = 0, 0
 
 while True:
     mx, my = pygame.mouse.get_pos()
@@ -559,14 +561,14 @@ while True:
             if event.key == pygame.K_F11:
                 fullscreen += 1
                 if fullscreen % 2 == 1:
-                    W = W_change
-                    H = H_change
-                    screen = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
-                    back_ground = back_ground_color(W, H)
+                    w = W_change
+                    h = H_change
+                    screen = pygame.display.set_mode((w, h), pygame.FULLSCREEN)
+                    back_ground = back_ground_color(w, h)
                 else:
-                    W, H = 1000, 700
-                    screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
-                    back_ground = back_ground_color(W, H)
+                    w, h = 1000, 700
+                    screen = pygame.display.set_mode((w, h), pygame.RESIZABLE)
+                    back_ground = back_ground_color(w, h)
         elif event.type == pygame.MOUSEBUTTONUP:
             if inputbox:
                 input_box.handle_mouse(mx, my, sx, sy)
@@ -577,8 +579,8 @@ while True:
                 do_something = None
 
     screen.fill((0, 0, 0))
-    for x in range(fl(W / 10)):
-        for y in range(fl(H / 10)):
+    for x in range(fl(w / 10)):
+        for y in range(fl(h / 10)):
             pygame.draw.rect(screen, back_ground[x][y], (x * 10, y * 10, 10, 10), 0)
     screen.blit(font.render(f"{mx},{my}", True, (0, 0, 0)), [0, 0])
 

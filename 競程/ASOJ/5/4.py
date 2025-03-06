@@ -9,7 +9,7 @@ cost = list(map(int, input().split()))
 
 ans = 0
 while True in flag:
-    t = [-float("inf"), -1]
+    t: list[int] = [-2147483648, -1]
     for i in range(n):
         if flag[i]:
             t0 = -cost[i] * 2

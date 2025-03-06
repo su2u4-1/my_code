@@ -1,7 +1,7 @@
 import random
 
 
-def bag_add(item, quantity):
+def bag_add(item: str, quantity: int):
     global money, bag_space, bag
     s = 0
     for i in range(len(item_list)):
@@ -82,7 +82,7 @@ while True:
             a = 4
         elif b == "5":
             a = 5
-        elif a == "exit":
+        elif b == "exit":
             break
         else:
             a = 0

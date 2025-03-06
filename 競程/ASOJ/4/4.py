@@ -25,6 +25,7 @@ for _ in range(m):
     if c > mc:
         mc = c
 k = int(input())
+i = -1
 for i in range(mc + 1, -1, -1):
     t = mo.copy()
     for j in t:

@@ -11,6 +11,7 @@ for _ in range(int(input())):
             x = md[i].index(s)
             y = i
             break
+    x, y = -1, -1
     for _ in range(int(n)):
         x += dx[t % 8] * d
         y += dy[t % 8] * d

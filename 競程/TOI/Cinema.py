@@ -1,4 +1,4 @@
-t = []
+t: list[tuple[str, str, int]] = []
 for _ in range(int(input())):
     h, m = input().split()
     t.append((h, m, int(h) * 60 + int(m)))

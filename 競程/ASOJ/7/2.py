@@ -6,7 +6,7 @@ D = ((-1, 0), (0, 1), (1, 0), (0, -1))
 a = [0, 0]
 
 
-def update(nn):
+def update(nn: int):
     global d, x, y
     if nn == -1:
         if d == 0:

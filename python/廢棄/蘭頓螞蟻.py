@@ -1,4 +1,3 @@
-from random import randint as ri
 import pygame, sys
 
 pygame.init()
@@ -6,13 +5,13 @@ W, H = pygame.display.Info().current_w, pygame.display.Info().current_h
 screen = pygame.display.set_mode((W, H))
 pygame.display.set_caption("蘭頓螞蟻")
 clock = pygame.time.Clock()
-point = []
+point: list[list[int]] = []
 d = 0
 ant = [960, 540]
 mx = [0, 1, 0, -1]
 my = [-1, 0, 1, 0]
 for _ in range(1920):
-    a = []
+    a: list[int] = []
     for _ in range(1080):
         a.append(0)
     point.append(a)

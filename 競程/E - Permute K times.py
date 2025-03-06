@@ -6,9 +6,9 @@ a = list(map(int, input().split()))
 if k == 0:
     print(*a)
 else:
-    p = []
+    p: list[list[int]] = []
     for i in x:
-        tt = []
+        tt: list[int] = []
         t = i
         tt.append(t)
         t = x[t - 1]
@@ -20,9 +20,10 @@ else:
                 exit()
         tt.reverse()
         p.append(tt)
+    pp: list[int] = []
     for i in range(n):
         if len(p[i]) < k:
-            p[i] = a[p[i][k % len(p[i]) - 1] - 1]
+            pp[i] = a[p[i][k % len(p[i]) - 1] - 1]
         else:
-            p[i] = a[p[i][len(p[i]) % k - 1] - 1]
-    print(*p)
+            pp[i] = a[p[i][len(p[i]) % k - 1] - 1]
+    print(*pp)

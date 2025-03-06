@@ -21,7 +21,7 @@
 # print(ans)
 
 
-def f(l, r):
+def f(l: int, r: int) -> int:
     if l < 0:
         l = 0
     if r > n:

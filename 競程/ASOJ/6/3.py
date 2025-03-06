@@ -3,9 +3,9 @@ c = map(int, input().split())
 tree = [list(map(int, input().split()))[1:] for _ in range(n)]
 x = list(map(int, input().split()))
 f = [True for _ in range(n)]
-nu = []
+nu: list[int] = []
 
-nue = [0]
+nue: list[int] = [0]
 t = 0
 while True in f:
     ue = nue
@@ -19,6 +19,7 @@ while True in f:
     nu.append(t)
 
 for i in c:
+    j = -1
     for j, v in enumerate(nu):
         if v > i:
             print(j)

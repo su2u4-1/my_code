@@ -1,5 +1,5 @@
 n, k = map(int, input().split())
-p = [[i[0], int(i[1:])] for i in input().split()]
+p = [(i[0], int(i[1:])) for i in input().split()]
 l = 0
 ans = 0
 for j in range(len(p)):
