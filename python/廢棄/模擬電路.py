@@ -2,7 +2,7 @@ import pygame, os
 from math import floor as fl
 
 
-def update1(x, y, state="No"):
+def update1(x: int, y: int, state: str = "No"):
     global data
     if x not in data:
         return
@@ -33,6 +33,8 @@ def update1(x, y, state="No"):
             d = 1
         elif data[x][y][1] == "right":
             d = 3
+        else:
+            d = -1
         for i in range(4):
             if data[x][y][0] == "not":
                 if data[x][y][2] == "unpower" and i != d:
@@ -43,7 +45,7 @@ def update1(x, y, state="No"):
                 update1(x + a1[i], y + a2[i], data[x][y][2])
 
 
-def update2(x, y):
+def update2(x: int, y: int):
     global data
     if x in data and y in data[x]:
         if data[x][y][0] == "line":
@@ -165,13 +167,13 @@ def update2(x, y):
 pygame.init()
 W_change = pygame.display.Info().current_w
 H_change = pygame.display.Info().current_h
-W, H = 1000, 700
-screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
+w, h = 1000, 700
+screen = pygame.display.set_mode((w, h), pygame.RESIZABLE)
 pygame.display.set_caption("模擬電路")
 clock = pygame.time.Clock()
 full = False
 start_coordinate = 0, 0
-data = {}
+data: dict[int, dict[int, list[str]]] = {}
 # {x:{y:[type,direction,state]}}
 image_link = os.path.dirname(os.path.realpath(__file__)) + "\\模擬電路圖片\\"
 choose = "No"
@@ -188,12 +190,12 @@ while True:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_F11:
                 if full:
-                    W, H = W_change, H_change
-                    screen = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
+                    w, h = W_change, H_change
+                    screen = pygame.display.set_mode((w, h), pygame.FULLSCREEN)
                     full = False
                 else:
-                    W, H = 1000, 700
-                    screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
+                    w, h = 1000, 700
+                    screen = pygame.display.set_mode((w, h), pygame.RESIZABLE)
                     full = True
             elif event.key == pygame.K_UP:
                 director = "up"
@@ -246,9 +248,9 @@ while True:
                 put = False
                 next_put = "No"
 
-    button = []
-    for i in range(fl(W / 10)):
-        for j in range(fl(H / 10)):
+    button: list[tuple[int, int]] = []
+    for i in range(fl(w / 10)):
+        for j in range(fl(h / 10)):
             if i in data and j in data[i]:
                 if data[i][j][0] == "button":
                     button.append((i, j))
@@ -257,8 +259,8 @@ while True:
         update2(i[0], i[1])
 
     screen.fill((0, 0, 0))
-    for i in range(fl(W / 10)):
-        for j in range(fl(H / 10)):
+    for i in range(fl(w / 10)):
+        for j in range(fl(h / 10)):
             if i in data and j in data[i]:
                 if data[i][j][1] == "No":
                     screen.blit(

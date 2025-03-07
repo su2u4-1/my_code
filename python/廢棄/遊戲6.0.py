@@ -1,5 +1,6 @@
 from random import randint as ri
 import os
+from typing import Any
 
 
 def attributepage():
@@ -7,23 +8,13 @@ def attributepage():
         f"\n1.攻擊力:{player.att}\n2.防禦力:{player.Def}\n3.速度:{player.agi}\n4.血量:{player.hp}\n5.金:{player.metal}\n6.木:{player.wood}\n7.水:{player.water}\n8.火:{player.fire}\n9.土:{player.earth}\n基礎屬性剩餘點:{player.rp1}\n五行屬性剩餘點:{player.rp2}\n"
     )
     option = input("\n輸入你要加點的屬性名稱或編號\n輸入10離開\n")
-    if (
-        option == "1"
-        or option == "2"
-        or option == "3"
-        or option == "4"
-        or option == "5"
-        or option == "6"
-        or option == "7"
-        or option == "8"
-        or option == "9"
-    ):
+    if option in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
         option1 = input("\n輸入你要加的點數\n")
         try:
             option1 = int(option1)
         except:
             print("輸入錯誤")
-            attributepage()
+            return
         if option == "1":
             if option1 <= player.rp1:
                 print(f"攻擊力:{player.att} -> {player.att + option1}\n基礎屬性剩餘點:{player.rp1} -> {player.rp1 - option1}")
@@ -96,7 +87,7 @@ def attributepage():
 
 def bag():
     option = input("\n要打開素材背包請按1\n要打開裝備背包請按2\n要打開人物裝備欄請按3\n要離開背包介面請按4\n")
-    li = []
+    li: list[list[str]] = []
     if option == "1":
         for i in player.material_bag:
             print(f"{i}:{player.material_bag[i]}")
@@ -151,9 +142,9 @@ def base():
 
 
 def generatemap():
-    map = []
+    map: list[list[list[int | bool | str]]] = []
     for i in range(999):
-        a = []
+        a: list[list[int | bool | str]] = []
         for j in range(999):
             a.append([ri(0, 100), True, "美麗的大自然"])
         map.append(a)
@@ -396,7 +387,7 @@ def nuwgame():
     main()
 
 
-def openfile(name):
+def openfile(name: str):
     global player, map
     if not os.access("C:\\__game__\\" + name + ".txt", os.F_OK):
         print("\n檔案不存在")
@@ -414,30 +405,30 @@ def openfile(name):
 
 
 class playerc:
-    def __init__(self, name, attribute):
+    def __init__(self, name: str, attribute: dict[str, int | dict[str, int | None] | list[int]]) -> None:
         self.name = name
-        self.att = attribute["att"]
-        self.Def = attribute["Def"]
-        self.agi = attribute["agi"]
-        self.hp = attribute["hp"]
-        self.metal = attribute["metal"]
-        self.wood = attribute["wood"]
-        self.water = attribute["water"]
-        self.fire = attribute["fire"]
-        self.earth = attribute["earth"]
-        self.material_bag = attribute["mb"]
-        self.equipment_bag = attribute["eb"]
-        self.equipment_slot = attribute["es"]
-        self.rp1 = attribute["rp1"]
-        self.rp2 = attribute["rp2"]
-        self.x = attribute["x"]
-        self.y = attribute["y"]
-        self.bonus = attribute["bonus"]
-        self.lv = attribute["lv"]
-        self.exp = attribute["exp"]
+        self.att: int = attribute["att"]
+        self.Def: int = attribute["Def"]
+        self.agi: int = attribute["agi"]
+        self.hp: int = attribute["hp"]
+        self.metal: int = attribute["metal"]
+        self.wood: int = attribute["wood"]
+        self.water: int = attribute["water"]
+        self.fire: int = attribute["fire"]
+        self.earth: int = attribute["earth"]
+        self.material_bag: dict[str, int] = attribute["mb"]
+        self.equipment_bag: dict[str, Any] = attribute["eb"]
+        self.equipment_slot: dict[str, None] = attribute["es"]
+        self.rp1: int = attribute["rp1"]
+        self.rp2: int = attribute["rp2"]
+        self.x: int = attribute["x"]
+        self.y: int = attribute["y"]
+        self.bonus: list[int] = attribute["bonus"]
+        self.lv: int = attribute["lv"]
+        self.exp: int = attribute["exp"]
 
 
-def fightbackjudgment(m, p, mn, pn, s):
+def fightbackjudgment(m: dict[str, float | str], p: dict[str, float | str], mn: float, pn: float, s: str) -> str:
     if s == "p":
         fightback = p["bonus"][1] - m["bonus"][7]
         fightback = (0, fightback)[fightback > 0]
@@ -454,9 +445,11 @@ def fightbackjudgment(m, p, mn, pn, s):
             pn -= atk
             print(f"  {p['name']}受到了來自{m['name']}的{atk}點反擊傷害\n  剩餘血量:{pn}|{round((pn/p['hp'])*100,2)}%")
         return pn
+    else:
+        return ""
 
 
-def loot(lv, type):
+def loot(lv: int, type: str):
     TYPE = [
         "普通史萊姆",
         "菁英史萊姆",
@@ -523,11 +516,13 @@ def penalty():
     pass
 
 
-def PvE(m, p):  # bonus = [吸血,反擊,連擊,閃避,爆擊,擊暈,抗吸血,抗反擊,抗連擊,抗閃避,抗爆擊,抗擊暈]
+def PvE(
+    m: dict[str, float | str], p: dict[str, float | str]
+):  # bonus = [吸血,反擊,連擊,閃避,爆擊,擊暈,抗吸血,抗反擊,抗連擊,抗閃避,抗爆擊,抗擊暈]
     pnowhp = p["hp"]
     mnowhp = m["hp"]
     c = ["金", "木", "水", "火", "土"]
-    b = []
+    b: list[float] = []
     b.append(m["metal"] / p["metal"])
     b.append(m["wood"] / p["wood"])
     b.append(m["water"] / p["water"])
@@ -719,7 +714,7 @@ def start():
     start()
 
 
-def summonmonster(lv):
+def summonmonster(lv: int) -> dict[str, float | str]:
     TYPE = [
         "普通史萊姆",
         "菁英史萊姆",
@@ -782,7 +777,7 @@ def summonmonster(lv):
     water = (1, lv * (ri(90, 110) / 100))[element == "水"]
     fire = (1, lv * (ri(90, 110) / 100))[element == "火"]
     earth = (1, lv * (ri(90, 110) / 100))[element == "土"]
-    attribute = {
+    attribute: dict[str, float | str] = {
         "att": att,
         "def": Def,
         "agi": agi,
@@ -831,7 +826,7 @@ def system():
     system()
 
 
-def writefile(name):
+def writefile(name: str):
     global player, map
     if not os.access("C:\\__game__\\" + name + ".txt", os.F_OK):
         print("\n此路徑不存在")
