@@ -4,7 +4,7 @@ from random import randint as ri
 
 
 class Button:
-    def __init__(self, x: int, y: int, w: int, h: int, do: Callable[..., None], text: str = ""):
+    def __init__(self, x: int, y: int, w: int, h: int, do: Callable[..., None], args: tuple[int, ...], text: str = ""):
         self.ox = x
         self.oy = y
         self.ow = w
@@ -14,6 +14,7 @@ class Button:
         self.w = self.ow
         self.h = self.oh
         self.do = do
+        self.args = args
         self.scaling = 0.9
         self.color1 = (100, 100, 100)
         self.color2 = (200, 200, 200)
@@ -38,7 +39,7 @@ class Button:
             self.y = self.oy + self.oh * 0.05
             self.w = self.ow * 0.9
             self.h = self.oh * 0.9
-            self.do()
+            self.do(*self.args)
         else:
             self.x = self.ox
             self.y = self.oy
@@ -98,34 +99,34 @@ class RubiksCube:
         )
         self.display_order = display_order
         self.rc = rc
-        self.rect: dict[str, tuple[tuple[int, int], tuple[int, int], tuple[int, int], tuple[int, int]]] = {}
-        self.rect["u0"] = (self.p[0], self.p[1], self.p[4], self.p[2])
-        self.rect["u1"] = (self.p[2], self.p[4], self.p[8], self.p[5])
-        self.rect["u2"] = (self.p[5], self.p[8], self.p[12], self.p[9])
-        self.rect["u3"] = (self.p[1], self.p[3], self.p[7], self.p[4])
-        self.rect["u4"] = (self.p[4], self.p[7], self.p[11], self.p[8])
-        self.rect["u5"] = (self.p[8], self.p[11], self.p[14], self.p[12])
-        self.rect["u6"] = (self.p[3], self.p[6], self.p[10], self.p[7])
-        self.rect["u7"] = (self.p[7], self.p[10], self.p[13], self.p[11])
-        self.rect["u8"] = (self.p[11], self.p[13], self.p[15], self.p[14])
-        self.rect["l0"] = (self.p[6], self.p[16], self.p[17], self.p[10])
-        self.rect["l1"] = (self.p[10], self.p[17], self.p[18], self.p[13])
-        self.rect["l2"] = (self.p[13], self.p[18], self.p[19], self.p[15])
-        self.rect["l3"] = (self.p[16], self.p[23], self.p[24], self.p[17])
-        self.rect["l4"] = (self.p[17], self.p[24], self.p[25], self.p[18])
-        self.rect["l5"] = (self.p[18], self.p[25], self.p[26], self.p[19])
-        self.rect["l6"] = (self.p[23], self.p[30], self.p[31], self.p[24])
-        self.rect["l7"] = (self.p[24], self.p[31], self.p[32], self.p[25])
-        self.rect["l8"] = (self.p[25], self.p[32], self.p[33], self.p[26])
-        self.rect["r0"] = (self.p[15], self.p[19], self.p[20], self.p[14])
-        self.rect["r1"] = (self.p[14], self.p[20], self.p[21], self.p[12])
-        self.rect["r2"] = (self.p[12], self.p[21], self.p[22], self.p[9])
-        self.rect["r3"] = (self.p[19], self.p[26], self.p[27], self.p[20])
-        self.rect["r4"] = (self.p[20], self.p[27], self.p[28], self.p[21])
-        self.rect["r5"] = (self.p[21], self.p[28], self.p[29], self.p[22])
-        self.rect["r6"] = (self.p[26], self.p[33], self.p[34], self.p[27])
-        self.rect["r7"] = (self.p[27], self.p[34], self.p[35], self.p[28])
-        self.rect["r8"] = (self.p[28], self.p[35], self.p[36], self.p[29])
+        self.rect: dict[str, tuple[int, int, int, int]] = {}
+        self.rect["u0"] = (0, 1, 4, 2)
+        self.rect["u1"] = (2, 4, 8, 5)
+        self.rect["u2"] = (5, 8, 12, 9)
+        self.rect["u3"] = (1, 3, 7, 4)
+        self.rect["u4"] = (4, 7, 11, 8)
+        self.rect["u5"] = (8, 11, 14, 12)
+        self.rect["u6"] = (3, 6, 10, 7)
+        self.rect["u7"] = (7, 10, 13, 11)
+        self.rect["u8"] = (11, 13, 15, 14)
+        self.rect["l0"] = (6, 16, 17, 10)
+        self.rect["l1"] = (10, 17, 18, 13)
+        self.rect["l2"] = (13, 18, 19, 15)
+        self.rect["l3"] = (16, 23, 24, 17)
+        self.rect["l4"] = (17, 24, 25, 18)
+        self.rect["l5"] = (18, 25, 26, 19)
+        self.rect["l6"] = (23, 30, 31, 24)
+        self.rect["l7"] = (24, 31, 32, 25)
+        self.rect["l8"] = (25, 32, 33, 26)
+        self.rect["r0"] = (15, 19, 20, 14)
+        self.rect["r1"] = (14, 20, 21, 12)
+        self.rect["r2"] = (12, 21, 22, 9)
+        self.rect["r3"] = (19, 26, 27, 20)
+        self.rect["r4"] = (20, 27, 28, 21)
+        self.rect["r5"] = (21, 28, 29, 22)
+        self.rect["r6"] = (26, 33, 34, 27)
+        self.rect["r7"] = (27, 34, 35, 28)
+        self.rect["r8"] = (28, 35, 36, 29)
         self.rect_name_list = [
             "u0",
             "u1",
@@ -158,55 +159,64 @@ class RubiksCube:
 
     def desplay(self, screen: pygame.Surface) -> None:
         for i in range(27):
-            pygame.draw.polygon(screen, self.rc[self.display_order[i]], self.rect[self.rect_name_list[i]])
-            screen.blit(font.render(self.rect_name_list[i], True, (0, 0, 0)), self.rect[self.rect_name_list[i]][:2])
-        pygame.draw.line(screen, (0, 0, 0), self.p[0], self.p[6], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[0], self.p[9], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[1], self.p[12], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[3], self.p[14], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[2], self.p[10], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[5], self.p[13], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[6], self.p[15], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[9], self.p[15], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[6], self.p[30], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[15], self.p[33], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[9], self.p[36], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[30], self.p[33], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[33], self.p[36], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[10], self.p[31], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[13], self.p[32], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[14], self.p[34], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[12], self.p[35], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[16], self.p[19], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[23], self.p[26], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[19], self.p[22], 3)
-        pygame.draw.line(screen, (0, 0, 0), self.p[26], self.p[29], 3)
+            pygame.draw.polygon(screen, self.rc[self.display_order[i]], tuple(self.p[i] for i in self.rect[self.rect_name_list[i]]))
+            screen.blit(
+                font.render(self.rect_name_list[i], True, (0, 0, 0)), tuple(self.p[i] for i in self.rect[self.rect_name_list[i]][:2])
+            )
+        for i, j in (
+            (0, 6),
+            (0, 9),
+            (1, 12),
+            (3, 14),
+            (2, 10),
+            (5, 13),
+            (6, 15),
+            (9, 15),
+            (6, 30),
+            (15, 33),
+            (9, 36),
+            (30, 33),
+            (33, 36),
+            (10, 31),
+            (13, 32),
+            (14, 34),
+            (12, 35),
+            (16, 19),
+            (23, 26),
+            (19, 22),
+            (26, 29),
+        ):
+            pygame.draw.line(screen, (0, 0, 0), self.p[i], self.p[j], 3)
 
     def register_button(self, button_list: list[Button]) -> None:
-        button_list.append(Button(self.x[7], self.y[4], 30, 20, lambda: ro(4), "4"))
-        button_list.append(Button(self.x[7], self.y[6], 30, 20, lambda: ro(5), "5"))
-        button_list.append(Button(self.x[7], self.y[8], 30, 20, lambda: ro(6), "6"))
-        button_list.append(Button(self.x[8], self.y[4], 30, 20, lambda: ro(1), "1"))
-        button_list.append(Button(self.x[8], self.y[6], 30, 20, lambda: ro(2), "2"))
-        button_list.append(Button(self.x[8], self.y[8], 30, 20, lambda: ro(3), "3"))
-        button_list.append(Button(self.x[6], self.y[2], 30, 20, lambda: ro(10), "10"))
-        button_list.append(Button(self.x[5], self.y[1], 30, 20, lambda: ro(11), "11"))
-        button_list.append(Button(self.x[4], self.y[0], 30, 20, lambda: ro(12), "12"))
-        button_list.append(Button(self.x[2], self.y[12], 30, 20, lambda: ro(7), "7"))
-        button_list.append(Button(self.x[1], self.y[11], 30, 20, lambda: ro(8), "8"))
-        button_list.append(Button(self.x[0], self.y[10], 30, 20, lambda: ro(9), "9"))
-        button_list.append(Button(self.x[0], self.y[2], 30, 20, lambda: ro(16), "16"))
-        button_list.append(Button(self.x[1], self.y[1], 30, 20, lambda: ro(17), "17"))
-        button_list.append(Button(self.x[2], self.y[0], 30, 20, lambda: ro(18), "18"))
-        button_list.append(Button(self.x[4], self.y[12], 30, 20, lambda: ro(13), "13"))
-        button_list.append(Button(self.x[5], self.y[11], 30, 20, lambda: ro(14), "14"))
-        button_list.append(Button(self.x[6], self.y[10], 30, 20, lambda: ro(15), "15"))
-        button_list.append(Button(self.x[7] - 35, self.y[6], 30, 20, (lambda: ros(4, 5, 6))))
-        button_list.append(Button(self.x[8] + 35, self.y[6], 30, 20, (lambda: ros(1, 2, 3))))
-        button_list.append(Button(self.x[5] + 35, self.y[1] - 25, 30, 20, (lambda: ros(10, 11, 12))))
-        button_list.append(Button(self.x[1] - 35, self.y[11] + 25, 30, 20, (lambda: ros(7, 8, 9))))
-        button_list.append(Button(self.x[1] - 35, self.y[1] - 25, 30, 20, (lambda: ros(16, 17, 18))))
-        button_list.append(Button(self.x[5] + 35, self.y[11] + 25, 30, 20, (lambda: ros(13, 14, 15))))
+        p = (
+            (8, 4),
+            (8, 6),
+            (8, 8),
+            (7, 4),
+            (7, 6),
+            (7, 8),
+            (2, 12),
+            (1, 11),
+            (0, 10),
+            (6, 2),
+            (5, 1),
+            (4, 0),
+            (4, 12),
+            (5, 11),
+            (6, 10),
+            (0, 2),
+            (1, 1),
+            (2, 0),
+        )
+        for i in range(18):
+            button_list.append(Button(self.x[p[i][0]], self.y[p[i][1]], 30, 20, ro, (i + 1,), str(i + 1)))
+        button_list.append(Button(self.x[7] - 35, self.y[6], 30, 20, ros, (4, 5, 6)))
+        button_list.append(Button(self.x[8] + 35, self.y[6], 30, 20, ros, (1, 2, 3)))
+        button_list.append(Button(self.x[5] + 35, self.y[1] - 25, 30, 20, ros, (10, 11, 12)))
+        button_list.append(Button(self.x[1] - 35, self.y[11] + 25, 30, 20, ros, (7, 8, 9)))
+        button_list.append(Button(self.x[1] - 35, self.y[1] - 25, 30, 20, ros, (16, 17, 18)))
+        button_list.append(Button(self.x[5] + 35, self.y[11] + 25, 30, 20, ros, (13, 14, 15)))
 
 
 # u上d下l左r右f前b後
@@ -446,6 +456,84 @@ def ro(n: int, f: bool = True) -> None:
             print("error: unknow key", n)
 
 
+def mouse_turn_rc(start_pos: str, end_pos: str) -> None:
+    match (start_pos, end_pos):
+        case ("u0", "u2"):
+            ro(15)
+        case ("u2", "u0"):
+            ro(18)
+        case ("u3", "u5"):
+            ro(14)
+        case ("u5", "u3"):
+            ro(17)
+        case ("u6", "u8"):
+            ro(13)
+        case ("u8", "u6"):
+            ro(16)
+        case ("u0", "u6"):
+            ro(9)
+        case ("u6", "u0"):
+            ro(12)
+        case ("u1", "u7"):
+            ro(8)
+        case ("u7", "u1"):
+            ro(11)
+        case ("u2", "u8"):
+            ro(7)
+        case ("u8", "u2"):
+            ro(10)
+        case ("l0", "l2"):
+            ro(1)
+        case ("l2", "l0"):
+            ro(4)
+        case ("l3", "l5"):
+            ro(2)
+        case ("l5", "l3"):
+            ro(5)
+        case ("l6", "l8"):
+            ro(3)
+        case ("l8", "l6"):
+            ro(6)
+        case ("l0", "l6"):
+            ro(9)
+        case ("l6", "l0"):
+            ro(12)
+        case ("l1", "l7"):
+            ro(8)
+        case ("l7", "l1"):
+            ro(11)
+        case ("l2", "l8"):
+            ro(7)
+        case ("l8", "l2"):
+            ro(10)
+        case ("r0", "r2"):
+            ro(1)
+        case ("r2", "r0"):
+            ro(4)
+        case ("r3", "r5"):
+            ro(2)
+        case ("r5", "r3"):
+            ro(5)
+        case ("r6", "r8"):
+            ro(3)
+        case ("r8", "r6"):
+            ro(6)
+        case ("r0", "r6"):
+            ro(13)
+        case ("r6", "r0"):
+            ro(16)
+        case ("r1", "r7"):
+            ro(14)
+        case ("r7", "r1"):
+            ro(17)
+        case ("r2", "r8"):
+            ro(15)
+        case ("r8", "r2"):
+            ro(18)
+        case _:
+            print("error: unknow key", start_pos, end_pos)
+
+
 def f1() -> None:
     for _ in range(10):
         ro(ri(1, 18))
@@ -456,9 +544,15 @@ def ros(*code: int) -> None:
         ro(i)
 
 
-def check_mouse_pos(rects: dict[str, pygame.Rect]) -> str:
+def check_mouse_pos(rects: dict[str, tuple[tuple[int, int], ...]]) -> str:
     for i in rects:
-        if rects[i].collidepoint(pygame.mouse.get_pos()):
+        pos = pygame.mouse.get_pos()
+        A, B, C, D = rects[i]
+        cp1 = (B[0] - A[0]) * (pos[1] - A[1]) - (pos[0] - A[0]) * (B[1] - A[1])
+        cp2 = (C[0] - B[0]) * (pos[1] - B[1]) - (pos[0] - B[0]) * (C[1] - B[1])
+        cp3 = (D[0] - C[0]) * (pos[1] - C[1]) - (pos[0] - C[0]) * (D[1] - C[1])
+        cp4 = (A[0] - D[0]) * (pos[1] - D[1]) - (pos[0] - D[0]) * (A[1] - D[1])
+        if (cp1 >= 0 and cp2 >= 0 and cp3 >= 0 and cp4 >= 0) or (cp1 <= 0 and cp2 <= 0 and cp3 <= 0 and cp4 <= 0):
             return i
     else:
         return ""
@@ -477,8 +571,8 @@ fullscreen = 0
 step: list[int] = []
 start_pos, end_pos = "", ""
 button_list: list[Button] = []
-button_list.append(Button(150, 75, 100, 40, lambda: ro(step.pop(), False) if len(step) > 0 else None, "回上一步"))
-button_list.append(Button(75, 150, 60, 40, f1, "轉亂"))
+button_list.append(Button(150, 75, 100, 40, lambda: ro(step.pop(), False) if len(step) > 0 else None, (), "回上一步"))
+button_list.append(Button(75, 150, 60, 40, f1, (), "轉亂"))
 rc1 = RubiksCube(
     rc,
     (
@@ -550,9 +644,9 @@ rc2 = RubiksCube(
     50,
 )
 rc1.register_button(button_list)
-rects: dict[str, pygame.Rect] = {}
+rects: dict[str, tuple[tuple[int, int], ...]] = {}
 for i in rc1.rect:
-    rects[i] = pygame.draw.polygon(screen, (0, 0, 0), rc1.rect[i])
+    rects[i] = tuple(rc1.p[j] for j in rc1.rect[i])
 
 
 while True:
@@ -576,8 +670,7 @@ while True:
         elif event.type == pygame.MOUSEBUTTONUP:
             end_pos = check_mouse_pos(rects)
             if start_pos != "" and end_pos != "":
-                if start_pos[0] == end_pos[0]:
-                    print(start_pos, end_pos)
+                mouse_turn_rc(start_pos, end_pos)
     for i in button_list:
         i.check1(mx, my)
     if not pygame.mouse.get_pressed()[0]:
