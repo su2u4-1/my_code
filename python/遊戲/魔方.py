@@ -541,7 +541,7 @@ def f1() -> None:
 
 def ros(*code: int) -> None:
     for i in code:
-        ro(i)
+        ro(i, False)
 
 
 def check_mouse_pos(rects: dict[str, tuple[tuple[int, int], ...]]) -> str:
