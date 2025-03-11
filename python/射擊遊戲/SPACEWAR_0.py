@@ -215,7 +215,7 @@ while True:
         font = pygame.font.Font(None, 80)
         txt = font.render(f"SCORE:{score}", True, (255, 255, 255))
         screen.blit(txt, [0, 0])
-        hpbar(screen, player.hp, W / 2 - 98, H - 20)
+        hpbar(screen, player.hp, W // 2 - 98, H - 20)
         all_sprites.update()
         shotdown_red = pygame.sprite.groupcollide(reds, bullets, True, True)
         for shots in shotdown_red:
