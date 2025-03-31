@@ -4,9 +4,7 @@ from typing import TypeVar, Callable
 T = TypeVar("T")
 
 
-def print_tree(
-    node: int, tree_structure: dict[int, list[int]], tree: dict[int, int], output: list[str], indent: str = "", is_last: bool = True
-) -> None:
+def print_tree(node: int, tree_structure: dict[int, list[int]], tree: dict[int, int], output: list[str], indent: str = "", is_last: bool = True) -> None:
     branch = "└── " if is_last else "├── "
     output.append(f"{indent}{branch}{tree[node]}>{node}")
     indent += "    " if is_last else "│   "
@@ -51,16 +49,12 @@ def draw_tree(tree_structure: dict[T, list[T]], start: T, show: Callable[[T], st
         screen.blit(text, (x * w + (w // 2 - r), y * w + (w // 2 - r)))
         ox = x
         if start in tree_structure:
-            pygame.draw.line(
-                screen, color[start], (x * w + (w // 2), y * w + (w // 2 + r)), (x * w + (w // 2), y * w + (w // 2 + 4 * r)), 3
-            )
+            pygame.draw.line(screen, color[start], (x * w + (w // 2), y * w + (w // 2 + r)), (x * w + (w // 2), y * w + (w // 2 + 4 * r)), 3)
             children = tree_structure[start]
             x = draw_tree_node(screen, tree_structure, children[0], show, font, x, y + 1)
             for child in children[1:]:
                 pygame.draw.line(screen, color[start], ((x + 1) * w + (w // 2), y * w + w), (ox * w + (w // 2), y * w + w), 3)
-                pygame.draw.line(
-                    screen, color[start], ((x + 1) * w + (w // 2), y * w + w), ((x + 1) * w + (w // 2), y * w + (w // 2 + 4 * r)), 3
-                )
+                pygame.draw.line(screen, color[start], ((x + 1) * w + (w // 2), y * w + w), ((x + 1) * w + (w // 2), y * w + (w // 2 + 4 * r)), 3)
                 x = draw_tree_node(screen, tree_structure, child, show, font, x + 1, y + 1)
         return x
 

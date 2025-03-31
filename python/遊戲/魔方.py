@@ -53,9 +53,7 @@ class Button:
 
 
 class RubiksCube:
-    def __init__(
-        self, rc: dict[str, tuple[int, int, int]], display_order: tuple[str, ...], l: int = 100, xs: int = 200, ys: int = 50
-    ) -> None:
+    def __init__(self, rc: dict[str, tuple[int, int, int]], display_order: tuple[str, ...], l: int = 100, xs: int = 200, ys: int = 50) -> None:
         self.x = [int(xs + l * i * 3**0.5) for i in (0, 0.5, 1, 1.5, 2, 2.5, 3, -0.25, 3.25)]
         self.y = [int(ys + l * i) for i in (0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6)]
         self.p = (
@@ -160,9 +158,7 @@ class RubiksCube:
     def desplay(self, screen: pygame.Surface) -> None:
         for i in range(27):
             pygame.draw.polygon(screen, self.rc[self.display_order[i]], tuple(self.p[i] for i in self.rect[self.rect_name_list[i]]))
-            screen.blit(
-                font.render(self.rect_name_list[i], True, (0, 0, 0)), tuple(self.p[i] for i in self.rect[self.rect_name_list[i]][:2])
-            )
+            screen.blit(font.render(self.rect_name_list[i], True, (0, 0, 0)), tuple(self.p[i] for i in self.rect[self.rect_name_list[i]][:2]))
         for i, j in (
             (0, 6),
             (0, 9),

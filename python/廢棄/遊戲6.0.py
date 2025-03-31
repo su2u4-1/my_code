@@ -516,9 +516,7 @@ def penalty():
     pass
 
 
-def PvE(
-    m: dict[str, float | str], p: dict[str, float | str]
-):  # bonus = [吸血,反擊,連擊,閃避,爆擊,擊暈,抗吸血,抗反擊,抗連擊,抗閃避,抗爆擊,抗擊暈]
+def PvE(m: dict[str, float | str], p: dict[str, float | str]):  # bonus = [吸血,反擊,連擊,閃避,爆擊,擊暈,抗吸血,抗反擊,抗連擊,抗閃避,抗爆擊,抗擊暈]
     pnowhp = p["hp"]
     mnowhp = m["hp"]
     c = ["金", "木", "水", "火", "土"]
@@ -537,9 +535,7 @@ def PvE(
         n += 1
         if a == "m":
             element = ri(0, 4)
-            print(
-                f"{n}:{p['name']}剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%,{m['name']}剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%"
-            )
+            print(f"{n}:{p['name']}剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%,{m['name']}剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%")
             atk = m["att"] / (p["def"] + m["att"]) * b[element]
             f = True
             dodge = p["bonus"][3] - m["bonus"][9]
@@ -560,28 +556,20 @@ def PvE(
             if ri(1, 100) <= crit:
                 atk *= 1.5
                 pnowhp -= atk * ri(90, 110) / 100
-                print(
-                    f"  {p['name']}受到了來自{m['name']}的{atk}點{c[element]}屬性爆擊傷害\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%"
-                )
+                print(f"  {p['name']}受到了來自{m['name']}的{atk}點{c[element]}屬性爆擊傷害\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%")
                 mnowhp = fightbackjudgment(m, p, mnowhp, pnowhp, "p")
                 f = False
             if ri(1, 100) <= combo:
                 pnowhp -= atk * ri(90, 110) / 100
-                print(
-                    f"  {p['name']}受到了來自{m['name']}的{atk}點{c[element]}屬性連擊傷害\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%"
-                )
+                print(f"  {p['name']}受到了來自{m['name']}的{atk}點{c[element]}屬性連擊傷害\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%")
                 mnowhp = fightbackjudgment(m, p, mnowhp, pnowhp, "p")
                 f = False
             if f:
                 pnowhp -= atk * ri(90, 110) / 100
-                print(
-                    f"  {p['name']}受到了來自{m['name']}的{atk}點{c[element]}屬性普攻傷害\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%"
-                )
+                print(f"  {p['name']}受到了來自{m['name']}的{atk}點{c[element]}屬性普攻傷害\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%")
             if ri(1, 100) <= suckblood:
                 mnowhp += round(atk * (suckblood / 100))
-                print(
-                    f"  {p['name']}被{m['name']}吸血,{m['name']}回復了{round(atk*(suckblood/100))}血\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%"
-                )
+                print(f"  {p['name']}被{m['name']}吸血,{m['name']}回復了{round(atk*(suckblood/100))}血\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%")
             if ri(1, 100) <= stun:
                 a = "m"
                 print(f"  {p['name']}被{m['name']}擊暈,下回合無法攻擊")
@@ -595,9 +583,7 @@ def PvE(
                 break
         elif a == "p":
             element = ri(0, 4)
-            print(
-                f"{n}:{m['name']}剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%,{p['name']}剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%"
-            )
+            print(f"{n}:{m['name']}剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%,{p['name']}剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%")
             atk = p["att"] / (m["def"] + p["att"]) / b[element]
             f = True
             dodge = m["bonus"][3] - p["bonus"][9]
@@ -618,28 +604,20 @@ def PvE(
             if ri(1, 100) <= crit:
                 atk *= 1.5
                 mnowhp -= atk * ri(90, 110) / 100
-                print(
-                    f"  {m['name']}受到了來自{p['name']}的{atk}點{c[element]}屬性爆擊傷害\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%"
-                )
+                print(f"  {m['name']}受到了來自{p['name']}的{atk}點{c[element]}屬性爆擊傷害\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%")
                 pnowhp = fightbackjudgment(m, p, mnowhp, pnowhp, "m")
                 f = False
             if ri(1, 100) <= combo:
                 mnowhp -= atk * ri(90, 110) / 100
-                print(
-                    f"  {m['name']}受到了來自{p['name']}的{atk}點{c[element]}屬性連擊傷害\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%"
-                )
+                print(f"  {m['name']}受到了來自{p['name']}的{atk}點{c[element]}屬性連擊傷害\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%")
                 pnowhp = fightbackjudgment(m, p, mnowhp, pnowhp, "m")
                 f = False
             if f:
                 mnowhp -= atk * ri(90, 110) / 100
-                print(
-                    f"  {m['name']}受到了來自{p['name']}的{atk}點{c[element]}屬性普攻傷害\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%"
-                )
+                print(f"  {m['name']}受到了來自{p['name']}的{atk}點{c[element]}屬性普攻傷害\n  剩餘血量:{mnowhp}|{round((mnowhp/m['hp'])*100,2)}%")
             if ri(1, 100) <= suckblood:
                 pnowhp += round(atk * (suckblood / 100))
-                print(
-                    f"  {m['name']}被{p['name']}吸血,{p['name']}回復了{round(atk*(suckblood/100))}血\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%"
-                )
+                print(f"  {m['name']}被{p['name']}吸血,{p['name']}回復了{round(atk*(suckblood/100))}血\n  剩餘血量:{pnowhp}|{round((pnowhp/p['hp'])*100,2)}%")
             if ri(1, 100) <= stun:
                 a = "p"
                 print(f"  {m['name']}被{p['name']}擊暈,下回合無法攻擊")

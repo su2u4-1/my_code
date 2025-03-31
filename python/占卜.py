@@ -97,9 +97,7 @@ def divination(text: str):
     else:
         s = f"占卜「{text}」"
     if d == e:
-        return (
-            s + f"占卜到了【{F[d][1]}】\n解釋:\n{URL2}{F[d][0]}.html\n{URL4}{F[d][0]}\n原文:\n{URL1}{F[d][1]}\n詳細解釋:\n{URL3}{F[d][0]}"
-        )
+        return s + f"占卜到了【{F[d][1]}】\n解釋:\n{URL2}{F[d][0]}.html\n{URL4}{F[d][0]}\n原文:\n{URL1}{F[d][1]}\n詳細解釋:\n{URL3}{F[d][0]}"
     else:
         return (
             s

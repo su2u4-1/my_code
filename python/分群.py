@@ -98,9 +98,7 @@ while True:
                 f2()
             elif event.key == pygame.K_r:
                 point = [Point() for _ in range(500)]
-                p = [Point((255, 0, 0)), Point((0, 255, 0)), Point((0, 0, 255))] + [
-                    Point((ri(0, 255), ri(0, 255), ri(0, 255))) for _ in range(len(p) - 3)
-                ]
+                p = [Point((255, 0, 0)), Point((0, 255, 0)), Point((0, 0, 255))] + [Point((ri(0, 255), ri(0, 255), ri(0, 255))) for _ in range(len(p) - 3)]
                 line = []
             elif event.key == pygame.K_e:
                 line = []

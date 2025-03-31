@@ -156,15 +156,9 @@ def fighting(
     message: list[str] = []
     message.append(f"你開始跟{monster_name}戰鬥")
     if monster[2] > player[2]:
-        if (
-            attribute[(monster[7] + 3) % 5] > monster[6][monster[7]] * 1.25
-            and attribute[(monster[7] + 2) % 5] > monster[6][monster[7]] * 0.75
-        ):
+        if attribute[(monster[7] + 3) % 5] > monster[6][monster[7]] * 1.25 and attribute[(monster[7] + 2) % 5] > monster[6][monster[7]] * 0.75:
             l = 0.5
-        elif (
-            attribute[(monster[7] + 3) % 5] < monster[6][monster[7]] * 1.25
-            and attribute[(monster[7] + 2) % 5] < monster[6][monster[7]] * 0.75
-        ):
+        elif attribute[(monster[7] + 3) % 5] < monster[6][monster[7]] * 1.25 and attribute[(monster[7] + 2) % 5] < monster[6][monster[7]] * 0.75:
             l = 1.5
         else:
             l = 1
@@ -172,15 +166,9 @@ def fighting(
         message.append(f"{monster_name}率先發動攻擊，造成{round(harm,1)}點傷害")
         player[3] -= round(harm, 1)
     elif player[2] > monster[2]:
-        if (
-            attribute[(monster[7] + 3) % 5] > monster[6][monster[7]] * 1.25
-            and attribute[(monster[7] + 2) % 5] > monster[6][monster[7]] * 0.75
-        ):
+        if attribute[(monster[7] + 3) % 5] > monster[6][monster[7]] * 1.25 and attribute[(monster[7] + 2) % 5] > monster[6][monster[7]] * 0.75:
             l = 1.5
-        elif (
-            attribute[(monster[7] + 3) % 5] < monster[6][monster[7]] * 1.25
-            and attribute[(monster[7] + 2) % 5] < monster[6][monster[7]] * 0.75
-        ):
+        elif attribute[(monster[7] + 3) % 5] < monster[6][monster[7]] * 1.25 and attribute[(monster[7] + 2) % 5] < monster[6][monster[7]] * 0.75:
             l = 0.5
         else:
             l = 1
@@ -203,15 +191,9 @@ def fighting(
     while monster[3] > 0 and player[3] > 0:
         a += 1
         if player_time > monster_time:
-            if (
-                attribute[(monster[7] + 3) % 5] > monster[6][monster[7]] * 1.25
-                and attribute[(monster[7] + 2) % 5] > monster[6][monster[7]] * 0.75
-            ):
+            if attribute[(monster[7] + 3) % 5] > monster[6][monster[7]] * 1.25 and attribute[(monster[7] + 2) % 5] > monster[6][monster[7]] * 0.75:
                 l = 1.5
-            elif (
-                attribute[(monster[7] + 3) % 5] < monster[6][monster[7]] * 1.25
-                and attribute[(monster[7] + 2) % 5] < monster[6][monster[7]] * 0.75
-            ):
+            elif attribute[(monster[7] + 3) % 5] < monster[6][monster[7]] * 1.25 and attribute[(monster[7] + 2) % 5] < monster[6][monster[7]] * 0.75:
                 l = 0.5
             else:
                 l = 1
@@ -230,15 +212,9 @@ def fighting(
             )
             player_time += player[2]
         elif monster_time > player_time:
-            if (
-                attribute[(monster[7] + 3) % 5] > monster[6][monster[7]] * 1.25
-                and attribute[(monster[7] + 2) % 5] > monster[6][monster[7]] * 0.75
-            ):
+            if attribute[(monster[7] + 3) % 5] > monster[6][monster[7]] * 1.25 and attribute[(monster[7] + 2) % 5] > monster[6][monster[7]] * 0.75:
                 l = 0.5
-            elif (
-                attribute[(monster[7] + 3) % 5] < monster[6][monster[7]] * 1.25
-                and attribute[(monster[7] + 2) % 5] < monster[6][monster[7]] * 0.75
-            ):
+            elif attribute[(monster[7] + 3) % 5] < monster[6][monster[7]] * 1.25 and attribute[(monster[7] + 2) % 5] < monster[6][monster[7]] * 0.75:
                 l = 1.5
             else:
                 l = 1
@@ -352,9 +328,7 @@ def divination(text: str):
     else:
         s = f"占卜「{text}」"
     if d == e:
-        return (
-            s + f"占卜到了【{F[d][1]}】\n解釋:\n{URL2}{F[d][0]}.html\n{URL4}{F[d][0]}\n原文:\n{URL1}{F[d][1]}\n詳細解釋:\n{URL3}{F[d][0]}"
-        )
+        return s + f"占卜到了【{F[d][1]}】\n解釋:\n{URL2}{F[d][0]}.html\n{URL4}{F[d][0]}\n原文:\n{URL1}{F[d][1]}\n詳細解釋:\n{URL3}{F[d][0]}"
     else:
         return (
             s

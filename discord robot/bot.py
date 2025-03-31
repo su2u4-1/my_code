@@ -104,9 +104,7 @@ async def 賭(ctx: commands.Context[commands.Bot], *m2: Any):
 async def 升級(ctx: commands.Context[commands.Bot], *m2: Any):
     uid = ctx.author.id
     if len(m2) == 1:
-        await ctx.send(
-            f"<@{uid}>目前屬性為:\n攻擊:{player[uid].at}\n防禦:{player[uid].de}\n速度:{player[uid].ag}\n血量:{player[uid].hp}\n剩餘點數:{player[uid].po}"
-        )
+        await ctx.send(f"<@{uid}>目前屬性為:\n攻擊:{player[uid].at}\n防禦:{player[uid].de}\n速度:{player[uid].ag}\n血量:{player[uid].hp}\n剩餘點數:{player[uid].po}")
     elif len(m2) == 2:
         pass  # help 升級
     elif len(m2) == 3:
@@ -118,25 +116,17 @@ async def 升級(ctx: commands.Context[commands.Bot], *m2: Any):
             if player[uid].po >= add:
                 if m2[1] == "1" or m2[1] == "攻擊" or m2[1] == "att":
                     a = random.randint(1, 2)
-                    await ctx.send(
-                        f"<@{uid}>\n攻擊:{player[uid].at} -> {player[uid].at+add*a}\n升級點:{player[uid].po} -> {player[uid].po-add}"
-                    )
+                    await ctx.send(f"<@{uid}>\n攻擊:{player[uid].at} -> {player[uid].at+add*a}\n升級點:{player[uid].po} -> {player[uid].po-add}")
                     player[uid].at += add * a
                 elif m2[1] == "2" or m2[1] == "防禦" or m2[1] == "def":
-                    await ctx.send(
-                        f"<@{uid}>\n防禦:{player[uid].de} -> {player[uid].de+add}\n升級點:{player[uid].po} -> {player[uid].po-add}"
-                    )
+                    await ctx.send(f"<@{uid}>\n防禦:{player[uid].de} -> {player[uid].de+add}\n升級點:{player[uid].po} -> {player[uid].po-add}")
                     player[uid].de += add
                 elif m2[1] == "3" or m2[1] == "速度" or m2[1] == "agi":
-                    await ctx.send(
-                        f"<@{uid}>\n速度:{player[uid].ag} -> {player[uid].ag+add}\n升級點:{player[uid].po} -> {player[uid].po-add}"
-                    )
+                    await ctx.send(f"<@{uid}>\n速度:{player[uid].ag} -> {player[uid].ag+add}\n升級點:{player[uid].po} -> {player[uid].po-add}")
                     player[uid].ag += add
                 elif m2[1] == "4" or m2[1] == "血量" or m2[1] == "Hp" or m2[1] == "hp":
                     a = random.randint(5, 20)
-                    await ctx.send(
-                        f"<@{uid}>\n血量:{player[uid].hp} -> {player[uid].hp+add*a}\n升級點:{player[uid].po} -> {player[uid].po-add}"
-                    )
+                    await ctx.send(f"<@{uid}>\n血量:{player[uid].hp} -> {player[uid].hp+add*a}\n升級點:{player[uid].po} -> {player[uid].po-add}")
                     player[uid].hp += add * a
                 player[uid].po -= add
             else:

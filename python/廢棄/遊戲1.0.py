@@ -201,9 +201,7 @@ while repeat == 1:
     place = "無憂宗"
     print("\n%s進入了%s" % (player[0], place))
     time.sleep(0.75)
-    option_1 = input(
-        "\n[1]進入練功房\t[2]去見師父\t[3]去集市\n[4]去丹閣\t\t[5]去器閣\t\t[6]去藏經閣\n[7]去悟道峰\t[8]去外事閣\t[9]宗門大殿\n[10]去靈獸園\t[11]出山門\t:"
-    )
+    option_1 = input("\n[1]進入練功房\t[2]去見師父\t[3]去集市\n[4]去丹閣\t\t[5]去器閣\t\t[6]去藏經閣\n[7]去悟道峰\t[8]去外事閣\t[9]宗門大殿\n[10]去靈獸園\t[11]出山門\t:")
     judge(option_1)
     time.sleep(0.75)
     while option_1 == "1":
