@@ -176,7 +176,7 @@ start_coordinate = 0, 0
 data: dict[int, dict[int, list[str]]] = {}
 # {x:{y:[type,direction,state]}}
 image_link = os.path.dirname(os.path.realpath(__file__)) + "\\模擬電路圖片\\"
-choose = "No"
+choose = (-1, -1)
 put = False
 director = "up"
 next_put = "No"
@@ -206,7 +206,7 @@ while True:
             elif event.key == pygame.K_LEFT:
                 director = "left"
             elif event.key == pygame.K_SPACE:
-                choose = "No"
+                choose = (-1, -1)
             elif event.key == pygame.K_1 and put:
                 next_put = ["button", "No", "unpower"]
             elif event.key == pygame.K_2 and put:
@@ -242,7 +242,7 @@ while True:
                         data[choose[0]] = {}
                         data[choose[0]][choose[1]] = next_put
                     next_put = "No"
-                choose = mx, my
+                choose = (mx, my)
                 put = True
             elif pygame.mouse.get_pressed()[2]:
                 put = False
@@ -272,7 +272,7 @@ while True:
                         pygame.image.load(image_link + f"{data[i][j][0]}_{data[i][j][1]}_{data[i][j][2]}.png"),
                         [i * 10, j * 10],
                     )
-    if choose != "No":
+    if choose != (-1, -1):
         if next_put != "No":
             if next_put[1] == "No":
                 screen.blit(
