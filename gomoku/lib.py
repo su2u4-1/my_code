@@ -1,5 +1,7 @@
-from random import choice, randint
+from os.path import isfile
+from random import choice, randint, choices
 from typing import Callable, NoReturn
+import pickle
 
 #      ⇘       ⇒       ⇗       ⇓       ⇑        ⇙       ⇐        ⇖
 D8 = ((1, 1), (1, 0), (1, -1), (0, 1), (0, -1), (-1, 1), (-1, 0), (-1, -1))
@@ -215,3 +217,117 @@ def gomoku_ai(chessBoard: list[list[int]], ai_side: int, player_side: int) -> tu
         mx, my = randint(0, size - 1), randint(0, size - 1)
         if chessBoard[mx][my] == 0:
             return mx, my
+
+
+class AI_1:
+    def __init__(self, file: str) -> None:
+        self.model: dict[tuple[int, ...], dict[int, int]] = {}
+        if isfile(file):
+            with open(file, "rb") as f:
+                self.model = pickle.load(f)
+        self.log: list[tuple[tuple[int, ...], int]] = []
+
+    def next(self, chessBoard: list[list[int]], ai_side: int, player_side: int) -> tuple[int, int]:
+        priority_positions: list[tuple[int, list[tuple[int, int]]]] = []
+        size = len(chessBoard)
+        for x in range(size):
+            for y in range(size):
+                if chessBoard[x][y] == 0:
+                    t: list[int] = []
+                    for i in range(8):
+                        for j in range(1, 5):
+                            nx, ny = x + D8[i][0] * j, y + D8[i][1] * j
+                            if 0 <= nx < size and 0 <= ny < size:
+                                t.append(chessBoard[nx][ny])
+                            else:
+                                t.append(-1)
+                    p = self.p(t, ai_side, player_side)
+                    for i in priority_positions:
+                        if i[0] == p:
+                            i[1].append((x, y))
+                            break
+                    else:
+                        priority_positions.append((p, [(x, y)]))
+
+        priority_positions.sort(key=lambda x: x[0], reverse=True)
+        for _, v in priority_positions:
+            if len(v) > 0:
+                mx, my = choice(v)
+                if chessBoard[mx][my] == 0:
+                    return mx, my
+        while True:
+            mx, my = randint(0, size - 1), randint(0, size - 1)
+            if chessBoard[mx][my] == 0:
+                return mx, my
+
+    def p(self, chessBoard: list[int], ai_side: int, player_side: int) -> int:
+        cb = tuple(1 if i == ai_side else 2 if i == player_side else i for i in chessBoard)
+        if cb in self.model:
+            result = choices(tuple(self.model[cb].keys()) + (randint(0, 99),), tuple(0 if i < 0 else i for i in self.model[cb].values()) + (1,))[0]
+        else:
+            result = randint(0, 99)
+        self.log.append((cb, result))
+        return result
+
+
+def plus_model_1(file: str, *plus: tuple[list[tuple[tuple[int, ...], int]], int]) -> None:
+    model: dict[tuple[int, ...], dict[int, int]] = {}
+    if isfile(file):
+        with open(file, "rb") as f:
+            model = pickle.load(f)
+    for log, i in plus:
+        for cb, result in log:
+            if cb not in model:
+                model[cb] = {}
+            if result not in model[cb]:
+                model[cb][result] = i
+            model[cb][result] += i
+    with open(file, "wb") as f:
+        pickle.dump(model, f)
+    print("save model to", file)
+
+
+class AI_0:
+    def __init__(self, file: str) -> None:
+        self.model: dict[tuple[tuple[int, ...], ...], dict[tuple[int, int], int]] = {}
+        if isfile(file):
+            with open(file, "rb") as f:
+                self.model = pickle.load(f)
+        self.log: list[tuple[tuple[tuple[int, ...], ...], tuple[int, int]]] = []
+
+    def next(self, chessBoard: list[list[int]], ai_side: int, player_side: int) -> tuple[int, int]:
+        cb = tuple(tuple(1 if j == ai_side else 2 if j == player_side else j for j in i) for i in chessBoard)
+        if cb in self.model:
+            result = choices(tuple(self.model[cb].keys()), tuple(self.model[cb].values()))[0]
+        else:
+            result = (randint(0, len(chessBoard) - 1), randint(0, len(chessBoard) - 1))
+            while cb[result[0]][result[1]] != 0:
+                result = (randint(0, len(chessBoard) - 1), randint(0, len(chessBoard) - 1))
+        self.log.append((cb, result))
+        return result
+
+
+def plus_model_0(file: str, *plus: tuple[list[tuple[tuple[tuple[int, ...], ...], tuple[int, int]]], int]) -> None:
+    model: dict[tuple[tuple[int, ...], ...], dict[tuple[int, int], int]] = {}
+    if isfile(file):
+        with open(file, "rb") as f:
+            model = pickle.load(f)
+    for log, i in plus:
+        for cb, result in log:
+            if cb not in model:
+                model[cb] = {}
+            if result not in model[cb]:
+                model[cb][result] = i
+            model[cb][result] += i
+    with open(file, "wb") as f:
+        pickle.dump(model, f)
+    print("save model to", file)
+
+
+def show_model(file: str) -> None:
+    model: dict[tuple[tuple[int, ...], ...], dict[tuple[int, int], int]] = {}
+    if isfile(file):
+        with open(file, "rb") as f:
+            model = pickle.load(f)
+    with open(file + ".py", "w") as f:
+        f.write(str(model.values()))

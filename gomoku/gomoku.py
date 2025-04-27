@@ -2,7 +2,11 @@ from typing import Literal, Callable, Optional
 
 import pygame
 
-from lib import gomoku_ai, get_int, D8
+from lib import get_int, D8, AI_0
+
+
+ai_1 = AI_0("./gomoku/ai.pkl")
+ai_2 = AI_0("./gomoku/ai.pkl")
 
 
 class Game_gomoku:
@@ -162,10 +166,10 @@ class Game_gomoku:
                             return
                         elif 120 <= mx < 180 and self.h <= my < self.h + 30 and not self.ai[self.turn - 1]:
                             if self.turn == 1:
-                                self.p1 = gomoku_ai
+                                self.p1 = ai_1.next
                                 self.ai[0] = True
                             else:
-                                self.p2 = gomoku_ai
+                                self.p2 = ai_2.next
                                 self.ai[1] = True
                             if self.turn == 1 and self.p1 is not None:
                                 x, y = self.p1(self.chessBoard, 1, 2)
