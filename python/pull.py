@@ -33,7 +33,7 @@ def main(dir: str) -> None:
         print(f"    Error: {e}, skipping")
 
 
-now_dir = getcwd()
+now_dir = abspath(getcwd())
 flag = False
 github_user_name = "su2u4-1"
 for i in argv[1:]:
@@ -55,3 +55,6 @@ for i in argv[1:]:
 
 if not flag:
     main(now_dir)
+    for j in listdir(now_dir):
+        if j != ".git" and isdir(join(now_dir, j)):
+            main(join(now_dir, j))
