@@ -1,10 +1,11 @@
 from random import randint
 from typing import TypeVar, Callable
+from json import loads
 
 T = TypeVar("T")
 
 
-def print_tree(node: int, tree_structure: dict[int, list[int]], tree: dict[int, int], output: list[str], indent: str = "", is_last: bool = True) -> None:
+def print_tree(node: T, tree_structure: dict[T, list[T]], tree: dict[T, T], output: list[str], indent: str = "", is_last: bool = True) -> None:
     branch = "└── " if is_last else "├── "
     output.append(f"{indent}{branch}{tree[node]}>{node}")
     indent += "    " if is_last else "│   "
@@ -94,16 +95,55 @@ def load_tree_0(filename: str) -> tuple[dict[int, int], dict[int, list[int]]]:
     return tree, tree_structure
 
 
-tree, tree_structure = load_tree_0("./virus.txt")
-output: list[str] = ["0"]
-children = tree_structure[0]
-for i, k in enumerate(children):
-    print_tree(k, tree_structure, tree, output, "", i == len(children) - 1)
+def load_tree_1(filename: str) -> tuple[dict[str, str], dict[str, list[str]]]:
+    tree: dict[str, str] = {}
+    tree_structure: dict[str, list[str]] = {}
+    with open(filename, "r") as f:
+        tree_structure = loads(f.read())
+    for k, v in tree_structure.items():
+        if len(v) == 0:
+            continue
+        for i in v:
+            tree[i] = k
+    return tree, tree_structure
 
-# print(tree_structure)
-# {0: [1, 2, 8, 9, 10, 20, 29, 38, 50], 20: [22, 36], 8: [24], 29: [34], 10: [35, 42, 43], 9: [37], 2: [39], 24: [41, 49, 52], 1: [44, 47], 38: [48], 41: [51]}
 
-with open("./tree.txt", "w+") as f:
-    f.write("\n".join(output))
+def main_0() -> None:
+    tree, tree_structure = load_tree_0("./virus.txt")
+    output: list[str] = ["1"]
+    children = tree_structure[0]
+    for i, k in enumerate(children):
+        print_tree(k, tree_structure, tree, output, "", i == len(children) - 1)
+    with open("./python/data/m_tree.txt", "w+") as f:
+        f.write("\n".join(output))
+    draw_tree(tree_structure, 0, str)
 
-draw_tree(tree_structure, 0, str)
+
+def main_1() -> None:
+    tree, tree_structure = load_tree_1("./python/data/f_tree.json")
+    output: list[str] = ["0"]
+    children = tree_structure["0"]
+    for i, k in enumerate(children):
+        print_tree(k, tree_structure, tree, output, "", i == len(children) - 1)
+    with open("./python/data/f_tree.txt", "w+") as f:
+        f.write("\n".join(output))
+    with open("./python/data/.txt", "a") as f:
+        f.write("\n".join([f"{k} {v}" for k, v in tree.items()]))
+
+
+def main_2() -> None:
+    tree, tree_structure = load_tree_1("./python/data/m_tree.json")
+    output: list[str] = ["1"]
+    children = tree_structure["1"]
+    for i, k in enumerate(children):
+        print_tree(k, tree_structure, tree, output, "", i == len(children) - 1)
+    with open("./python/data/m_tree.txt", "w+") as f:
+        f.write("\n".join(output))
+    with open("./python/data/.txt", "a") as f:
+        f.write("\n".join([f"{k} {v}" for k, v in tree.items()]))
+
+
+if __name__ == "__main__":
+    # main_0()
+    main_1()
+    main_2()
