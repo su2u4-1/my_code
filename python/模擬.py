@@ -22,6 +22,9 @@ class Person:
             father.children.append(self)
         if mother is not None:
             mother.children.append(self)
+        self.log: list[tuple[int, int, str]] = [
+            (year, 0, "出生, 父親: " + (father.id if father is not None else "無") + ", 母親: " + (mother.id if mother is not None else "無") + ", 性別: " + self.gender)
+        ]
 
     def __repr__(self) -> str:
         return f"(ID: {self.id}, 年齡: {self.age}, 父親: {self.father.id if self.father is not None else '無'}, 母親: {self.mother.id if self.mother is not None else '無'}, 性別: {self.gender}, 幸運值: {self.luck}, 配偶: {self.spouse.id if self.spouse is not None else '無'}, 小孩: {[i.id for i in self.children]})"
@@ -31,6 +34,7 @@ people: list[Person] = []
 f_tree: dict[str, list[str]] = {}
 m_tree: dict[str, list[str]] = {}
 
+year = 0
 people_id = 2
 
 # for _ in range(100):
@@ -42,8 +46,7 @@ people.append(Person("1", 0, None, None, "female", 100))
 f_tree["0"] = []
 m_tree["1"] = []
 
-year = 0
-n = 0
+a, b = 0, 0
 total_die: list[Person] = []
 log: list[str] = []
 loop = 100
@@ -64,35 +67,48 @@ while True:
 
         for i in people:
             if i.spouse is not None:
-                if i.luck + i.spouse.luck > ri(0, 1600):
+                if i.luck + i.spouse.luck > ri(0, 1600) and i.age < ri(50, 75) and i.spouse.age < ri(50, 75):
                     if i.gender == "male":
                         people.append(Person(str(people_id), 0, i, i.spouse, ("male", "female")[ri(0, 1)], ((i.luck + i.spouse.luck) // 2, -1)[ri(0, 1)]))
                     else:
                         people.append(Person(str(people_id), 0, i.spouse, i, ("male", "female")[ri(0, 1)], ((i.luck + i.spouse.luck) // 2, -1)[ri(0, 1)]))
                     if people[-1].gender == "male":
+                        i.log.append((year, i.age, "小孩出生, ID: " + people[-1].id + ", 性別: male"))
+                        i.spouse.log.append((year, i.spouse.age, "小孩出生, ID: " + people[-1].id + ", 性別: male"))
                         f_tree[people[-1].id] = []
                     else:
+                        i.log.append((year, i.age, "小孩出生, ID: " + people[-1].id + ", 性別: female"))
+                        i.spouse.log.append((year, i.spouse.age, "小孩出生, ID: " + people[-1].id + ", 性別: female"))
                         m_tree[people[-1].id] = []
-                    # print(f_tree, m_tree)
-                    # print(f"新生兒：{people[-1].id}")
-                    # print(people)
-                    f_tree[people[-1].father.id].append(people[-1].id)
-                    m_tree[people[-1].mother.id].append(people[-1].id)
+                    if people[-1].father is not None:
+                        f_tree[people[-1].father.id].append(people[-1].id)
+                    if people[-1].mother is not None:
+                        m_tree[people[-1].mother.id].append(people[-1].id)
                     people_id += 1
                     statistics[0] += 1
 
         for i in people:
             if i.age >= 18:
-                if i.spouse is None and i.luck > ri(0, 100):
+                if i.spouse is None and i.luck > ri(0, 50):
                     j = rc(people)
-                    if j != i and j.gender != i.gender and j.age >= 18 and j.spouse is None and j.luck > ri(0, 50):
-                        i.spouse = j
-                        j.spouse = i
-                        statistics[1] += 1
+                    if j != i and j.gender != i.gender and j.age >= 18 and j.spouse is None:
+                        if j.luck > ri(0, 50) and i.luck + j.luck > ri(0, abs(i.age - j.age) * 10):
+                            print("雙方年齡差: " + str(abs(i.age - j.age)))
+                            a += abs(i.age - j.age)
+                            b += 1
+                            if i.father == j or i.mother == j or j.father == i or j.mother == i:
+                                input(i.id + ", " + j.id)
+                            i.log.append((year, i.age, "結婚, 配偶: " + j.id))
+                            j.log.append((year, j.age, "結婚, 配偶: " + i.id))
+                            i.spouse = j
+                            j.spouse = i
+                            statistics[1] += 1
 
         for i in people:
             if i.spouse is not None:
-                if i.luck + i.spouse.luck < ri(0, 100):
+                if i.luck + i.spouse.luck < ri(0, 50):
+                    i.log.append((year, i.age, "離婚, 配偶: " + i.spouse.id))
+                    i.spouse.log.append((year, i.spouse.age, "離婚, 配偶: " + i.id))
                     i.spouse.spouse = None
                     i.spouse = None
                     statistics[2] += 1
@@ -102,9 +118,13 @@ while True:
             if ri(0, i.age) > i.luck:
                 statistics[3] += 1
                 if i.age < 18:
+                    i.log.append((year, i.age, "早夭, 享年: " + str(i.age)))
                     statistics[4] += 1
+                else:
+                    i.log.append((year, i.age, "去世, 享年: " + str(i.age)))
                 die.append(i)
                 if i.spouse is not None:
+                    i.spouse.log.append((year, i.spouse.age, "喪偶, 配偶: " + i.id))
                     i.spouse.spouse = None
                     i.spouse = None
                     statistics[2] += 1
@@ -138,6 +158,15 @@ while True:
 with open("./python/data/log.txt", "w", encoding="utf-8") as f:
     for i in log:
         f.write(i + "\n")
+
+with open("./python/data/all_log.txt", "w", encoding="utf-8") as f:
+    t = total_die + people
+    t.sort(key=lambda x: int(x.id))
+    for i in t:
+        f.write(i.id + ":\n")
+        for j in i.log:
+            f.write(f"    {j[0]}年({j[1]}歲): {j[2]}\n")
+        f.write("\n")
 
 with open("./python/data/f_tree.json", "w", encoding="utf-8") as f:
     f.write(json.dumps(f_tree))
