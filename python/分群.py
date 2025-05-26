@@ -24,10 +24,11 @@ line = []
 flag_0 = False
 flag_1 = False
 
+line: list[tuple[tuple[int, int, int], tuple[int, int], tuple[int, int]]] = []
+
 
 def f1():
-    global line
-    line: list[tuple[tuple[int, int, int], tuple[int, int], tuple[int, int]]] = []
+    line.clear()
     for i in p:
         i.son = []
     for i in point:
