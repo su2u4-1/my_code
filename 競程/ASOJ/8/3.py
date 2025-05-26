@@ -1,4 +1,4 @@
-def f(a):
+def f(a: int) -> bool:
     m = [a - 2]
     i = n - 2
     while i > 0:
@@ -6,7 +6,7 @@ def f(a):
             return False
         t = m[-1]
         if t % 2 == 0 and t // 2 - 1 >= k:
-            m[-1] = t / 2 - 1
+            m[-1] = t // 2 - 1
             m.append(t // 2)
         elif t % 2 == 1 and t // 2 >= k:
             m[-1] = t // 2

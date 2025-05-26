@@ -1,4 +1,4 @@
-def f(a, b):
+def f(a: int, b: int) -> bool:
     if a == 0:
         return True
     elif a < 0 and (b < 0 or b == 0):
@@ -8,7 +8,7 @@ def f(a, b):
     return False
 
 
-def f1():
+def f1() -> int:
     ans = 0
     c = 0
     for i in range(n - 1):
@@ -21,7 +21,7 @@ def f1():
     return ans
 
 
-def f2():
+def f2() -> int:
     ans = 0
     c = 0
     flag = False
@@ -42,8 +42,8 @@ def f2():
 
 n = int(input())
 h = list(map(int, input().split()))
-p0 = []
-p1 = []
+p0: list[tuple[int, int]] = []
+p1: list[int] = []
 t = h[0]
 for i in h[1:]:
     p0.append((abs(i - t), i - t))
@@ -51,16 +51,3 @@ for i in h[1:]:
     t = i
 
 print(min(f1(), f2()))
-
-from typing import Callable, Any
-
-
-class defaultdict(dict):
-    def __init__(self, default: Callable, *args, **kwargs) -> None:
-        self.default = default
-        super().__init__(args, kwargs)
-
-    def __getitem__(self, key: Any) -> int:
-        if key not in self:
-            super().__setitem__(key, self.default())
-        return super().__getitem__(key)

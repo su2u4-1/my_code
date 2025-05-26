@@ -1,5 +1,5 @@
 # h082 NA 55%
-p = []
+p: list[list[int]] = []
 n, m = map(int, input().split())
 for i in map(int, input().split()):
     p.append([i])
@@ -8,9 +8,9 @@ for i, v in enumerate(map(int, input().split())):
     p[i].append(0)
 sort = list(map(int, input().split()))
 while len(sort) > 1:
-    loser = []
-    winner = []
-    promotion = []
+    loser: list[int] = []
+    winner: list[int] = []
+    promotion: list[int] = []
     for i in range(0, len(sort), 2):
         if i == len(sort) - 1:
             promotion = [sort[i]]

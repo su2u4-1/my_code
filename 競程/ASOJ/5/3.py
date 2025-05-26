@@ -1,6 +1,6 @@
 _, k, t = map(int, input().split())
 p = 0
-d = []
+d: list[float] = []
 for i in map(int, input().split()):
     d.append(i - p)
     p = i

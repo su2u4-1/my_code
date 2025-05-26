@@ -1,5 +1,5 @@
 _, n = map(int, input().split())
-d = {}
+d: dict[str, int] = {}
 for i in input().split():
     d[i] = d.get(i, 0) + 1
 input()

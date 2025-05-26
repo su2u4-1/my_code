@@ -1,4 +1,4 @@
-def f(t) -> int:
+def f(t: int) -> int:
     a = R[0] - (C * t)
     b = R[0] - (C * t)
     for i in range(1, N):

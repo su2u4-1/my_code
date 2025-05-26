@@ -34,7 +34,7 @@
 #         ff(n, k, t)
 
 
-def f(m):
+def f(m: list[tuple[int, ...]]) -> list[tuple[int, ...]]:
     t = list(zip(*m))
     t.reverse()
     return t
@@ -42,9 +42,9 @@ def f(m):
 
 n = int(input())
 k = input().split()
-t = [list(map(int, input().split())) for _ in range(n)]
+t = [tuple(map(int, input().split())) for _ in range(n)]
 
-m = []
+m: list[list[tuple[int, ...]]] = []
 for _ in range(4):
     m.append(t)
     t = f(t)

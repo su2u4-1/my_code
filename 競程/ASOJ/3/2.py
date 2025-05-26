@@ -1,12 +1,12 @@
 d1 = [0, 1, 1, 0, -1, -1, -1, 1]
 d2 = [1, 1, 0, -1, -1, 0, 1, -1]
 n, m, r = map(int, input().split())
-c = []
+c: list[list[list[float]]] = []
 for i in range(n):
     c.append([[j, 0] for j in map(int, input().split())])
 for i in range(len(c)):
     for j in range(len(c[i])):
-        t = []
+        t: list[float] = []
         for d in range(8):
             if 0 <= i + d1[d] < n and 0 <= j + d2[d] < m:
                 t.append(c[i + d1[d]][j + d2[d]][0])

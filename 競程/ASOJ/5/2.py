@@ -1,4 +1,4 @@
-def f(i, j, k):
+def f(i: int, j: int, k: int) -> tuple[int, int, int]:
     for l in fri:
         if max(min(k - (abs(i - l[0]) + abs(j - l[1])) + ma[l[0]][l[1]], 50), 0) != l[2]:
             break
@@ -11,13 +11,14 @@ def f(i, j, k):
                     if max(min(k - (abs(i - l[0]) + abs(j - l[1])) + ma[l[0]][l[1]], 50), 0) != l[2]:
                         break
                 else:
-                    return (i, j, k)
+                    return i, j, k
+    return -1, -1, -1
 
 
 n, m, N, Q = map(int, input().split())
 ma = [list(map(int, input().split())) for _ in range(n)]
 mb = [[-1 for _ in range(m)] for _ in range(n)]
-fri = []
+fri: list[tuple[int, int, int]] = []
 for _ in range(N):
     x, y, mi = map(int, input().split())
     fri.append((x, y, mi))

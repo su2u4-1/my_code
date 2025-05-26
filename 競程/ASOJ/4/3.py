@@ -2,19 +2,19 @@ n, m = map(int, input().split())
 s = input()
 h = list(map(int, input().split()))
 t = list(map(int, input().split()))
-ha = []
-ht = []
+ha: list[int] = []
+ht: list[int] = []
 ans = 0
 for i in s:
     if i == "W":
         i = 0
     elif i == "M":
         i = 1
-    elif i == "L":
+    else:  # L
         i = 2
     ha.append(h[i])
     ht.append(t[i])
-    r = []
+    r: list[int] = []
     for j in range(len(ht)):
         ht[j] -= 1
         if ht[j] <= 0:
