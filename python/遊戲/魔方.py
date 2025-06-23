@@ -155,7 +155,7 @@ class RubiksCube:
             "r8",
         ]
 
-    def desplay(self, screen: pygame.Surface) -> None:
+    def display(self, screen: pygame.Surface) -> None:
         for i in range(27):
             pygame.draw.polygon(screen, self.rc[self.display_order[i]], tuple(self.p[i] for i in self.rect[self.rect_name_list[i]]))
             screen.blit(font.render(self.rect_name_list[i], True, (0, 0, 0)), tuple(self.p[i] for i in self.rect[self.rect_name_list[i]][:2]))
@@ -673,8 +673,8 @@ while True:
         for i in button_list:
             i.check2(mx, my, False)
     screen.fill((0, 0, 0))
-    rc1.desplay(screen)
-    rc2.desplay(screen)
+    rc1.display(screen)
+    rc2.display(screen)
     text = font.render(f"({mx},{my}){step}", True, (255, 255, 255))
     screen.blit(text, [0, 0])
     for i in button_list:
