@@ -21,6 +21,14 @@ class Human:
 
     def age_one_year(self) -> None:
         self.age += 1
+        if self.age >= 60:
+            self.charm = ri(int(self.charm * 0.75), int(self.charm * 0.9))
+        elif self.age >= 50:
+            self.charm = ri(int(self.charm * 0.75), int(self.charm * 0.9))
+        elif self.age >= 40:
+            self.charm = ri(int(self.charm * 0.75), int(self.charm * 0.9))
+        elif self.age >= 30:
+            self.charm = ri(int(self.charm * 0.75), int(self.charm * 0.9))
         self.health -= ri(1, ri(1, ri(1, 5)))  # 每年健康值下降
         if self.health <= 0:  # 隨機死亡年齡或健康值耗盡
             self.is_alive = False
@@ -38,10 +46,12 @@ class Human:
                 log[other.ID].append(f"{year} 年, '{other.ID}' {other.age} 歲: 與 {self.ID} 結婚")
 
     def try_to_have_children(self) -> None:
+        global population_ID
         if self.partner is not None and self.partner.is_alive and self.gender == "female":
             if ri(2, 200) < self.fertility + self.partner.fertility:  # 生育率影響生子機率
                 child_gender = ("male", "female")[ri(0, 1)]
-                child_ID = f"({self.partner.ID},{self.ID})->{len(self.children) + 1}"
+                child_ID = f"{population_ID}({self.partner.ID}, {self.ID})"
+                population_ID += 1
                 child = Human(child_ID, child_gender, 0, rv(self.charm, self.partner.charm), rv(self.health, self.partner.health), rv(self.fertility, self.partner.fertility))
                 self.children.append(child)
                 self.partner.children.append(child)
@@ -53,12 +63,13 @@ class Human:
 
 
 # 初始化
+population_ID = 3
 population: list[Human] = [Human("1", "male", 20, 100, 100, 100), Human("2", "female", 20, 100, 100, 100)]
 log: dict[str, list[str]] = {"1": ["male, 100, 100, 100", "-20 年, '1' 0 歲: 出生"], "2": ["female, 100, 100, 100", "-20 年 '2' 0 歲: 出生"]}
 log_text = "模擬開始\n"
 
 
-years_to_simulate = 1000
+years_to_simulate = 100
 for year in range(years_to_simulate):
     new_population: list[Human] = []
     for human in population:
@@ -66,7 +77,7 @@ for year in range(years_to_simulate):
     for human in population:
         if human.is_alive and human.age > 18:
             for other in population:
-                if human != other and other.is_alive and other.age > 18:
+                if human != other and other.is_alive and other.age >= 18:
                     human.try_to_marry(other)
             human.try_to_have_children()
     # 移除死亡的人類
@@ -81,13 +92,13 @@ for year in range(years_to_simulate):
 
 # 結果輸出
 log_text += f"模擬結束，共有 {len(population)} 人存活。\n"
-print(f"模擬結束，共有 {len(population)} 人存活。")
+# print(f"模擬結束，共有 {len(population)} 人存活。")
 for k, v in log.items():
     log_text += f"{k}:\n"
-    print(f"{k}:")
+    # print(f"{k}:")
     for i in v:
         log_text += f"    {i}\n"
-        print(f"    {i}")
+        # print(f"    {i}")
 
 with open("simulation_log.txt", "w", encoding="utf-8") as f:
     f.write(log_text)
