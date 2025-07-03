@@ -1,3 +1,4 @@
+from pickle import dump, load  # type: ignore
 from random import randint as ri
 from typing import Literal, Optional
 
@@ -30,6 +31,7 @@ class Human:
         elif self.age >= 30:
             self.charm = ri(int(self.charm * 0.75), int(self.charm * 0.9))
         self.health -= ri(1, ri(1, ri(1, 5)))  # 每年健康值下降
+        # if ri(1, 50) > self.health:  # 健康值影響死亡機率
         if self.health <= 0:  # 隨機死亡年齡或健康值耗盡
             self.is_alive = False
             if self.partner is not None:
@@ -94,11 +96,67 @@ for year in range(years_to_simulate):
 log_text += f"模擬結束，共有 {len(population)} 人存活。\n"
 # print(f"模擬結束，共有 {len(population)} 人存活。")
 for k, v in log.items():
-    log_text += f"{k}:\n"
-    # print(f"{k}:")
-    for i in v:
-        log_text += f"    {i}\n"
-        # print(f"    {i}")
+    if len(v) > 3 or (len(v) == 3 and not v[2].endswith("死亡")):
+        log_text += f"{k}:\n"
+        # print(f"{k}:")
+        for i in v:
+            log_text += f"    {i}\n"
+            # print(f"    {i}")
 
 with open("simulation_log.txt", "w", encoding="utf-8") as f:
     f.write(log_text)
+
+with open("simulation_log.pkl", "wb") as f:
+    dump(log, f)
+
+# with open("simulation_log.pkl", "rb") as f:
+#     loaded_log = load(f)
+
+
+def process():
+    import re
+
+    def f0(s: str) -> str:
+        return re.sub(r"\d+", lambda m: f'"{m.group(0)}"', s)
+
+    def f1(s: str) -> str:
+        # 反覆處理，直到沒有不含內層大括號的 {} 為止
+        while True:
+            # 匹配最內層的大括號：`{` 內部不包含 `{` 或 `}` 的內容
+            new_s, count = re.subn(r"\{([^{}t]*)\}", r"[\1t]", s)
+            if count == 0:
+                break
+            s = new_s
+        return s.replace("t", "")
+
+    def parse_t_name(line: str) -> str:
+        return line.replace("\n", "").replace("(", ":(").replace("(", "{").replace(")", "}")
+
+    txt = []
+    with open("all_name.txt") as f:
+        txt = f.readlines()
+
+    result: list[str] = []
+    for i in txt:
+        # result.append(parse_t_name(i.replace("(1, 2)", "")))
+        result.append(parse_t_name(i))
+
+    e = ",\n".join(result)
+    e = f1(e)
+    e = f0(e)
+    e = e.replace('["1", "2"]', "[]")
+    # e = e.replace('{"3":[], "4":[]}', '"3,4"')
+    # e = e.replace('{"7":[], "5":[]}', '"7,5"')
+    # e = e.replace('{"11":[], "6":[]}', '"11,6"')
+    # e = e.replace('{"15":[], "9":[]}', '"15,9"')
+    # e = e.replace('{"14":[], "10":[]}', '"14,10"')
+    # e = e.replace('{"13":[], "8":[]}', '"13,8"')
+    # e = e.replace('{"17":[], "12":[]}', '"17,12"')
+    # e = e.replace('{"21":[], "16":[]}', '"21,16"')
+    # e = e.replace("[]", '"1,2"')
+    e = e.replace('"1"', '"1": "god"')
+    e = e.replace('"2"', '"2": "god"')
+
+    # 將結果保存為JSON文件
+    with open("parsed_names.json", "w", encoding="utf-8") as f:
+        f.write("{" + e + "}")
