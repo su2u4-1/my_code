@@ -61,7 +61,7 @@ def show(maze: MAZE, symbol_table: ST = (" ", "1", "3", "N", "S", "E"), start: P
         print()
 
 
-def generatemaze(lx: int = 25, ly: int = 25) -> MAZE:
+def generate_maze(lx: int = 25, ly: int = 25) -> MAZE:
     s = ((lx - 1) / 2) * ((ly - 1) / 2)
     maze = [[(1 if x % 2 == 0 or y % 2 == 0 else 0) for y in range(ly)] for x in range(lx)]
     a: set[tuple[int, int]] = set(((1, 1),))
@@ -81,7 +81,7 @@ def generatemaze(lx: int = 25, ly: int = 25) -> MAZE:
 
 
 size = 25
-maze = generatemaze(size, size)
+maze = generate_maze(size, size)
 start: POS = (1, 1)
 end: POS = (size - 2, size - 2)
 show(maze, ("  ", "牆", "路", "NN", "起", "終"), start, end)
