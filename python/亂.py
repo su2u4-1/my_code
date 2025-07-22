@@ -44,8 +44,8 @@ class Human:
             if self.gender != other.gender and ri(1, 100) < self.charm and ri(1, 100) < other.charm:  # 魅力值影響結婚機率
                 self.partner = other
                 other.partner = self
-                log[self.ID].append(f"{year} 年, '{self.ID}' {self.age} 歲: 與 {other.ID} 結婚")
-                log[other.ID].append(f"{year} 年, '{other.ID}' {other.age} 歲: 與 {self.ID} 結婚")
+                log[self.ID].append(f"{year} 年, '{self.ID}' {self.age} 歲: 與 {other.age} 歲的 {other.ID} 結婚")
+                log[other.ID].append(f"{year} 年, '{other.ID}' {other.age} 歲: 與 {self.age} 歲的 {self.ID} 結婚")
 
     def try_to_have_children(self) -> None:
         global population_ID
