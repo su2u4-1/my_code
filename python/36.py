@@ -1,5 +1,5 @@
 from random import randint
-from typing import Callable, Optional
+from typing import Callable
 
 
 def get_int(prompt: str, err_msg_1: str, err_msg_2: str, condition: Callable[[int], bool]) -> int:
@@ -14,29 +14,29 @@ def get_int(prompt: str, err_msg_1: str, err_msg_2: str, condition: Callable[[in
 
 
 player_n = get_int("請輸入玩家數量: ", "請輸入整數", "請輸入正整數", lambda x: x > 0)
-player_money: list[Optional[int]] = []
+player_money: list[int] = []
 player_profit: list[int] = [0 for _ in range(player_n)]
 for i in range(player_n):
     t = get_int(f"請輸入玩家{i + 1}的本金數量，如果為無限請輸入0: ", "請輸入整數", "請輸入0或正整數", lambda x: x >= 0)
-    player_money.append(t if t != 0 else None)
+    player_money.append(t if t != 0 else -1)
 t = get_int("請輸入莊家的本金數量，如果為無限請輸入0: ", "請輸入整數", "請輸入0或正整數", lambda x: x >= 0)
-banker_money = t if t != 0 else None
+banker_money = t if t != 0 else -1
 banker_profit = 0
 while True:
     broad: list[list[tuple[int, int]]] = [[], [], [], [], [], []]
-    if banker_money is not None and banker_money <= 0:
+    if banker_money != -1 and banker_money <= 0:
         print("\n莊家已經破產，遊戲結束！")
         break
-    if all(money is not None and money <= 0 for money in player_money):
+    if all(money != -1 and money <= 0 for money in player_money):
         print("\n所有玩家都已經破產，遊戲結束！")
         break
     print("\n目前情況:")
     for i, money in enumerate(player_money):
-        if money is None:
+        if money == -1:
             print(f"    玩家 {i + 1} 的本金為無限，利潤: {player_profit[i]}")
         else:
             print(f"    玩家 {i + 1} 的本金: {money}，利潤: {player_profit[i]}")
-    if banker_money is not None:
+    if banker_money != -1:
         print(f"莊家的本金: {banker_money}，利潤: {banker_profit}")
     else:
         print(f"莊家的本金為無限，利潤: {banker_profit}")
@@ -54,7 +54,7 @@ while True:
                 print(f"玩家{i + 1}還沒下注過，請至少下注一次")
                 continue
             f = True
-            if player_money[i] is None:
+            if player_money[i] == -1:
                 bet = get_int(f"玩家{i + 1}請輸入下注金額: ", "請輸入整數", "請輸入正整數", lambda x: 0 < x)
                 print(f"玩家{i + 1}下注 {bet}")
             else:
@@ -63,7 +63,7 @@ while True:
                 player_money[i] -= bet
             player_profit[i] -= bet
             player_b[i] -= bet
-            if banker_money is not None:
+            if banker_money != -1:
                 banker_money += bet
             banker_profit += bet
             player_b[-1] += bet
@@ -85,9 +85,9 @@ while True:
                 player_b[player] += bet
                 banker_profit -= bet
                 player_b[-1] -= bet
-                if banker_money is not None:
+                if banker_money != -1:
                     banker_money -= bet
-                if player_money[player] is not None:
+                if player_money[player] != -1:
                     player_money[player] += bet
     print("\n結算:")
     for i, b in enumerate(player_b):
