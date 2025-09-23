@@ -3,27 +3,26 @@ from typing import TextIO
 link = "python\\data\\"
 print("正在讀取質數")
 with open(link + "質數.txt", "r") as f:
-    a = list(map(int, f.readlines()))
+    prime_list = list(map(int, f.readlines()))
 print("質數讀取完畢")
-print(a[-1])
+print(prime_list[-1])
 
 
-def f2(b: int):
-    for i in a:
+def isPrime(b: int):
+    for i in prime_list:
         if b % i == 0:
             return False
-    else:
-        return True
+    return True
 
 
-def f1(c: int, b: int, f: TextIO):
-    for i in range(c - (c % 6), b + (6 - b % 6), 6):
-        if f2(i + 1):
-            a.append(i + 1)
-            f.write(str(i + 1) + "\n")
-        if f2(i + 5):
-            a.append(i + 5)
-            f.write(str(i + 5) + "\n")
+def calculate_new_primes(start: int, end: int, file: TextIO):
+    for i in range(start - (start % 6), end + (6 - end % 6), 6):
+        if isPrime(i + 1):
+            prime_list.append(i + 1)
+            file.write(str(i + 1) + "\n")
+        if isPrime(i + 5):
+            prime_list.append(i + 5)
+            file.write(str(i + 5) + "\n")
 
 
 try:
@@ -36,28 +35,28 @@ if n <= 0:
 if n == 1:
     print(1)
     exit()
-if n > a[-1]:
+if n > prime_list[-1]:
     print("正在計算新質數")
     with open(link + "質數.txt", "a+") as f:
-        f1(a[-1] + 1, n + 1, f)
+        calculate_new_primes(prime_list[-1] + 1, n + 1, f)
     print("新質數記錄完畢")
-if n in a:
+if n in prime_list:
     print("是質數")
-b: dict[int, int] = {}
+factor_counts: dict[int, int] = {}
 while n > 1:
-    for i in a:
+    for i in prime_list:
         if i > n:
             break
         if n % i == 0:
-            if i in b:
-                b[i] += 1
+            if i in factor_counts:
+                factor_counts[i] += 1
             else:
-                b[i] = 1
+                factor_counts[i] = 1
             n /= i
 l: list[str] = []
-for i in b:
-    if b[i] == 1:
+for i in factor_counts:
+    if factor_counts[i] == 1:
         l.append(str(i))
     else:
-        l.append(str(i) + "^" + str(b[i]))
+        l.append(str(i) + "^" + str(factor_counts[i]))
 print("*".join(l))
