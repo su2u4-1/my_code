@@ -1,4 +1,5 @@
 from random import choices as ch
+from random import seed
 
 F = {
     "111111": ("01", "乾"),
@@ -109,4 +110,5 @@ while True:
     a = input("請輸入你要占卜的事件(輸入exit離開):")
     if a == "exit":
         break
+    seed(a)
     print(divination(a))
