@@ -4,8 +4,7 @@ from random import randrange as rr
 pygame.init()
 W = pygame.display.Info().current_w
 H = pygame.display.Info().current_h
-screen = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
-font = pygame.font.Font(None, 30)
+screen = pygame.display.set_mode((W, H))
 clock = pygame.time.Clock()
 
 point: list[tuple[int, int, tuple[int, int, int]]] = []
