@@ -1,6 +1,7 @@
 import asyncio
 import os
 import re
+import html
 from playwright.async_api import async_playwright, Page, Route, BrowserContext, Locator
 
 
@@ -24,26 +25,40 @@ class EtymonlineWordScraper:
 
         await page.route("**/*", route_handler)
 
-    def is_chinese(self, text: str) -> bool:
-        return bool(re.search(r"[\u4e00-\u9fa5]", text))
-
     def format_content(self, text: str) -> str:
+        text = html.unescape(text)
+
+        # 1. 處理星號轉義，但避開連結格式
+        # 先將連結暫時替換，轉義星號後再換回來
+        links: list[str] = re.findall(r"\[.*?\]\(http.*?\)", text)
+        for i, link in enumerate(links):
+            text = text.replace(link, f"__LINK{i}__")
+
+        text = text.replace("*", r"\*")
+
+        for i, link in enumerate(links):
+            text = text.replace(f"__LINK{i}__", link)
+
         lines: list[str] = text.split("\n")
         formatted_lines: list[str] = []
+
         for line in lines:
             line = line.strip()
             if not line:
                 formatted_lines.append("")
                 continue
+
+            # 2. 詞性標題
             if re.match(r"^[a-zA-Z-\s]+\([a-z./\s]+\)$", line):
                 formatted_lines.append(f"### {line}")
                 continue
-            if line.startswith("...") or (("[" in line and "]" in line) and len(line) > 50):
-                formatted_lines.append(f"> {line}\n")
-                continue
+
+            # 3. 移除贅餘行
             if re.match(r"^also from .+$", line, re.IGNORECASE):
                 continue
+
             formatted_lines.append(line)
+
         return "\n".join(formatted_lines).strip()
 
     async def extract_word_page(self, page: Page, word: str) -> list[dict[str, str]]:
@@ -77,39 +92,94 @@ class EtymonlineWordScraper:
                 container_id,
             )
 
-            # 記錄點擊前的原始文本內容，用來比對是否已變更（即翻譯完成）
             target_container: Locator = page.locator(f"[data-scraped-id='{container_id}']")
             original_text: str = await target_container.inner_text()
 
             await btn.scroll_into_view_if_needed()
             await btn.click()
-            print(f"[{word}] 點擊第 {loop_counter+1} 條翻譯，等待翻譯完成...")
+            print(f"[{word}] 點擊第 {loop_counter+1} 條翻譯...")
 
-            # 核心修正：動態等待直到內容包含中文，或者內容發生變化
             try:
-                # 使用 wait_for_function 監控容器內容
-                # 設定 15 秒超時，防止翻譯腳本卡死導致程式永不停止
                 await page.wait_for_function(
                     """([id, oldText]) => {
                         const el = document.querySelector(`[data-scraped-id="${id}"]`);
                         if (!el) return false;
                         const newText = el.innerText;
-                        // 判定條件：內容改變且包含中文字符
                         return newText !== oldText && /[\\u4e00-\\u9fa5]/.test(newText);
                     }""",
                     arg=[container_id, original_text],
                     timeout=15000,
                 )
             except Exception:
-                print(f"[{word}] 第 {loop_counter+1} 條翻譯等待超時，直接嘗試抓取。")
+                pass
 
-            # 額外等待 1 秒，確保翻譯內容完全渲染
             await asyncio.sleep(1)
 
-            # 抓取並處理
-            raw_text: str = await target_container.inner_text()
-            clean_text: str = raw_text.replace("翻译成: 简体中文 (Chinese)", "")
-            clean_text = clean_text.replace("显示原文", "").strip()
+            # --- 強化 DOM 遍歷邏輯：解決嵌套標籤導致重複 > 的問題 ---
+            processed_text: str = await page.evaluate(
+                """(id) => {
+                const container = document.querySelector(`[data-scraped-id="${id}"]`);
+                if (!container) return "";
+
+                let result = "";
+
+                function walk(node, isInsideQuote = false) {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        result += node.textContent;
+                    } else if (node.nodeType === Node.ELEMENT_NODE) {
+                        const tagName = node.tagName.toLowerCase();
+                        
+                        // 移除無用 UI
+                        if (tagName === 'button' || node.classList.contains('ad-space')) return;
+
+                        // 處理超連結
+                        if (tagName === 'a') {
+                            let href = node.getAttribute('href') || '';
+                            if (href.startsWith('/')) href = 'https://www.etymonline.com' + href;
+                            if (href.includes('etymonline.com/word/')) {
+                                result += `[${node.innerText.trim()}](${href})`;
+                                return; 
+                            }
+                        }
+
+                        // 如果是 blockquote，在內容開始前標註一個特殊符號，稍後在 Python 端處理
+                        const isQuote = tagName === 'blockquote';
+                        if (isQuote) {
+                            result += '\\n[[BLOCKQUOTE_START]]';
+                        }
+
+                        node.childNodes.forEach(child => walk(child, isInsideQuote || isQuote));
+
+                        if (isQuote) {
+                            result += '[[BLOCKQUOTE_END]]\\n';
+                        } else if (['p', 'div', 'br', 'section'].includes(tagName)) {
+                            result += '\\n';
+                        }
+                    }
+                }
+
+                walk(container);
+                return result;
+            }""",
+                container_id,
+            )
+
+            # 在 Python 端利用預留的標記進行格式化
+            def process_quotes(match: re.Match[str]) -> str:
+                content: str = match.group(1).strip()
+                # 將內容的每一行前面都加上 >
+                quoted_lines: list[str] = [f"> {line}" if line.strip() else line for line in content.split("\n")]
+                return "\n" + "\n".join(quoted_lines) + "\n"
+
+            # 替換特殊標記
+            clean_text: str = processed_text.replace("翻译成: 简体中文 (Chinese)", "").replace("显示原文", "")
+
+            # 使用正則表達式處理所有 [[BLOCKQUOTE_START]] ... [[BLOCKQUOTE_END]] 的內容
+            clean_text = re.sub(r"\[\[BLOCKQUOTE_START\]\](.*?)\[\[BLOCKQUOTE_END\]\]", process_quotes, clean_text, flags=re.DOTALL)
+
+            # 清理過多換行
+            clean_text = re.sub(r"\n{3,}", "\n\n", clean_text).strip()
+
             final_content: str = self.format_content(clean_text)
 
             title: str = f"Origin and history of {word}"
@@ -117,8 +187,6 @@ class EtymonlineWordScraper:
                 title = f"{word} (related entry {loop_counter})"
 
             results.append({"title": title, "content": final_content})
-            print(f"[{word}] 第 {loop_counter+1} 條提取成功")
-
             loop_counter += 1
 
         return results
@@ -144,35 +212,28 @@ class EtymonlineWordScraper:
                     word_data: list[dict[str, str]] = await self.extract_word_page(page, word)
                     self.save_to_markdown(word, word_data)
                 except Exception as e:
-                    print(f"[{word}] 執行崩潰: {e}")
-                await asyncio.sleep(2)
+                    print(f"[{word}] 執行失敗: {e}")
             await browser.close()
 
 
 def load_words_from_text(file_path: str, target_list: list[str]) -> None:
-    """
-    載入格式為 '單字: 釋義' 的文本文件，並將單字加入 target_list。
-    """
     if not os.path.exists(file_path):
         print(f"錯誤：找不到檔案 {file_path}")
         return
-
     with open(file_path, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
-            # 確保行內包含冒號且不是空行
             if ":" in line:
-                # 分割單字與釋義，只取第一部分並去除空白
                 word: str = line.split(":", 1)[0].strip()
                 if word and word not in target_list:
                     target_list.append(word)
 
 
-test = True
+test = False
 
 if __name__ == "__main__":
     if test:
-        target_list = ["human", "April"]  # 測試用的單字列表
+        target_list = ["April", "all", "cum", "logic"]
         scraper = EtymonlineWordScraper(target_list)
     else:
         target_list: list[str] = []
