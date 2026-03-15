@@ -49,7 +49,7 @@ class EtymonlineWordScraper:
                 continue
 
             # 2. 詞性標題
-            if re.match(r"^[a-zA-Z-\s]+\([a-z./\s]+\)$", line):
+            if re.match(r"^[a-zA-Z-\s]+\([a-z./, \s0-9]+\)$", line):
                 formatted_lines.append(f"### {line}")
                 continue
 
@@ -70,6 +70,7 @@ class EtymonlineWordScraper:
             await page.wait_for_selector(btn_selector, timeout=10000)
         except:
             print(f"[{word}] 找不到翻譯按鈕")
+            log.append(f"[{word}] 找不到翻譯按鈕")
             return []
 
         results: list[dict[str, str]] = []
@@ -98,6 +99,7 @@ class EtymonlineWordScraper:
             await btn.scroll_into_view_if_needed()
             await btn.click()
             print(f"[{word}] 點擊第 {loop_counter+1} 條翻譯...")
+            log.append(f"[{word}] 點擊第 {loop_counter+1} 條翻譯...")
 
             try:
                 await page.wait_for_function(
@@ -200,6 +202,7 @@ class EtymonlineWordScraper:
             for item in data:
                 f.write(f"## {item['title']}\n{item['content']}\n\n---\n")
         print(f"存檔完成: {file_path}")
+        log.append(f"存檔完成: {file_path}")
 
     async def run(self) -> None:
         async with async_playwright() as p:
@@ -213,12 +216,14 @@ class EtymonlineWordScraper:
                     self.save_to_markdown(word, word_data)
                 except Exception as e:
                     print(f"[{word}] 執行失敗: {e}")
+                    log.append(f"[{word}] 執行失敗: {e}")
             await browser.close()
 
 
 def load_words_from_text(file_path: str, target_list: list[str]) -> None:
     if not os.path.exists(file_path):
         print(f"錯誤：找不到檔案 {file_path}")
+        log.append(f"錯誤：找不到檔案 {file_path}")
         return
     with open(file_path, "r", encoding="utf-8") as f:
         for line in f:
@@ -230,6 +235,7 @@ def load_words_from_text(file_path: str, target_list: list[str]) -> None:
 
 
 test = False
+log: list[str] = []
 
 if __name__ == "__main__":
     if test:
@@ -238,6 +244,12 @@ if __name__ == "__main__":
     else:
         target_list: list[str] = []
         load_words_from_text("C:/Users/joey2/桌面/英文/words.txt", target_list)
+        load_words_from_text("C:/Users/joey2/桌面/英文/affix.txt", target_list)
+        load_words_from_text("C:/Users/joey2/桌面/英文/word.txt", target_list)
         print(f"已載入單字清單: {target_list}")
+        log.append(f"已載入單字清單: {target_list}")
         scraper = EtymonlineWordScraper(target_list, "C:/Users/joey2/桌面/英文/etymology_archive")
     asyncio.run(scraper.run())
+
+with open("etymology_scraping_log.txt", "w", encoding="utf-8") as log_file:
+    log_file.write("\n".join(log))
