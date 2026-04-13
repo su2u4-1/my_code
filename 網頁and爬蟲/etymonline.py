@@ -209,7 +209,7 @@ if __name__ == "__main__":
     else:
         target_list: list[str] = []
         base_path = "C:/Users/joey2/桌面/英文/"
-        for f_name in ["words.txt", "affix.txt", "word.txt"]:
+        for f_name in ["words.txt", "affix.txt"]:
             load_words_from_text(os.path.join(base_path, f_name), target_list)
         scraper = EtymonlineWordScraper(target_list, os.path.join(base_path, "etymology_archive"))
 
