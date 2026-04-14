@@ -1,120 +1,147 @@
 import pygame
 import numpy as np
-from numpy.typing import NDArray
-from random import randint as ri
-from random import choices
 
-W, H = 512, 512
-
-DIRE_VEC = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
-SENSOR_MAP = {i: (DIRE_VEC[(i - 1) % 8], DIRE_VEC[i], DIRE_VEC[(i + 1) % 8]) for i in range(8)}
-color_table = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
+W, H = 1920, 1080
+PARTICLE_COUNT = 3000
+PARTICLE_RADIUS = 3
+R_MIN = PARTICLE_RADIUS * 3 + 1
+R_MAX = 100
+FRICTION = 0.75
+DT = 0.25
+# 滑鼠斥力參數
+MOUSE_REPULSE_RADIUS = 100.0
+MOUSE_REPULSE_STRENGTH = 1000.0
+# force_table = [
+#     [1.25, -1.0, -0.15],  # r -> r, g, b
+#     [1.0, 1.25, -0.15],  # g -> r, g, b
+#     [0.5, 0.25, -0.1],  # b -> r, g, b
+# ]
 force_table = [
-    # r g  b
-    [2, 0, 0],  # r
-    [0, 2, 0],  # g
-    [0, 0, 2],  # b
+    [1, 1, 1],  # r -> r, g, b
+    [1, 1, 1],  # g -> r, g, b
+    [1, 1, 1],  # b -> r, g, b
 ]
+FORCE_MATRIX = np.array(force_table, dtype=np.float32) * 5.0
+COLOR_TABLE = np.array([[255, 0, 0], [0, 255, 0], [0, 0, 255]], dtype=np.uint8)
+# 類型數量比例權重（可自行調整，例如 [0.7, 0.2, 0.1]）。
+TYPE_WEIGHTS = np.array([0.25, 0.25, 0.5], dtype=np.float32)
 
 
-class Weight:
-    def __init__(self, w: int, params: tuple[float, float, float, float]):
-        self.w = w
-        self.params = params
+class ParticleSystem:
+    def __init__(self, n: int) -> None:
+        # 粒子總數。
+        self.n = n
+        type_count = COLOR_TABLE.shape[0]
 
-    def mutation(self) -> tuple[float, float, float, float]:
-        return tuple(p + ri(-10, 10) for p in self.params)  # type: ignore
+        # 粒子初始位置與速度都以向量化陣列儲存，方便一次更新全部粒子。
+        self.pos = np.random.rand(n, 2).astype(np.float32) * [W, H]
+        self.vel = np.zeros((n, 2), dtype=np.float32)
+        # 依權重抽樣粒子類型，權重越高的類型數量越多。
+        self.types = np.random.choice(type_count, size=n, p=TYPE_WEIGHTS / float(np.sum(TYPE_WEIGHTS))).astype(np.int32)
+        self.colors = [tuple(c) for c in COLOR_TABLE[self.types]]
+        # 預先計算交互矩陣以節省每一幀的索引開銷。
+        self.inter_matrix = FORCE_MATRIX[self.types[:, np.newaxis], self.types[np.newaxis, :]]
+        self.r_half_range = (R_MAX - R_MIN) * 0.5
+        self.r_avg = (R_MAX + R_MIN) * 0.5
 
+    def update(self, mouse_pos: tuple[int, int] | None = None) -> None:
+        # 分離 X 與 Y 座標以減少記憶體壓力
+        px = self.pos[:, 0]
+        py = self.pos[:, 1]
+        dx = px[:, np.newaxis] - px[np.newaxis, :]
+        dy = py[:, np.newaxis] - py[np.newaxis, :]
 
-def choice_weight(weights: list[Weight]) -> Weight:
-    w = choices(weights, [item.w for item in weights])[0]
-    if ri(0, 100) < 10:
-        w = Weight(1, w.mutation())
-        weights.append(w)
-    return w
+        # 週期邊界修正：超過半個邊長就從另一側繞回（環面空間）。
+        dx[dx > W * 0.5] -= W
+        dx[dx < -W * 0.5] += W
+        dy[dy > H * 0.5] -= H
+        dy[dy < -H * 0.5] += H
 
+        # 計算距離平方與距離。
+        dist = np.sqrt(dx**2 + dy**2)
 
-# (1000, -1000, 10, -10)
-weight: list[Weight] = [Weight(90, (1000, -1000, 10, -10)), Weight(9, (1000, -1000, 1, -1)), Weight(1, (1000, -1000, 0, 0))]
+        # 處理自作用力與除零風險。
+        dist = np.maximum(dist, 1e-5)
 
+        # 計算力的大小。
+        force_mag = np.zeros((self.n, self.n), dtype=np.float32)
 
-def fast_diffuse(arr: NDArray[np.float32], attenuate: float) -> NDArray[np.float32]:
-    diffused = arr.copy()
-    diffused[1:-1, 1:-1] = arr[1:-1, 1:-1] * 0.6 + (arr[:-2, 1:-1] + arr[2:, 1:-1] + arr[1:-1, :-2] + arr[1:-1, 2:]) * 0.1
-    diffused[diffused < 0.5] = 0
-    return diffused * attenuate
+        # 1. 強大斥力：當距離小於 R_MIN 時，force_mag 應為正值以推開粒子。
+        mask_repel = dist < R_MIN
+        force_mag[mask_repel] = (1.0 - dist[mask_repel] / R_MIN) * 20.0
 
+        # 2. 中距離互動：根據交互矩陣決定吸引（負值）或排斥（正值）。
+        mask_act = (dist >= R_MIN) & (dist < R_MAX)
+        # 注意：此處加上負號是因為在 force_table 中 1 代表吸引，而在我們的向量運算中負值才代表吸引。
+        force_mag[mask_act] = -self.inter_matrix[mask_act] * (1.0 - np.abs(dist[mask_act] - self.r_avg) / self.r_half_range)
 
-class Ant:
-    def __init__(self, x: float, y: float):
-        self.x = x
-        self.y = y
-        self.kind = ri(0, 2)
-        self.direction = ri(0, 7)
+        # 加速度向量計算：force_mag / dist 得到單位向量的力強度。
+        inv_dist = force_mag / dist
+        acc_x = np.sum(dx * inv_dist, axis=1)
+        acc_y = np.sum(dy * inv_dist, axis=1)
 
-    def update(self, ph: list[NDArray[np.float32]]) -> None:
-        sensor_dirs = [(self.direction + i) % 8 for i in range(-1, 2)]
-        sensors = [DIRE_VEC[d] for d in sensor_dirs]
-        scores = [0.0 for _ in range(3)]
-        for idx, (dx, dy) in enumerate(sensors):
-            nx, ny = int(self.x + dx * 5), int(self.y + dy * 5)
-            if 0 <= nx < W and 0 <= ny < H:
-                for i in range(len(ph)):
-                    scores[idx] += ph[i][ny, nx] * force_table[self.kind][i]
-        best_idx = max(range(3), key=lambda i: scores[i])
-        if ri(0, 100) < 50:
-            self.direction = self.direction
-        else:
-            self.direction = sensor_dirs[best_idx]
-        dx, dy = DIRE_VEC[self.direction]
-        new_x, new_y = self.x + dx * 1.5, self.y + dy * 1.5
-        # 修改後的邊界傳送邏輯
-        if not (0 <= new_x < W) or not (0 <= new_y < H):
-            # self.direction = (self.direction + 4) % 8
-            if new_x < 0:
-                self.x = W - ri(1, 10)
-            elif new_x >= W:
-                self.x = ri(1, 10)
-            if new_y < 0:
-                self.y = H - ri(1, 10)
-            elif new_y >= H:
-                self.y = ri(1, 10)
-        else:
-            self.x, self.y = new_x, new_y
-        ix, iy = int(self.x), int(self.y)
-        if 0 <= ix < W and 0 <= iy < H:
-            ph[self.kind][iy, ix] = min(255, ph[self.kind][iy, ix] + 60)
+        # 處理滑鼠斥力源。
+        if mouse_pos:
+            mx, my = mouse_pos
+            mdx = px - mx
+            mdy = py - my
+            # 滑鼠交互同樣套用週期邊界修正。
+            mdx[mdx > W * 0.5] -= W
+            mdx[mdx < -W * 0.5] += W
+            mdy[mdy > H * 0.5] -= H
+            mdy[mdy < -H * 0.5] += H
+            m_dist = np.sqrt(mdx**2 + mdy**2)
+            m_dist = np.maximum(m_dist, 1.0)
+            m_mask = m_dist < MOUSE_REPULSE_RADIUS
+            m_force = (1.0 - m_dist[m_mask] / MOUSE_REPULSE_RADIUS) * MOUSE_REPULSE_STRENGTH
+            acc_x[m_mask] += mdx[m_mask] * (m_force / m_dist[m_mask])
+            acc_y[m_mask] += mdy[m_mask] * (m_force / m_dist[m_mask])
+
+        # 物理積分與摩擦力。
+        self.vel[:, 0] = (self.vel[:, 0] + acc_x * DT) * FRICTION
+        self.vel[:, 1] = (self.vel[:, 1] + acc_y * DT) * FRICTION
+        # 位置更新後以取模維持在環面邊界內。
+        self.pos = (self.pos + self.vel * DT) % [W, H]
+
+    def draw(self, screen: pygame.Surface) -> None:
+        # 直接把粒子畫進螢幕。
+        screen.fill((0, 0, 0))
+        for i in range(self.n):
+            pygame.draw.rect(screen, self.colors[i], (int(self.pos[i, 0]), int(self.pos[i, 1]), PARTICLE_RADIUS, PARTICLE_RADIUS))
 
 
 def main() -> None:
+    # 建立視窗並持續更新模擬，直到使用者關閉程式。
     pygame.init()
-    screen = pygame.display.set_mode((W, H))
+    screen = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
+    pygame.display.set_caption("Particle Life Optimized")
     clock = pygame.time.Clock()
-    ph: list[NDArray[np.float32]] = [np.zeros((H, W), dtype=np.float32), np.zeros((H, W), dtype=np.float32), np.zeros((H, W), dtype=np.float32)]
-    ants = [Ant(ri(10, W - 10), ri(10, H - 10)) for _ in range(5000)]
+    ps = ParticleSystem(PARTICLE_COUNT)
     run = True
     while True:
+        # 處理事件。
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 pygame.quit()
                 return
-            if e.type == pygame.KEYDOWN and e.key == pygame.K_SPACE:
-                run = not run
+            elif e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    return
+                elif e.key == pygame.K_SPACE:
+                    run = not run
+
+        # 檢測滑鼠按壓狀態。
+        m_pos = None
+        if pygame.mouse.get_pressed()[0]:
+            m_pos = pygame.mouse.get_pos()
+
+        # 每幀：更新物理、重畫畫面、提交到螢幕。
         if run:
-            for ant in ants:
-                ant.update(ph)
-            for k in range(len(ph)):
-                ph[k] = fast_diffuse(ph[k], 0.98)
-        vis_array = np.zeros((H, W, 3), dtype=np.uint8)
-        for k in range(len(ph)):
-            vis_array[..., k] = np.clip(ph[k], 0, 255)
-        surf = pygame.surfarray.make_surface(vis_array.transpose(1, 0, 2))  # type: ignore
-        screen.blit(surf, (0, 0))
-        for ant in ants:
-            color = color_table[ant.kind]
-            pygame.draw.rect(screen, color, (int(ant.x), int(ant.y), 2, 2))
+            ps.update(m_pos)
+        ps.draw(screen)
         pygame.display.flip()
-        clock.tick(60)
+        clock.tick()
 
 
 if __name__ == "__main__":
