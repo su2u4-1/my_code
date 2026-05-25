@@ -52,3 +52,5 @@ def leather_armor_dyeing():
             sumMax += max(color)
         average = (sum[0] * sumMax, sum[1] * sumMax, sum[2] * sumMax)
         return (round(average[0] / max(average)), round(average[1] / max(average)), round(average[2] / max(average)))
+
+    average_color([(255, 255, 255)])

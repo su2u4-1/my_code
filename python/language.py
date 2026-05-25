@@ -61,7 +61,7 @@ class StringVectorAI:
     def _tensor_to_string(self, tensor: torch.Tensor) -> str:
         probs = torch.softmax(tensor, dim=1)
         indices = torch.multinomial(probs, 1).squeeze(1)
-        return "".join(self.idx_to_char[idx.item()] for idx in indices)
+        return "".join(self.idx_to_char[int(idx.item())] for idx in indices)
 
     # -------------------------------
     # 核心函式 1：猜測向量並更新模型
@@ -75,11 +75,12 @@ class StringVectorAI:
         self.optimizer.zero_grad()
         pred: torch.Tensor = self.model(x)
         loss: torch.Tensor = self.loss_fn(pred, adjusted_y)
-        loss.backward()
+        # use torch.autograd.backward to avoid static-analysis issues with Tensor.backward
+        torch.autograd.backward([loss])
         self.optimizer.step()
 
         # 紀錄
-        self.records.append((input_str, tuple(pred.squeeze(0).detach().tolist())))
+        self.records.append((input_str, tuple(float(v.item()) for v in pred.squeeze(0).detach().flatten())))
         return loss.item()
 
     # -------------------------------
@@ -87,16 +88,18 @@ class StringVectorAI:
     # -------------------------------
     def generate_vector(self) -> tuple[tuple[float, ...], str]:
         if not self.records:
-            vec: tuple[float, ...] = tuple(torch.rand(self.vector_dim).tolist())
+            vec: tuple[float, ...] = tuple(float(v) for v in torch.rand(self.vector_dim))
             s_len: int = max(1, self.vector_dim)
             string: str = "".join(self.charset[i % self.vocab_size] for i in range(s_len))
             return vec, string
 
-        last_str, last_vec = self.records[-1]
+        last_str, _ = self.records[-1]
         x: torch.Tensor = self._string_to_tensor(last_str).unsqueeze(0)  # shape: (1, seq_len, vocab_size)
         with torch.no_grad():
             pred: torch.Tensor = self.model(x)
-        vec: tuple[float, ...] = tuple(pred.squeeze(0).tolist())
+        # ensure tensor moved to CPU and elements are concrete floats for typing
+        # convert tensor to a CPU numpy array then to a tuple of floats to satisfy type checkers
+        vec: tuple[float, ...] = tuple(float(v) for v in pred.squeeze(0).cpu().detach().numpy())
 
         # 修正這裡，加上 squeeze(0) 去掉 batch 維度
         string: str = self._tensor_to_string(x.squeeze(0))
