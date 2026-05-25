@@ -1,19 +1,29 @@
-import pygame, random, os.path
+from __future__ import annotations
+
+from os.path import dirname, abspath
+from random import randrange
+from typing import Any
+
+import pygame
 
 pygame.init()
-pygame.mixer.init()
 score = 0
 W = pygame.display.Info().current_w
 H = pygame.display.Info().current_h
 screen = pygame.display.set_mode((W, H))
-pygame.display.set_caption("gametest")
+pygame.display.set_caption("game test")
 clock = pygame.time.Clock()
-path = os.path.dirname(os.path.abspath(__file__))
+path = dirname(abspath(__file__))
 
 
-class Player(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
+class GameSprite(pygame.sprite.Sprite):
+    image: pygame.Surface
+    rect: pygame.Rect
+
+
+class Player(GameSprite):
+    def __init__(self, *args: pygame.sprite.AbstractGroup[Any]):
+        super().__init__(*args)
         self.image = pygame.image.load(path + "\\plane_up.png")
         self.image = pygame.transform.scale(self.image, (120, 120))
         self.rect = self.image.get_rect()
@@ -24,7 +34,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         keys = pygame.key.get_pressed()
-        if gameing:
+        if gaming:
             if keys[pygame.K_w]:
                 self.rect.y -= self.speed_y
             if keys[pygame.K_s]:
@@ -45,21 +55,26 @@ class Player(pygame.sprite.Sprite):
         self.cd -= 6
         if keys[pygame.K_SPACE]:
             if self.cd < 0:
-                bullet = Bullet(self.rect.centerx, self.rect.y)
+                bullet = Bullet.spawn(self.rect.centerx, self.rect.y)
                 all_sprites.add(bullet)
                 bullets.add(bullet)
                 self.cd = 200
 
 
-class Bullet(pygame.sprite.Sprite):
-    def __init__(self, x: int, y: int):
-        pygame.sprite.Sprite.__init__(self)
+class Bullet(GameSprite):
+    def __init__(self, *args: pygame.sprite.AbstractGroup[Any]):
+        super().__init__(*args)
         self.image = pygame.image.load(path + "\\bullet.png")
         self.image = pygame.transform.scale(self.image, (80, 80))
         self.rect = self.image.get_rect()
-        self.rect.centerx = x
-        self.rect.bottom = y + 30
         self.speed_y = -15
+
+    @classmethod
+    def spawn(cls, x: int, y: int, *args: pygame.sprite.AbstractGroup[Any]) -> "Bullet":
+        bullet = cls(*args)
+        bullet.rect.centerx = x
+        bullet.rect.bottom = y + 30
+        return bullet
 
     def update(self):
         self.rect.y += self.speed_y
@@ -67,16 +82,16 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
-class Red(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(path + "\\redmonster_0.png")
+class Red(GameSprite):
+    def __init__(self, *args: pygame.sprite.AbstractGroup[Any]):
+        super().__init__(*args)
+        self.image = pygame.image.load(path + "\\red_monster_0.png")
         self.image = pygame.transform.scale(self.image, (130, 130))
         self.rect = self.image.get_rect()
-        self.rect.x = random.randrange(0, W - self.rect.width)
-        self.rect.y = random.randrange(-1000, -400)
-        self.speed_y = random.randrange(1, 6)
-        self.speed_x = random.randrange(-2, 2)
+        self.rect.x = randrange(0, W - self.rect.width)
+        self.rect.y = randrange(-1000, -400)
+        self.speed_y = randrange(1, 6)
+        self.speed_x = randrange(-2, 2)
 
     def update(self):
         self.rect.y += self.speed_y
@@ -86,27 +101,27 @@ class Red(pygame.sprite.Sprite):
         if self.rect.right < 0:
             self.rect.left = W
         if self.rect.top > H:
-            self.rect.x = random.randrange(0, W - self.rect.width)
-            self.rect.y = random.randrange(-1000, -400)
-            self.speed_y = random.randrange(1, 6)
+            self.rect.x = randrange(0, W - self.rect.width)
+            self.rect.y = randrange(-1000, -400)
+            self.speed_y = randrange(1, 6)
 
 
-class Eyes(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(path + "\\eyesmonster.png")
+class Eyes(GameSprite):
+    def __init__(self, *args: pygame.sprite.AbstractGroup[Any]):
+        super().__init__(*args)
+        self.image = pygame.image.load(path + "\\eyes_monster.png")
         self.image = pygame.transform.scale(self.image, (130, 130))
         self.rect = self.image.get_rect()
         self.cd = 200
-        if random.randrange(0, 2) == 0:
-            self.rect.x = random.randrange(-200, -50)
+        if randrange(0, 2) == 0:
+            self.rect.x = randrange(-200, -50)
             self.left = True
         else:
-            self.rect.x = W + random.randrange(20, 500)
+            self.rect.x = W + randrange(20, 500)
             self.left = False
 
-        self.rect.y = random.randrange(20, 300)
-        self.speed_x = random.randrange(2, 5)
+        self.rect.y = randrange(20, 300)
+        self.speed_x = randrange(2, 5)
 
     def update(self):
         self.cd -= 4
@@ -119,21 +134,26 @@ class Eyes(pygame.sprite.Sprite):
             if self.rect.right < 0:
                 self.rect.right = W + 50
         if self.cd < 0:
-            ball = Ball(self.rect.centerx, self.rect.y)
+            ball = Ball.spawn(self.rect.centerx, self.rect.y)
             all_sprites.add(ball)
             balls.add(ball)
             self.cd = 400
 
 
-class Ball(pygame.sprite.Sprite):
-    def __init__(self, x: int, y: int):
-        pygame.sprite.Sprite.__init__(self)
+class Ball(GameSprite):
+    def __init__(self, *args: pygame.sprite.AbstractGroup[Any]):
+        super().__init__(*args)
         self.image = pygame.image.load(path + "\\ball.png")
         self.image = pygame.transform.scale(self.image, (80, 80))
         self.rect = self.image.get_rect()
-        self.rect.centerx = x
-        self.rect.bottom = y + 110
-        self.speed_y = random.randrange(2, 4)
+        self.speed_y = randrange(2, 4)
+
+    @classmethod
+    def spawn(cls, x: int, y: int, *args: pygame.sprite.AbstractGroup[Any]) -> "Ball":
+        ball = cls(*args)
+        ball.rect.centerx = x
+        ball.rect.bottom = y + 110
+        return ball
 
     def update(self):
         self.rect.y += self.speed_y
@@ -141,43 +161,43 @@ class Ball(pygame.sprite.Sprite):
             self.kill()
 
 
-def hpbar(surf: pygame.Surface, hp: int, x: int, y: int):
+def hp_bar(surf: pygame.Surface, hp: int, x: int, y: int):
     if hp < 0:
         hp = 0
     bar_length = 200
     bar_height = 20
     fill = (hp / 100) * bar_length
-    hpbox = pygame.Rect(x, y, bar_length, bar_height)
-    hpin = pygame.Rect(x, y, fill, bar_height)
+    hp_box = pygame.Rect(x, y, bar_length, bar_height)
+    h_pin = pygame.Rect(x, y, fill, bar_height)
     if hp > 30:
-        pygame.draw.rect(surf, (0, 255, 0), hpin)
+        pygame.draw.rect(surf, (0, 255, 0), h_pin)
     elif hp <= 30:
-        pygame.draw.rect(surf, (255, 0, 0), hpin)
-    pygame.draw.rect(surf, (255, 255, 255), hpbox, 2)
+        pygame.draw.rect(surf, (255, 0, 0), h_pin)
+    pygame.draw.rect(surf, (255, 255, 255), hp_box, 2)
 
 
-background_sound = pygame.mixer.Sound(path + "\\backgroundmusic.mp3")
+background_sound = pygame.mixer.Sound(path + "\\background_music.mp3")
 background_sound.play()
-startbut = pygame.image.load(path + "\\startbut.png")
+start_but = pygame.image.load(path + "\\start_but.png")
 main_page = True
-gameing = False
-gameover = False
+gaming = False
+game_over = False
 background_image = pygame.image.load(path + "\\space.png")
-all_sprites = pygame.sprite.Group()
-reds = pygame.sprite.Group()
-bullets = pygame.sprite.Group()
-eyesll = pygame.sprite.Group()
-balls = pygame.sprite.Group()
+all_sprites: pygame.sprite.Group[GameSprite] = pygame.sprite.Group()
+reds: pygame.sprite.Group[Red] = pygame.sprite.Group()
+bullets: pygame.sprite.Group[Bullet] = pygame.sprite.Group()
+eye_sll: pygame.sprite.Group[Eyes] = pygame.sprite.Group()
+balls: pygame.sprite.Group[Ball] = pygame.sprite.Group()
 player = Player()
 all_sprites.add(player)
 for i in range(15):
-    redmonster = Red()
-    all_sprites.add(redmonster)
-    reds.add(redmonster)
+    red_monster = Red()
+    all_sprites.add(red_monster)
+    reds.add(red_monster)
 for i in range(10):
     eyes = Eyes()
     all_sprites.add(eyes)
-    eyesll.add(eyes)
+    eye_sll.add(eyes)
 
 while True:
     for event in pygame.event.get():
@@ -189,7 +209,7 @@ while True:
             if W / 2 - 85 <= mouse_pos[0] <= W / 2 + 85 and H / 2 - 47 <= mouse_pos[1] <= H / 2 + 47:
                 button_state = True
                 main_page = False
-                gameing = True
+                gaming = True
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
@@ -197,45 +217,45 @@ while True:
     background_image = pygame.transform.scale(background_image, (W, H))
     screen.blit(background_image, (0, 0))
     if main_page:
-        startbut = pygame.transform.scale(startbut, (180, 180))
-        screen.blit(startbut, (W / 2 - 90, H / 2 - 100))
+        start_but = pygame.transform.scale(start_but, (180, 180))
+        screen.blit(start_but, (W / 2 - 90, H / 2 - 100))
         font = pygame.font.Font(None, 200)
-        txt = font.render("SPACEWAR", True, (255, 0, 0))
+        txt = font.render("space war", True, (255, 0, 0))
         screen.blit(txt, [W / 2 - 410, H / 2 - 250])
-    if gameing:
+    if gaming:
         all_sprites.draw(screen)
-    if gameover:
-        gameover_image = pygame.image.load(path + "\\gameover.png")
-        gameover_image = pygame.transform.scale(gameover_image, (W, H))
-        screen.blit(gameover_image, (0, 0))
+    if game_over:
+        game_over_image = pygame.image.load(path + "\\game_over.png")
+        game_over_image = pygame.transform.scale(game_over_image, (W, H))
+        screen.blit(game_over_image, (0, 0))
         font = pygame.font.Font(None, 200)
         txt = font.render(f"YOUR SCORE:{score}", True, (255, 255, 255))
         screen.blit(txt, [140, 360])
-    if gameing:
+    if gaming:
         font = pygame.font.Font(None, 80)
         txt = font.render(f"SCORE:{score}", True, (255, 255, 255))
         screen.blit(txt, [0, 0])
-        hpbar(screen, player.hp, W // 2 - 98, H - 20)
+        hp_bar(screen, player.hp, W // 2 - 98, H - 20)
         all_sprites.update()
-        shotdown_red = pygame.sprite.groupcollide(reds, bullets, True, True)
-        for shots in shotdown_red:
+        shot_down_red = pygame.sprite.groupcollide(reds, bullets, True, True)
+        for shots in shot_down_red:
             score += 3
-            redmonster = Red()
-            all_sprites.add(redmonster)
-            reds.add(redmonster)
-        shotdown_eye = pygame.sprite.groupcollide(eyesll, bullets, True, True)
-        for shots in shotdown_eye:
+            red_monster = Red()
+            all_sprites.add(red_monster)
+            reds.add(red_monster)
+        shot_down_eye = pygame.sprite.groupcollide(eye_sll, bullets, True, True)
+        for shots in shot_down_eye:
             score += 5
             eyes = Eyes()
             all_sprites.add(eyes)
-            eyesll.add(eyes)
+            eye_sll.add(eyes)
         hurt1 = pygame.sprite.spritecollide(player, reds, False, pygame.sprite.collide_mask)
         hurt2 = pygame.sprite.spritecollide(player, balls, False, pygame.sprite.collide_mask)
-        hurt3 = pygame.sprite.spritecollide(player, eyesll, False, pygame.sprite.collide_mask)
+        hurt3 = pygame.sprite.spritecollide(player, eye_sll, False, pygame.sprite.collide_mask)
         if hurt1 or hurt2 or hurt3:
             player.hp -= 1
             if player.hp < 0:
-                gameing = False
-                gameover = True
+                gaming = False
+                game_over = True
     pygame.display.update()
     clock.tick(120)
