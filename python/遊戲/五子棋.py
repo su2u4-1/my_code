@@ -15,7 +15,7 @@ def checking(board: list[list[int]]) -> Optional[tuple[tuple[int, int], tuple[in
                 end_x = x
                 end_y = y
                 for _ in range(4):
-                    if not (0 < end_x + dire[i][0] < BOARD_SIZE) or not (0 < end_y + dire[i][1] < BOARD_SIZE):
+                    if not (0 <= end_x + dire[i][0] < BOARD_SIZE) or not (0 <= end_y + dire[i][1] < BOARD_SIZE):
                         break
                     if board[end_x + dire[i][0]][end_y + dire[i][1]] != board[x][y]:
                         break
@@ -39,7 +39,9 @@ def main() -> None:
     # init
     pygame.init()
     pygame.display.set_caption("五子棋")
-    screen = pygame.display.set_mode((670, 700), pygame.RESIZABLE)
+    # if board_size < 7, board_x = 318, board_y = 348
+    board_x, board_y = max(318, 44 * (BOARD_SIZE - 1) + 54), max(348, 44 * (BOARD_SIZE - 1) + 84)
+    screen = pygame.display.set_mode((board_x, board_y), pygame.RESIZABLE)
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 30)
     message = ""
@@ -66,17 +68,14 @@ def main() -> None:
                     try:
                         if board[mouse_x][mouse_y] == 0:
                             move_count += 1
-                            if move_count % 2 == 1:
-                                board[mouse_x][mouse_y] = 1
-                            else:
-                                board[mouse_x][mouse_y] = 2
+                            board[mouse_x][mouse_y] = 1 if move_count % 2 else 2
                     except:
                         pass
                 # button click
-                if 60 < mousex < 120 and 670 < mousey:
+                if 60 < mousex < 120 and mousey > board_x:
                     print("\nexit game")
                     exit()
-                if mousex < 60 and 670 < mousey:
+                if mousex < 60 and mousey > board_x:
                     print("\nreset game")
                     main()
 
@@ -107,31 +106,28 @@ def main() -> None:
                     message = "White Win"
                 else:
                     message = "Draw"
+            if is_game_active:
+                message = "turn: Black" if move_count % 2 == 0 else "turn: White"
             # draw mouse hover
-            if move_count % 2 == 0:
-                if is_game_active:
-                    message = "turn: Black"
-                pygame.draw.circle(screen, (0, 0, 0), (mouse_x * 44 + 28, mouse_y * 44 + 28), 15, width=3)
-            else:
-                if is_game_active:
-                    message = "turn: White"
-                pygame.draw.circle(screen, (255, 255, 255), (mouse_x * 44 + 28, mouse_y * 44 + 28), 15, width=3)
+            color = (0, 0, 0) if move_count % 2 == 0 else (255, 255, 255)
+            if 0 <= mouse_x < BOARD_SIZE and 0 <= mouse_y < BOARD_SIZE and board[mouse_x][mouse_y] == 0:
+                pygame.draw.circle(screen, color, (mouse_x * 44 + 28, mouse_y * 44 + 28), 15, width=3)
         elif result_line is not None:
             pygame.draw.line(screen, (255, 0, 0), result_line[0], result_line[1], width=3)
 
         # draw button
-        pygame.draw.rect(screen, (0, 0, 0), (0, 670, 60, 30), 5)
-        screen.blit(font.render("reset", True, (0, 0, 0)), (5, 675))
-        pygame.draw.rect(screen, (0, 0, 0), (60, 670, 60, 30), 5)
-        screen.blit(font.render("exit", True, (0, 0, 0)), (70, 675))
+        pygame.draw.rect(screen, (0, 0, 0), (0, board_x, 60, 30), 5)
+        screen.blit(font.render("reset", True, (0, 0, 0)), (5, board_x + 5))
+        pygame.draw.rect(screen, (0, 0, 0), (60, board_x, 60, 30), 5)
+        screen.blit(font.render("exit", True, (0, 0, 0)), (70, board_x + 5))
         # draw button hover
-        if 60 < mousex < 120 and 670 < mousey:
-            pygame.draw.rect(screen, (255, 255, 255), (60, 670, 60, 30), 5)
-        if mousex < 60 and 670 < mousey:
-            pygame.draw.rect(screen, (255, 255, 255), (0, 670, 60, 30), 5)
+        if 60 < mousex < 120 and mousey > board_x:
+            pygame.draw.rect(screen, (255, 255, 255), (60, board_x, 60, 30), 5)
+        if mousex < 60 and mousey > board_x:
+            pygame.draw.rect(screen, (255, 255, 255), (0, board_x, 60, 30), 5)
         # draw mouse pos and message
         text = font.render(f"({mouse_x},{mouse_y})  {message}", True, (0, 0, 0))
-        screen.blit(text, (125, 675))
+        screen.blit(text, (125, board_x + 5))
 
         pygame.display.update()
         clock.tick(60)
