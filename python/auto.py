@@ -93,62 +93,13 @@ def run_script() -> None:
     global running
     try:
         print("開始執行")
-        # ===== 在這裡寫你的操作 =====
-        put(b1, [t8])
-        put(b2, [t4, t6, t2])
-        take(b9)
-
-        put(b1, [t4])
-        put(b2, [t8, t6, t2])
-        take(b8)
-
-        put(b1, [t6])
-        put(b2, [t8, t4, t2])
-        take(b7)
-
-        put(b1, [t2])
-        put(b2, [t8, t4, t6])
-        take(b6)
         # ==========================
-        put(b2, [t8])
-        put(b1, [t4, t6, t2])
-        take(b27)
-
-        put(b2, [t4])
-        put(b1, [t8, t6, t2])
-        take(b26)
-
-        put(b2, [t6])
-        put(b1, [t8, t4, t2])
-        take(b25)
-
-        put(b2, [t2])
-        put(b1, [t8, t4, t6])
-        take(b24)
-        # ==========================
-        put(b1, [t8, t4])
-        put(b2, [t6, t2])
-        take(b18)
-
-        put(b1, [t4, t2])
-        put(b2, [t8, t6])
-        take(b17)
-
-        put(b1, [t6, t2])
-        put(b2, [t8, t4])
-        take(b16)
-
-        put(b1, [t8, t6])
-        put(b2, [t4, t2])
-        take(b15)
-        # ==========================
-        put(b1, [t8, t2])
-        put(b2, [t4, t6])
-        take(b14)
-
-        put(b1, [t4, t6])
-        put(b2, [t8, t2])
-        take(b13)
+        for i in (b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, b19, b20, b21):
+            put(b25, [t2])
+            put(b26, [t4])
+            put(b27, [t6])
+            put(i, [t8])
+            take(i)
         # ==========================
         print("執行完成\n")
     except Exception:
