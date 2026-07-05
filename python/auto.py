@@ -83,10 +83,15 @@ def put(pos1: tuple[int, int], other_pos: Iterable[tuple[int, int]]) -> None:
     click(pos1, "left")
 
 
+def move(pos1: tuple[int, int], pos2: tuple[int, int]) -> None:
+    """move pos1 to pos2"""
+    click(pos1, "left")
+    click(pos2, "left")
+
+
 def take(pos: tuple[int, int]) -> None:
-    """take result(r1) to pos"""
-    click(result, "left")
-    click(pos, "left")
+    """take result to pos"""
+    move(result, pos)
 
 
 def run_script() -> None:
@@ -94,11 +99,11 @@ def run_script() -> None:
     try:
         print("開始執行")
         # ==========================
+        move(b25, t2)
+        move(b26, t4)
+        move(b27, t6)
         for i in (b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, b19, b20, b21):
-            put(b25, [t2])
-            put(b26, [t4])
-            put(b27, [t6])
-            put(i, [t8])
+            move(i, t8)
             take(i)
         # ==========================
         print("執行完成\n")
